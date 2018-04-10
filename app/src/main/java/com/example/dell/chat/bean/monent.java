@@ -8,7 +8,6 @@ import java.util.Date;
 
 //朋友圈的类，每一条朋友圈就是一个该类的对象
 public class monent {
-    public  int a;
     private int moment_id;//朋友圈id
     private int user_id;//发这条朋友圈的用户的id
     private String user_name;//发这条朋友圈的用户的用户名
