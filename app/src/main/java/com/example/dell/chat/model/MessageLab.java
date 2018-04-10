@@ -1,16 +1,17 @@
-package com.example.dell.chat.base;
+package com.example.dell.chat.model;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.dell.chat.base.SQLHelper;
-import com.example.dell.chat.base.DbSchema.ChatListTable;
+import com.example.dell.chat.model.database.SQLHelper;
+import com.example.dell.chat.model.database.DbSchema.ChatListTable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import com.example.dell.chat.model.Message;
 
 /**
  * Created by courageface on 2018/4/3.
