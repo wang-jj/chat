@@ -1,4 +1,4 @@
-package com.example.dell.chat.base;
+package com.example.dell.chat.model;
 
 import java.util.UUID;
 

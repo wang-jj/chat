@@ -1,4 +1,4 @@
-package com.example.dell.chat.base;
+package com.example.dell.chat.model.database;
 
 /**
  * Created by courageface on 2018/4/8.

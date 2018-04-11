@@ -1,10 +1,10 @@
-package com.example.dell.chat.base;
+package com.example.dell.chat.model.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.dell.chat.base.DbSchema.ChatListTable;
+import com.example.dell.chat.model.database.DbSchema.ChatListTable;
 
 /**
  * Created by courageface on 2018/4/8.

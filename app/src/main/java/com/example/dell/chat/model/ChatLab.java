@@ -1,18 +1,18 @@
-package com.example.dell.chat.base;
+package com.example.dell.chat.model;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.dell.chat.base.DbSchema;
-import com.example.dell.chat.base.SQLHelper;
+import com.example.dell.chat.model.database.DbSchema;
+import com.example.dell.chat.model.database.SQLHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.example.dell.chat.base.DbSchema.*;
+import static com.example.dell.chat.model.database.DbSchema.*;
 
 /**
  * Created by courageface on 2018/4/8.
