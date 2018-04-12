@@ -1,11 +1,15 @@
 package com.example.dell.chat.bean;
 
+import org.litepal.crud.DataSupport;
+
+import java.util.Date;
+
 /**
  * Created by dell on 2018/4/10.
  */
 
 //用于查看用户个人资料
-public class user {
+public class User extends DataSupport {
     private int user_id;//用户id
     private String user_name;//用户名
     private String image_path;//头像地址
@@ -15,6 +19,16 @@ public class user {
     private String picture_path1;//朋友圈第一张图
     private String picture_path2;//朋友圈第二张图
     private String picture_path3;//朋友圈第三张图
+    private String password;//密码
+    private String birthday;//生日
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
 
     public int getUser_id() {
         return user_id;
@@ -86,5 +100,13 @@ public class user {
 
     public void setPicture_path3(String picture_path3) {
         this.picture_path3 = picture_path3;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 }
