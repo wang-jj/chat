@@ -11,7 +11,7 @@ import com.example.dell.chat.model.database.DbSchema.ChatListTable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import com.example.dell.chat.model.Message;
+import com.example.dell.chat.bean.Message;
 
 /**
  * Created by courageface on 2018/4/3.

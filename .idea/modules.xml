@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://D:\GitHubDoc\chat\android.iml" filepath="D:\GitHubDoc\chat\android.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\GitHubDoc\chat\app\app.iml" filepath="D:\GitHubDoc\chat\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/chat.iml" filepath="$PROJECT_DIR$/chat.iml" />
     </modules>
   </component>

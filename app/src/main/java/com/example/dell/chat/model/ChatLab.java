@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.dell.chat.model.database.DbSchema;
+import com.example.dell.chat.bean.Chat;
 import com.example.dell.chat.model.database.SQLHelper;
 
 import java.util.ArrayList;
