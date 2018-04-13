@@ -6,6 +6,6 @@
         <!-- 所有原型：包名+类名，类继承DataSupport，这时不用声明表名和列名，
                 它会帮你创建，生成的表名是类名的小写，列名是各属性的值，但是要注意这里不能搞内部类，否则它不能识别！ -->
         <mapping class="com.example.dell.chat.bean.User"></mapping>
-        <mapping class="com.example.dell.chat.bean.moment"></mapping>
+        <mapping class="com.example.dell.chat.bean.PersonalState"></mapping>
     </list>
 </litepal>
