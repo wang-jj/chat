@@ -1,6 +1,7 @@
-package com.example.dell.chat.model;
+package com.example.dell.chat.model.Login;
 
 import com.example.dell.chat.bean.User;
+import com.example.dell.chat.model.Callback;
 
 
 /**

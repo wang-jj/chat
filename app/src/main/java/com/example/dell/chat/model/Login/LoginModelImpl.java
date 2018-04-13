@@ -1,8 +1,10 @@
-package com.example.dell.chat.model;
+package com.example.dell.chat.model.Login;
 
-import android.os.AsyncTask;
 
 import com.example.dell.chat.bean.User;
+import com.example.dell.chat.model.Callback;
+import com.example.dell.chat.model.Execute;
+import com.example.dell.chat.tools.ThreadTask;
 
 import org.litepal.crud.DataSupport;
 
@@ -13,6 +15,7 @@ import org.litepal.crud.DataSupport;
 
 public class LoginModelImpl implements LoginModel {
 
+    /*
     private static class Task<T,V,C> extends AsyncTask<T,V,C>{
         private Callback<C> callback;
         private Execute<C> exe;
@@ -34,6 +37,7 @@ public class LoginModelImpl implements LoginModel {
             this.exe=exe;
         }
     }
+    */
 
     @Override
     public void FindLastUser(final Callback<User> callback){
@@ -43,7 +47,7 @@ public class LoginModelImpl implements LoginModel {
 
     @Override
     public void UpdateUser(final User u){
-        Task t=new Task<Void,Void,Void>(null, new Execute<Void>() {
+        ThreadTask t=new ThreadTask<Void,Void,Void>(null, new Execute<Void>() {
             @Override
             public Void doExec() {
                 if (u.isSaved()) {
