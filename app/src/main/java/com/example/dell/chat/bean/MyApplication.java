@@ -2,6 +2,9 @@ package com.example.dell.chat.bean;
 
 import android.app.Application;
 
+
+import com.example.dell.chat.tools.Dao;
+
 import org.litepal.LitePal;
 
 /**
@@ -9,14 +12,21 @@ import org.litepal.LitePal;
  */
 
 public class MyApplication extends Application {
-    public User user;
 
-    public User getUser() {
+    public static Dao dao;
+
+    public static User user;
+
+    public static User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public static void setUser(User usera) {
+        user = usera;
+    }
+
+    public static Dao getDao() {
+        return dao;
     }
 
     @Override
@@ -24,5 +34,7 @@ public class MyApplication extends Application {
         super.onCreate();
         LitePal.initialize(this);
         this.user=null;
+        dao=new Dao(this);
     }
+
 }

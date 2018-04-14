@@ -1,7 +1,9 @@
 package com.example.dell.chat.presenter;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.example.dell.chat.TestActivity;
 import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.base.BasePresenter;
 import com.example.dell.chat.bean.MyApplication;
@@ -27,8 +29,7 @@ public class LoginPresenter<T extends BaseActivity> extends BasePresenter<T>  {
             @Override
             public void execute(User datas) {
                 if(datas!=null){
-                    MyApplication myApplication=(MyApplication) (getView().getApplication());
-                    myApplication.setUser(datas);
+                    ((TestActivity)getView()).setUserName(datas.getUser_name());
                     //登陆成功
                 }else {
                     //转到登陆界面
