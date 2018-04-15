@@ -32,8 +32,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp">
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp">
 
             <EditText
                 android:id="@+id/registration_mail"
@@ -58,8 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp">
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp">
 
             <EditText
                 android:id="@+id/registration_password"
@@ -83,8 +83,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp">
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp">
 
             <EditText
                 android:id="@+id/registration_password_again"
@@ -108,8 +108,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp">
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp">
 
             <EditText
                 android:id="@+id/registration_nickname"
@@ -134,8 +134,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp">
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp">
 
             <EditText
                 android:id="@+id/registration_gender"
@@ -189,8 +189,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp">
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp">
 
             <EditText
                 android:id="@+id/registration_birth"
@@ -216,8 +216,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp">
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp">
 
             <EditText
                 android:id="@+id/registration_introduction"
@@ -240,6 +240,8 @@
             android:layout_alignParentBottom="true"
             android:layout_below="@+id/registration_7"
             android:layout_marginTop="20dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
             android:background="@drawable/toolbar_background"
             android:scaleX="-1"
             android:text="确认注册"
