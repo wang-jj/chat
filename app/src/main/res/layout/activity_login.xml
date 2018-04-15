@@ -1,0 +1,142 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context="com.example.dell.chat.view.LoginActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <RelativeLayout
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-40dp">
+
+        <ImageView
+            android:id="@+id/login_background"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/login_background"/>
+
+        <com.example.dell.chat.tools.CircleImageView
+            android:id="@+id/login_profile"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-70dp"
+            android:padding="1dp"
+            android:background="@drawable/circle_image_border"
+            android:layout_below="@id/login_background"/>
+
+        <EditText
+            android:id="@+id/login_mail"
+            style="@style/NewEditText"
+            android:layout_below="@id/login_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:textAlignment="center"
+            android:hint="邮箱"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:lineSpacingExtra="2dp"
+            android:padding="12dp"
+            android:textSize="19sp"/>
+
+        <EditText
+            android:id="@+id/login_password"
+            style="@style/NewEditText"
+            android:layout_below="@id/login_mail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:textAlignment="center"
+            android:hint="密码"
+            android:gravity="center_vertical"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:lineSpacingExtra="2dp"
+            android:padding="12dp"
+            android:textSize="19sp"/>
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:background="@drawable/login_button_background"
+            android:text="登录"
+            android:textSize="18sp"
+            android:textColor="@color/colorWhite"
+            android:layout_below="@id/login_password"/>
+
+        <TextView
+            android:layout_below="@id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="75dp"
+            android:layout_marginRight="75dp"
+            android:text="@string/login_introduce"/>
+
+        <TextView
+            android:id="@+id/login_registration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="新用户注册"
+            android:paddingLeft="15dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="25dp"
+            android:layout_alignParentBottom="true"/>
+
+        <TextView
+            android:id="@+id/login_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="无法登录？"
+            android:textSize="16sp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
+
+
+
+    </RelativeLayout>
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?metaButtonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

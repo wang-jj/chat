@@ -27,7 +27,7 @@ public class TestActivity extends BaseActivity<TestActivity,LoginPresenter<TestA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_test);    //删除testacticvity时记得删除布局文件
         User u=new User();
         u.setGender(1);
         u.setUser_id(1);

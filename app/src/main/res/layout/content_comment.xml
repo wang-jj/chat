@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.dell.chat.view.CommentActivity"
+    tools:showIn="@layout/activity_comment">
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/comment_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:background="@drawable/comment_state"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants"
+                android:paddingTop="10dp">
+
+                <!--头像、昵称、学校-->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="15dp"
+                    android:paddingLeft="15dp">
+
+                    <com.example.dell.chat.tools.CircleImageView
+                        android:id="@+id/comment_state_profile"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/profile"
+                        android:padding="1dp"
+                        android:background="@drawable/circle_image_border"/>
+
+                    <TextView
+                        android:id="@+id/comment_state_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="4dp"
+                        android:text="麦梓逗比旗"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="4dp"
+                        android:text="来自"
+                        android:textColor="@color/colorBlack"
+                        />
+
+                    <TextView
+                        android:id="@+id/comment_state_school"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="华南理工大学"
+                        android:textColor="@color/colorBlue"/>
+
+                </LinearLayout>
+
+                <!--动态内容-->
+                <TextView
+                    android:id="@+id/comment_state_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp"
+                    android:text="超级喜欢这种类型的小猫！好想带1只回家的！真想知道怎么养这种小猫！"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="15dp"
+                    android:paddingLeft="15dp">
+
+                    <!--图片 三张-->
+                    <ImageView
+                        android:id="@+id/comment_state_image1"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:src="@drawable/sample1"/>
+
+                    <ImageView
+                        android:id="@+id/comment_state_image2"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:src="@drawable/sample2"/>
+
+                    <ImageView
+                        android:id="@+id/comment_state_image3"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:src="@drawable/sample3"/>
+
+                </LinearLayout>
+
+                <!--定位-->
+                <TextView
+                    android:id="@+id/comment_state_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:text="广州·华南理工大学"
+                    android:textColor="@color/colorBlue"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorStrongGray"/>
+
+                <!--点赞数与评论数-->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/comment_like_linear"
+                        android:orientation="horizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:background="@drawable/linear_click_background_comment">
+
+                        <ImageView
+                            android:id="@+id/comment_like_picture"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/like"/>
+
+                        <TextView
+                            android:id="@+id/comment_state_like"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="233"
+                            android:textColor="@color/colorStrongGray"
+                            android:textSize="15sp"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorStrongGray"/>
+
+                    <LinearLayout
+                        android:id="@+id/comment_comment_linear"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/colorClickGray"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp">
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/comment_checked"/>
+                        <TextView
+                            android:id="@+id/comment_state_comment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="666"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="15sp"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorStrongGray"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/comment_recycler_view"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/comment_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:padding="10dp"
+                android:background="#ffffff">
+
+                <ProgressBar
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="加载中..."
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/comment_input"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginBottom="-2dp"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/comment_edit_background">
+
+        <EditText
+            android:id="@+id/comment_edit"
+            style="@style/NewEditText"
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:layout_height="35dp"
+            android:background="@drawable/chat_send_background"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:lineSpacingExtra="2dp"
+            android:padding="5dp"
+            android:textSize="16sp"
+            android:clickable="true"
+            android:focusableInTouchMode="false" />
+
+        <ImageButton
+            android:id="@+id/comment_send"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/chat_send_photo"
+            android:src="@drawable/ic_chat_24dp"
+            android:layout_marginLeft="8dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

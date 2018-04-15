@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.dell.chat.view.RegistrationActivity"
+    tools:showIn="@layout/activity_registration">
+
+    <RelativeLayout
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp">
+
+        <com.example.dell.chat.tools.CircleImageView
+            android:id="@+id/registration_profile"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_person_add_24dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:padding="1dp"
+            android:background="@drawable/circle_image_border"/>
+
+        <LinearLayout
+            android:gravity="center"
+            android:id="@+id/registration_1"
+            android:layout_below="@id/registration_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp">
+
+            <EditText
+                android:id="@+id/registration_mail"
+                style="@style/NewEditText"
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="邮箱"
+                android:gravity="center_vertical"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:lineSpacingExtra="2dp"
+                android:padding="12dp"
+                android:textSize="19sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/registration_2"
+            android:layout_below="@id/registration_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp">
+
+            <EditText
+                android:id="@+id/registration_password"
+                style="@style/NewEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="密码"
+                android:gravity="center_vertical"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:lineSpacingExtra="2dp"
+                android:padding="12dp"
+                android:textSize="19sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/registration_3"
+            android:layout_below="@id/registration_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp">
+
+            <EditText
+                android:id="@+id/registration_password_again"
+                style="@style/NewEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="确认密码"
+                android:gravity="center_vertical"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:lineSpacingExtra="2dp"
+                android:padding="12dp"
+                android:textSize="19sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/registration_4"
+            android:layout_below="@id/registration_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp">
+
+            <EditText
+                android:id="@+id/registration_nickname"
+                style="@style/NewEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="昵称"
+                android:gravity="center_vertical"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:lineSpacingExtra="2dp"
+                android:padding="12dp"
+                android:textSize="19sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/registration_5"
+            android:layout_below="@id/registration_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp">
+
+            <EditText
+                android:id="@+id/registration_gender"
+                style="@style/NewEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="性别"
+                android:gravity="center_vertical"
+                android:inputType=""
+                android:maxLines="1"
+                android:singleLine="true"
+                android:lineSpacingExtra="2dp"
+                android:padding="12dp"
+                android:textSize="19sp"
+                android:clickable="true"
+                android:focusableInTouchMode="false"
+                android:visibility="visible"/>
+
+            <RadioGroup
+                android:id="@+id/registration_gender_radio"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="男"
+                    android:textSize="19sp"
+                    android:padding="5dp"
+                    android:layout_margin="10dp"/>
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="女"
+                    android:textSize="19sp"
+                    android:padding="5dp"
+                    android:layout_margin="10dp"/>
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/registration_6"
+            android:layout_below="@id/registration_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp">
+
+            <EditText
+                android:id="@+id/registration_birth"
+                style="@style/NewEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="生日"
+                android:gravity="center_vertical"
+                android:inputType="date"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:lineSpacingExtra="2dp"
+                android:padding="12dp"
+                android:textSize="19sp"
+                android:clickable="true"
+                android:focusableInTouchMode="false"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/registration_7"
+            android:layout_below="@id/registration_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp">
+
+            <EditText
+                android:id="@+id/registration_introduction"
+                style="@style/NewEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="简介"
+                android:gravity="center_vertical"
+                android:inputType="textMultiLine"
+                android:lineSpacingExtra="2dp"
+                android:padding="12dp"
+                android:textSize="19sp"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/registration_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/registration_7"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/toolbar_background"
+            android:scaleX="-1"
+            android:text="确认注册"
+            android:textScaleX="-1"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

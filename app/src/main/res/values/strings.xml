@@ -1,3 +1,25 @@
 <resources>
-    <string name="app_name">chat</string>
+    <string name="app_name">砰砰</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_state">StateActivity</string>
+    <string name="title_activity_data">DataActivity</string>
+    <string name="title_activity_album">AlbumActivity</string>
+    <string name="title_activity_collect">CollectActivity</string>
+    <string name="title_activity_comment">CommentActivity</string>
+    <string name="title_activity_publish">PublishActivity</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_chat">ChatActivity</string>
+
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="login_introduce">请使用注册时的邮箱、密码进行登录,尚未注册的用户需先进行注册</string>
+    <string name="dummy_button">退出</string>
+
+    <string name="title_activity_load">砰砰</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
+
 </resources>

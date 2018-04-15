@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/local_linear"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/location_background"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:paddingTop="10dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!--头像、昵称、学校-->
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp">
+
+        <com.example.dell.chat.tools.CircleImageView
+            android:id="@+id/location_profile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="1dp"
+            android:background="@drawable/circle_image_border"
+            />
+
+        <TextView
+            android:id="@+id/location_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingLeft="9dp"
+            android:layout_toRightOf="@id/location_profile"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/location_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_below="@id/location_nickname"
+            android:layout_toRightOf="@id/location_profile"
+            android:paddingLeft="9dp"
+            android:paddingRight="4dp"
+            android:text="来自"
+            android:textColor="@color/colorBlack"
+            />
+
+        <TextView
+            android:id="@+id/location_school"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_below="@id/location_nickname"
+            android:layout_toRightOf="@id/location_from"
+            android:textColor="@color/colorBlue"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/location_introduction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="3dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:layout_marginBottom="15dp">
+
+        <!--图片 三张-->
+        <ImageView
+            android:id="@+id/location_image1"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_weight="1"
+            android:layout_margin="1dp"/>
+
+        <ImageView
+            android:id="@+id/location_image2"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_weight="1"
+            android:layout_margin="1dp"/>
+
+        <ImageView
+            android:id="@+id/location_image3"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_weight="1"
+            android:layout_margin="1dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_data"
+            android:icon="@drawable/personal_data"
+            android:title="个人资料" />
+        <item
+            android:id="@+id/nav_album"
+            android:icon="@drawable/personal_album"
+            android:title="相册" />
+        <item
+            android:id="@+id/nav_collect"
+            android:icon="@drawable/personal_collect"
+            android:title="收藏" />
+
+
+    <item android:title="其他">
+        <menu>
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/setting"
+                android:title="设置" />
+            <item
+                android:id="@+id/nav_cancel"
+                android:icon="@drawable/cancel"
+                android:title="退出" />
+        </menu>
+
+    </item>
+
+    </group>
+
+</menu>
