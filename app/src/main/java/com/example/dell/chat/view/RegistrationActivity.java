@@ -91,6 +91,12 @@ public class RegistrationActivity extends AppCompatActivity {
 
                     }
                 });
+                if(imageView_profile.getDrawable().getCurrent().getConstantState()==getResources().getDrawable(R.drawable.icon_logo).getConstantState()){
+                    alertDialog.setTitle("请确认注册信息");
+                    alertDialog.setMessage("请确认已设置头像");
+                    alertDialog.show();
+                    return;
+                }
                 if(editText_mail.getText().toString().isEmpty()||editText_password.getText().toString().isEmpty()
                         ||editText_password_again.getText().toString().isEmpty()||editText_nickname.getText().toString().isEmpty()
                         ||editText_birth.getText().toString().isEmpty()
