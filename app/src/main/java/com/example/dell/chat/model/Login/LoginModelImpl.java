@@ -33,7 +33,6 @@ public class LoginModelImpl implements LoginModel {
         ThreadTask t=new ThreadTask<Void,Void,Void>(null, new Execute<Void>() {
             @Override
             public Void doExec() {
-                //网络请求
                 UserDao userDao=MyApplication.getDao().getUserDao();
                 userDao.update(u);
                 MyApplication.setUser(u);
