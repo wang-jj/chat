@@ -4,7 +4,6 @@ import android.app.Application;
 
 
 import com.example.dell.chat.tools.Dao;
-import com.squareup.leakcanary.LeakCanary;
 
 import org.litepal.LitePal;
 
@@ -38,7 +37,6 @@ public class MyApplication extends Application {
         LitePal.initialize(this);
         this.user=null;
         dao=new Dao(this);
-        //LeakCanary.install(this);
     }
 
     public static int getTimeout() {
