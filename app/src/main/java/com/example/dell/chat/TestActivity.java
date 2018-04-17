@@ -20,6 +20,8 @@ import com.example.dell.chat.model.Moment.MomentModelImpl;
 import com.example.dell.chat.presenter.LoginPresenter;
 import com.example.dell.chat.presenter.MomentPresenter;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 public class TestActivity extends BaseActivity<TestActivity,LoginPresenter<TestActivity>> {

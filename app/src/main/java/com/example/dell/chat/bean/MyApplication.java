@@ -30,6 +30,8 @@ public class MyApplication extends Application {
         return dao;
     }
 
+    public static int timeout=1;
+
     @Override
     public void onCreate(){
         super.onCreate();
@@ -39,4 +41,7 @@ public class MyApplication extends Application {
         //LeakCanary.install(this);
     }
 
+    public static int getTimeout() {
+        return timeout;
+    }
 }

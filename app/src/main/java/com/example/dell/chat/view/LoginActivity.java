@@ -13,15 +13,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.example.dell.chat.base.BaseActivity;
 
 import com.example.dell.chat.R;
+import com.example.dell.chat.bean.User;
+import com.example.dell.chat.presenter.LoginPresenter;
 
 //登录Avtivity 判断登录逻辑进入主活动或者进行注册
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity<LoginActivity,LoginPresenter<LoginActivity>> {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -220,4 +223,10 @@ public class LoginActivity extends AppCompatActivity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+
+    @Override
+    protected LoginPresenter createPresenter() {
+        return new LoginPresenter();
+    }
+
 }

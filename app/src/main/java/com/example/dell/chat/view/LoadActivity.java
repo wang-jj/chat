@@ -6,17 +6,25 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.dell.chat.R;
+import com.example.dell.chat.bean.MyApplication;
+import com.example.dell.chat.bean.User;
+import com.example.dell.chat.db.UserDao;
+import com.example.dell.chat.presenter.LoginPresenter;
+import com.example.dell.chat.base.BaseActivity;
+
+import java.util.List;
 
 //初始化加载时的activity 判断是进入登录界面 还是进入程序主界面
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class LoadActivity extends AppCompatActivity {
+public class LoadActivity extends BaseActivity<LoadActivity,LoginPresenter<LoadActivity>> {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -111,6 +119,7 @@ public class LoadActivity extends AppCompatActivity {
         // while interacting with the UI.
 
         //写入判断进入主界面还是进入登录的逻辑 跳转至LoginActivity 或者跳转至MainActivity
+        /*
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -119,6 +128,14 @@ public class LoadActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }, 2000);
+        */
+        User u=new User();
+        u.setUser_id(2);
+        u.setUser_name("wang");
+        u.setPassword("111");
+        UserDao userDao=MyApplication.getDao().getUserDao();
+        userDao.insert(u);
+        presenter.connect();
     }
 
     @Override
@@ -178,5 +195,10 @@ public class LoadActivity extends AppCompatActivity {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    @Override
+    protected LoginPresenter createPresenter() {
+        return new LoginPresenter();
     }
 }
