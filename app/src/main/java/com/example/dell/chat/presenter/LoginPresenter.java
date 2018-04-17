@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.dell.chat.TestActivity;
 import com.example.dell.chat.base.BaseActivity;
@@ -17,6 +18,7 @@ import com.example.dell.chat.model.Login.LoginModelImpl;
 import com.example.dell.chat.view.LoadActivity;
 import com.example.dell.chat.view.LoginActivity;
 import com.example.dell.chat.view.MainActivity;
+import com.example.dell.chat.view.RegistrationActivity;
 
 import java.sql.SQLRecoverableException;
 
@@ -76,8 +78,31 @@ public class LoginPresenter<T extends BaseActivity> extends BasePresenter<T>  {
         loginModel.LoginByEmail(email, password, new Callback<User>() {
             @Override
             public void execute(User datas) {
-                if(datas.getUser_id()>0){
 
+            }
+        });
+    }
+
+    //注册
+    public void Registration(User u){
+        loginModel.CreateUser(u, new Callback<User>() {
+            @Override
+            public void execute(User datas) {
+                if(datas.getUser_id()==-1){
+                    AlertDialog.Builder alertDialog=new AlertDialog.Builder(getView());
+                    alertDialog.setCancelable(true);
+                    alertDialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    alertDialog.setTitle("邮箱已注册");
+                    alertDialog.setMessage("请重新注册");
+                    alertDialog.show();
+                }else {
+                    Toast.makeText(getView(),"注册成功，请登录",Toast.LENGTH_SHORT).show();
+                    getView().onBackPressed();
                 }
             }
         });

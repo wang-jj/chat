@@ -20,7 +20,6 @@ import com.example.dell.chat.R;
 import com.example.dell.chat.bean.User;
 import com.example.dell.chat.presenter.LoginPresenter;
 
-import me.nereo.multi_image_selector.MultiImageSelector;
 
 //登录Avtivity 判断登录逻辑进入主活动或者进行注册
 /**

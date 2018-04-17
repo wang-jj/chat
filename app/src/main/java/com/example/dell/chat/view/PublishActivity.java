@@ -22,8 +22,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.nereo.multi_image_selector.MultiImageSelector;
-import me.nereo.multi_image_selector.MultiImageSelectorActivity;
+
 
 //动态发布Activity
 public class PublishActivity extends AppCompatActivity {
@@ -80,7 +79,7 @@ public class PublishActivity extends AppCompatActivity {
                     mGroupDrawable.setStroke(5, Color.parseColor("#cccccc"));
                     imageView2.setImageResource(R.drawable.ic_wallpaper_24dp);
                     */
-                    PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(3).forResult(PictureConfig.CHOOSE_REQUEST);
+                    PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(3).enableCrop(true).isDragFrame(false).rotateEnabled(true).hideBottomControls(true).forResult(PictureConfig.CHOOSE_REQUEST);
                 }
                 //设置图片一
                 //imageView1.setImageResource(R.drawable.sample1);
@@ -101,7 +100,7 @@ public class PublishActivity extends AppCompatActivity {
                         imageView3.setImageResource(R.drawable.ic_wallpaper_24dp);
                         image_num+=1;
                         */
-                        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(3).forResult(PictureConfig.CHOOSE_REQUEST);
+                        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(2).forResult(PictureConfig.CHOOSE_REQUEST);
                     }
                     //设置图片二
                     //imageView2.setImageResource(R.drawable.sample2);
@@ -117,7 +116,7 @@ public class PublishActivity extends AppCompatActivity {
                     if(image_num==2){
                         GradientDrawable mGroupDrawable = (GradientDrawable) imageView3.getBackground();
                         mGroupDrawable.setStroke(5, Color.parseColor("#ffffff"));
-                        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(3).forResult(PictureConfig.CHOOSE_REQUEST);
+                        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(1).forResult(PictureConfig.CHOOSE_REQUEST);
                     }
                     //设置图片三
                     //imageView3.setImageResource(R.drawable.sample2);
@@ -138,7 +137,8 @@ public class PublishActivity extends AppCompatActivity {
                         selectList.addAll(a);
                     }
                     if(selectList==null){//没选择
-
+                        GradientDrawable groupDrawable = (GradientDrawable) imageView1.getBackground();
+                        groupDrawable.setStroke(5, Color.parseColor("#cccccc"));
                     }else if(selectList.size()==1){
                         image_num=1;
                         setbackground(imageView2);

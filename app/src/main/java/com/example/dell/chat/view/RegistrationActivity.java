@@ -3,12 +3,14 @@ package com.example.dell.chat.view;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -17,12 +19,23 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
+import com.example.dell.chat.base.BaseActivity;
+import com.example.dell.chat.bean.MyApplication;
+import com.example.dell.chat.bean.User;
+import com.example.dell.chat.presenter.LoginPresenter;
+import com.google.gson.Gson;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.Calendar;
+import java.util.List;
 
 //注册Activity
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends BaseActivity<RegistrationActivity,LoginPresenter<RegistrationActivity>> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +59,15 @@ public class RegistrationActivity extends AppCompatActivity {
         final RadioGroup radioGroup_gender=(RadioGroup)findViewById(R.id.registration_gender_radio);
         final EditText editText_birth=(EditText)findViewById(R.id.registration_birth);
         final EditText editText_introduction=(EditText)findViewById(R.id.registration_introduction);
+        final EditText editText_school=(EditText)findViewById(R.id.registration_school);
 
         imageView_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imageView_profile.setImageResource(R.drawable.profile);
+                //imageView_profile.setImageResource(R.drawable.profile);
+                //Log.e("RegistrationActivity", "王锦杰" );
+                PictureSelector.create(RegistrationActivity.this).openGallery(PictureMimeType.ofImage()).isGif(false).maxSelectNum(1).forResult(PictureConfig.CHOOSE_REQUEST);
+                //PictureSelector.create(RegistrationActivity.this).openGallery(PictureMimeType.ofImage()).isGif(false).maxSelectNum(1).enableCrop(true).isDragFrame(false).rotateEnabled(true).hideBottomControls(true).forResult(PictureConfig.CHOOSE_REQUEST);
             }
         });
 
@@ -100,7 +117,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if(editText_mail.getText().toString().isEmpty()||editText_password.getText().toString().isEmpty()
                         ||editText_password_again.getText().toString().isEmpty()||editText_nickname.getText().toString().isEmpty()
                         ||editText_birth.getText().toString().isEmpty()
-                        ||editText_introduction.getText().toString().isEmpty()||radioGroup_gender.getCheckedRadioButtonId()<=0){
+                        ||editText_introduction.getText().toString().isEmpty()||radioGroup_gender.getCheckedRadioButtonId()<=0||editText_school.getText().toString().isEmpty()){
                     alertDialog.setTitle("请确认注册信息");
                     alertDialog.setMessage("请确认所有信息已经输入完成");
                     alertDialog.show();
@@ -120,17 +137,49 @@ public class RegistrationActivity extends AppCompatActivity {
                 String birth=editText_birth.getText().toString();
                 String introduce=editText_introduction.getText().toString();
                 String gender;
+                String school=editText_school.getText().toString();
                 if((radioGroup_gender.getCheckedRadioButtonId())%2==0){
                     gender="女";
                 }else{
                     gender="男";
                 }
-
-                Toast.makeText(RegistrationActivity.this,"注册成功，请登录",Toast.LENGTH_SHORT).show();
-                onBackPressed();
+                User u=new User();
+                u.setEmail(main);
+                u.setPassword(password);
+                u.setUser_name(nickname);
+                u.setBirthday(birth);
+                u.setUser_motto(introduce);
+                u.setSchool(school);
+                if(gender.equals("女")){
+                    u.setGender(1);
+                }else {
+                    u.setGender(2);
+                }
+                MyApplication.setUser(u);
+                presenter.Registration(u);
+                //Toast.makeText(RegistrationActivity.this,"注册成功，请登录",Toast.LENGTH_SHORT).show();
+                //onBackPressed();
             }
         });
-
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("RegistrationActivity", "王锦杰" );
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    ImageView imageView_profile=(ImageView) findViewById(R.id.registration_profile);
+                    List<LocalMedia> a = PictureSelector.obtainMultipleResult(data);
+                    if(a!=null){
+                        Glide.with(RegistrationActivity.this).load(a.get(0).getPath()).into(imageView_profile);
+                    }
+            }
+        }
+    }
+    @Override
+    protected LoginPresenter createPresenter() {
+        return new LoginPresenter();
+    }
 }

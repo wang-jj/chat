@@ -241,12 +241,36 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/registration_8"
+            android:layout_below="@id/registration_7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp">
+
+            <EditText
+                android:id="@+id/registration_school"
+                style="@style/NewEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="学校"
+                android:background="@drawable/chat_send_background"
+                android:gravity="center_vertical"
+                android:inputType="textMultiLine"
+                android:lineSpacingExtra="2dp"
+                android:padding="12dp"
+                android:textSize="19sp"/>
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/registration_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/registration_7"
+            android:layout_below="@+id/registration_8"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"

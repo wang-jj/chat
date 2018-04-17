@@ -91,14 +91,35 @@ public class LoginModelImpl implements LoginModel {
 
     @Override
     public void CreateUser(final User u,final Callback<User> callback){
-        ThreadTask t=new ThreadTask<Void,Void,Void>(null, new Execute<Void>() {
+        ThreadTask t=new ThreadTask<Void,Void,User>(callback, new Execute<User>() {
             @Override
-            public Void doExec() {
+            public User doExec() {
                 //网络请求
-                UserDao userDao=MyApplication.getDao().getUserDao();
-                userDao.update(u);
-                MyApplication.setUser(u);
-                return null;
+                User u=null;
+                try {
+                    //Log.e("LoadActivity", new Gson().toJson(MyApplication.getUser()).toString());
+                    OkHttpClient client=new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
+                    RequestBody requestBody=new FormBody.Builder().add("user",new Gson().toJson(MyApplication.getUser()).toString()).build();
+                    Request request=new Request.Builder().url(LoginUrl+"?user="+new Gson().toJson(MyApplication.getUser()).toString()).build();
+                    Response response=client.newCall(request).execute();
+                    String a=response.body().string();
+                    //Log.e("LoadActivity", a);
+                    u=new Gson().fromJson(a,User.class);
+                }catch (IOException e){
+                    if(e instanceof SocketTimeoutException||e instanceof ConnectException){
+                        User exception=new User();
+                        exception.setUser_id(-3);
+                        return exception;
+                    }else {
+                        e.printStackTrace();
+                    }
+                }
+                if(u!=null&&u.getUser_id()>0){
+                    String file=MyApplication.getUser().getImage_path();
+                    MyApplication.setUser(null);
+                    //上传图片
+                }
+                return u;
             }
         });
         t.execute();

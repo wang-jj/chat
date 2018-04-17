@@ -48,7 +48,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile 'com.google.code.gson:gson:2.7'
     compile 'net.zetetic:android-database-sqlcipher:3.5.2'
-    compile 'com.github.lovetuzitong:MultiImageSelector:1.2'
+    //compile 'com.github.lovetuzitong:MultiImageSelector:1.2'
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
 
 }
