@@ -1,6 +1,7 @@
 package com.example.dell.chat.view;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,12 +20,15 @@ import com.example.dell.chat.R;
 import com.example.dell.chat.bean.User;
 import com.example.dell.chat.presenter.LoginPresenter;
 
+import me.nereo.multi_image_selector.MultiImageSelector;
+
 //登录Avtivity 判断登录逻辑进入主活动或者进行注册
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class LoginActivity extends BaseActivity<LoginActivity,LoginPresenter<LoginActivity>> {
+
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.

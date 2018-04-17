@@ -18,6 +18,7 @@ import org.greenrobot.greendao.annotation.Generated;
 public class User {
     @Id(autoincrement = true)
     private Long id;
+    private String email;
     private int user_id;//用户id
     private String user_name;//用户名
     private String image_path;//头像地址
@@ -101,12 +102,19 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 1876217888)
-    public User(Long id, int user_id, String user_name, String image_path,
-            String school, int gender, String user_motto, String picture_path1,
-            String picture_path2, String picture_path3, String password,
-            String birthday) {
+    public String getEmail() {
+        return this.email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    @Generated(hash = 1558431951)
+    public User(Long id, String email, int user_id, String user_name,
+            String image_path, String school, int gender, String user_motto,
+            String picture_path1, String picture_path2, String picture_path3,
+            String password, String birthday) {
         this.id = id;
+        this.email = email;
         this.user_id = user_id;
         this.user_name = user_name;
         this.image_path = image_path;

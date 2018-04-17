@@ -18,6 +18,8 @@ import com.example.dell.chat.view.LoadActivity;
 import com.example.dell.chat.view.LoginActivity;
 import com.example.dell.chat.view.MainActivity;
 
+import java.sql.SQLRecoverableException;
+
 /**
  * Created by wang on 2018/4/13.
  */
@@ -64,6 +66,7 @@ public class LoginPresenter<T extends BaseActivity> extends BasePresenter<T>  {
                     Intent intent=new Intent(getView(),LoginActivity.class);
                     getView().startActivity(intent);
                 }
+                Log.e("LoginActivity", String.valueOf(MyApplication.getUser()==null)  );
             }
         });
     }

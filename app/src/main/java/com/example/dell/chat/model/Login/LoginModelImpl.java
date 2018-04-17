@@ -34,7 +34,7 @@ import okhttp3.Response;
 
 public class LoginModelImpl implements LoginModel {
 
-    String LoginUrl="http://119.23.255.222/android/logininhis.php\n";
+    String LoginUrl="http://119.23.255.222/android/logininhis.php";
     String UpdateUrl;
     String createUrl="http://119.23.255.222/android/login.php\n";
 
@@ -51,12 +51,13 @@ public class LoginModelImpl implements LoginModel {
                 }else {//user表不为空，请求网络判断账号密码是否正确
                     User u=null;
                     try {
+                        Log.e("LoadActivity", new Gson().toJson(users.get(0)).toString());
                         OkHttpClient client=new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
-                        RequestBody requestBody=new FormBody.Builder().add("user",new Gson().toJson(users.get(0)).toString()).add("email","111@qq.com").build();
-                        Request request=new Request.Builder().url(LoginUrl).post(requestBody).build();
+                        RequestBody requestBody=new FormBody.Builder().add("user",new Gson().toJson(users.get(0)).toString()).build();
+                        Request request=new Request.Builder().url(LoginUrl+"?user="+new Gson().toJson(users.get(0)).toString()).build();
                         Response response=client.newCall(request).execute();
                         String a=response.body().string();
-                        Log.d("LoadActivity", a);
+                        Log.e("LoadActivity", a);
                         //u=new Gson().fromJson(a,User.class);
                     }catch (IOException e){
                         if(e instanceof SocketTimeoutException||e instanceof ConnectException){

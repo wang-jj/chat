@@ -131,8 +131,9 @@ public class LoadActivity extends BaseActivity<LoadActivity,LoginPresenter<LoadA
         */
         User u=new User();
         u.setUser_id(2);
-        u.setUser_name("wang");
+        u.setUser_name("王锦杰");
         u.setPassword("111");
+        u.setEmail("111@qq.com");
         UserDao userDao=MyApplication.getDao().getUserDao();
         userDao.insert(u);
         presenter.connect();
