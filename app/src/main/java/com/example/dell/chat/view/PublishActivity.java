@@ -79,7 +79,8 @@ public class PublishActivity extends AppCompatActivity {
                     mGroupDrawable.setStroke(5, Color.parseColor("#cccccc"));
                     imageView2.setImageResource(R.drawable.ic_wallpaper_24dp);
                     */
-                    PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(3).enableCrop(true).isDragFrame(false).rotateEnabled(true).hideBottomControls(true).forResult(PictureConfig.CHOOSE_REQUEST);
+                    PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(3).forResult(PictureConfig.CHOOSE_REQUEST);
+                    //PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(3).enableCrop(true).isDragFrame(false).rotateEnabled(true).hideBottomControls(true).forResult(PictureConfig.CHOOSE_REQUEST);
                 }
                 //设置图片一
                 //imageView1.setImageResource(R.drawable.sample1);

@@ -37,6 +37,7 @@ import java.util.List;
 //注册Activity
 public class RegistrationActivity extends BaseActivity<RegistrationActivity,LoginPresenter<RegistrationActivity>> {
 
+    private String path;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,6 +151,7 @@ public class RegistrationActivity extends BaseActivity<RegistrationActivity,Logi
                 u.setBirthday(birth);
                 u.setUser_motto(introduce);
                 u.setSchool(school);
+                u.setImage_path(path);
                 if(gender.equals("女")){
                     u.setGender(1);
                 }else {
@@ -174,6 +176,7 @@ public class RegistrationActivity extends BaseActivity<RegistrationActivity,Logi
                     List<LocalMedia> a = PictureSelector.obtainMultipleResult(data);
                     if(a!=null){
                         Glide.with(RegistrationActivity.this).load(a.get(0).getPath()).into(imageView_profile);
+                        path=a.get(0).getPath();
                     }
             }
         }
@@ -181,5 +184,9 @@ public class RegistrationActivity extends BaseActivity<RegistrationActivity,Logi
     @Override
     protected LoginPresenter createPresenter() {
         return new LoginPresenter();
+    }
+
+    public String getPath() {
+        return path;
     }
 }
