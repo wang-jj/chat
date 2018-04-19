@@ -96,17 +96,17 @@ public class User {
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
-    public Long getId() {
-        return this.id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
     public String getEmail() {
         return this.email;
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    public Long getId() {
+        return this.id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
     @Generated(hash = 1558431951)
     public User(Long id, String email, int user_id, String user_name,
@@ -130,4 +130,6 @@ public class User {
     @Generated(hash = 586692638)
     public User() {
     }
+
+
 }

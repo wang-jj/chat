@@ -1,12 +1,9 @@
 package com.example.dell.chat.view;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,8 +13,6 @@ import com.example.dell.chat.bean.User;
 import com.example.dell.chat.db.UserDao;
 import com.example.dell.chat.presenter.LoginPresenter;
 import com.example.dell.chat.base.BaseActivity;
-
-import java.util.List;
 
 //初始化加载时的activity 判断是进入登录界面 还是进入程序主界面
 /**

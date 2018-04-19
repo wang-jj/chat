@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.PersonalState;
 
@@ -79,9 +80,9 @@ public class HomeFragment extends Fragment {
                     personalState.setLocation("广州·华南理工大学");
                     personalState.setLike(233);
                     personalState.setComment(666);
-                    personalState.setProfileID(R.drawable.profile);
-                    personalState.setImage1ID(R.drawable.sample1);
-                    personalState.setImage2ID(R.drawable.sample2);
+                    personalState.setProfileID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                    personalState.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                    personalState.setImage2ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
                     personalState.setImg_type(1);
                     personalState.setPictureID(R.drawable.like);
                     //personalState.setState_time("09:22");
@@ -111,8 +112,8 @@ public class HomeFragment extends Fragment {
                 personalState.setLocation("广州·华南理工大学");
                 personalState.setLike(233);
                 personalState.setComment(666);
-                personalState.setProfileID(R.drawable.profile);
-                personalState.setImage1ID(R.drawable.sample1);
+                personalState.setProfileID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                personalState.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
                 personalState.setImg_type(0);
                 personalState.setPictureID(R.drawable.like);
                 //personalState.setState_time("09:22");
@@ -140,18 +141,18 @@ public class HomeFragment extends Fragment {
             personalState.setLocation("广州·华南理工大学");
             personalState.setLike(233);
             personalState.setComment(666);
-            personalState.setProfileID(R.drawable.profile);
+            personalState.setProfileID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
             if((i-1)%3==0){
-                personalState.setImage1ID(R.drawable.sample1);
+                personalState.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
                 personalState.setImg_type(0);
             }else if((i-1)%3==1){
-                personalState.setImage1ID(R.drawable.sample1);
-                personalState.setImage2ID(R.drawable.sample2);
+                personalState.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                personalState.setImage2ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
                 personalState.setImg_type(1);
             }else{
-                personalState.setImage1ID(R.drawable.sample1);
-                personalState.setImage2ID(R.drawable.sample2);
-                personalState.setImage3ID(R.drawable.sample3);
+                personalState.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                personalState.setImage2ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                personalState.setImage3ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
                 personalState.setImg_type(2);
             }
             personalState.setPictureID(R.drawable.like);
@@ -313,9 +314,10 @@ public class HomeFragment extends Fragment {
                 ((OneViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));      //用以将int类型转换成String类型使用setText显示
                 ((OneViewHolder)holder).stateComment.setText(String.valueOf(personalState.getComment()));
                 //stateProfile 就是一个ImageView
-                //Glide.with(getActivity()).load(personalState.getProfileID()).into(((OneViewHolder)holder).stateProfile);
-                ((OneViewHolder)holder).stateProfile.setImageResource(personalState.getProfileID());
-                ((OneViewHolder)holder).stateImage1.setImageResource(personalState.getImage1ID());
+                Glide.with(getActivity()).load(personalState.getProfileID()).into(((OneViewHolder)holder).stateProfile);
+                Glide.with(getActivity()).load(personalState.getImage1ID()).into(((OneViewHolder)holder).stateImage1);
+                //((OneViewHolder)holder).stateProfile.setImageResource(personalState.getProfileID());
+                //((OneViewHolder)holder).stateImage1.setImageResource(personalState.getImage1ID());
                 ((OneViewHolder)holder).stateLikePicture.setImageResource(personalState.getPictureID());
             }else if(holder instanceof TwoViewHolder){
                 PersonalState personalState=mStateList.get(position);
@@ -326,9 +328,14 @@ public class HomeFragment extends Fragment {
                 //((TwoViewHolder)holder).stateTime.setText(personalState.getState_time());
                 ((TwoViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));      //用以将int类型转换成String类型使用setText显示
                 ((TwoViewHolder)holder).stateComment.setText(String.valueOf(personalState.getComment()));
+                Glide.with(getActivity()).load(personalState.getProfileID()).into(((TwoViewHolder)holder).stateProfile);
+                Glide.with(getActivity()).load(personalState.getImage1ID()).into(((TwoViewHolder)holder).stateImage1);
+                Glide.with(getActivity()).load(personalState.getImage2ID()).into(((TwoViewHolder)holder).stateImage2);
+                /*
                 ((TwoViewHolder)holder).stateProfile.setImageResource(personalState.getProfileID());
                 ((TwoViewHolder)holder).stateImage1.setImageResource(personalState.getImage1ID());
                 ((TwoViewHolder)holder).stateImage2.setImageResource(personalState.getImage2ID());
+                */
                 ((TwoViewHolder)holder).stateLikePicture.setImageResource(personalState.getPictureID());
             }else{
                 PersonalState personalState=mStateList.get(position);
@@ -339,10 +346,16 @@ public class HomeFragment extends Fragment {
                 //((ViewHolder)holder).stateTime.setText(personalState.getState_time());
                 ((ViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));      //用以将int类型转换成String类型使用setText显示
                 ((ViewHolder)holder).stateComment.setText(String.valueOf(personalState.getComment()));
+                Glide.with(getActivity()).load(personalState.getProfileID()).into(((ViewHolder)holder).stateProfile);
+                Glide.with(getActivity()).load(personalState.getImage1ID()).into(((ViewHolder)holder).stateImage1);
+                Glide.with(getActivity()).load(personalState.getImage2ID()).into(((ViewHolder)holder).stateImage2);
+                Glide.with(getActivity()).load(personalState.getImage3ID()).into(((ViewHolder)holder).stateImage3);
+                /*
                 ((ViewHolder)holder).stateProfile.setImageResource(personalState.getProfileID());
                 ((ViewHolder)holder).stateImage1.setImageResource(personalState.getImage1ID());
                 ((ViewHolder)holder).stateImage2.setImageResource(personalState.getImage2ID());
                 ((ViewHolder)holder).stateImage3.setImageResource(personalState.getImage3ID());
+                */
                 ((ViewHolder)holder).stateLikePicture.setImageResource(personalState.getPictureID());
             }
         }

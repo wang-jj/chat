@@ -32,10 +32,10 @@ public class PersonalStateDao extends AbstractDao<PersonalState, Long> {
         public final static Property State_time = new Property(5, java.util.Date.class, "state_time", false, "STATE_TIME");
         public final static Property Like = new Property(6, int.class, "like", false, "LIKE");
         public final static Property Comment = new Property(7, int.class, "comment", false, "COMMENT");
-        public final static Property ProfileID = new Property(8, int.class, "profileID", false, "PROFILE_ID");
-        public final static Property Image1ID = new Property(9, int.class, "image1ID", false, "IMAGE1_ID");
-        public final static Property Image2ID = new Property(10, int.class, "image2ID", false, "IMAGE2_ID");
-        public final static Property Image3ID = new Property(11, int.class, "image3ID", false, "IMAGE3_ID");
+        public final static Property ProfileID = new Property(8, String.class, "profileID", false, "PROFILE_ID");
+        public final static Property Image1ID = new Property(9, String.class, "image1ID", false, "IMAGE1_ID");
+        public final static Property Image2ID = new Property(10, String.class, "image2ID", false, "IMAGE2_ID");
+        public final static Property Image3ID = new Property(11, String.class, "image3ID", false, "IMAGE3_ID");
         public final static Property PictureID = new Property(12, int.class, "pictureID", false, "PICTURE_ID");
         public final static Property Img_type = new Property(13, int.class, "img_type", false, "IMG_TYPE");
         public final static Property Personalstate_id = new Property(14, int.class, "personalstate_id", false, "PERSONALSTATE_ID");
@@ -65,10 +65,10 @@ public class PersonalStateDao extends AbstractDao<PersonalState, Long> {
                 "\"STATE_TIME\" INTEGER," + // 5: state_time
                 "\"LIKE\" INTEGER NOT NULL ," + // 6: like
                 "\"COMMENT\" INTEGER NOT NULL ," + // 7: comment
-                "\"PROFILE_ID\" INTEGER NOT NULL ," + // 8: profileID
-                "\"IMAGE1_ID\" INTEGER NOT NULL ," + // 9: image1ID
-                "\"IMAGE2_ID\" INTEGER NOT NULL ," + // 10: image2ID
-                "\"IMAGE3_ID\" INTEGER NOT NULL ," + // 11: image3ID
+                "\"PROFILE_ID\" TEXT," + // 8: profileID
+                "\"IMAGE1_ID\" TEXT," + // 9: image1ID
+                "\"IMAGE2_ID\" TEXT," + // 10: image2ID
+                "\"IMAGE3_ID\" TEXT," + // 11: image3ID
                 "\"PICTURE_ID\" INTEGER NOT NULL ," + // 12: pictureID
                 "\"IMG_TYPE\" INTEGER NOT NULL ," + // 13: img_type
                 "\"PERSONALSTATE_ID\" INTEGER NOT NULL ," + // 14: personalstate_id
@@ -123,10 +123,26 @@ public class PersonalStateDao extends AbstractDao<PersonalState, Long> {
         }
         stmt.bindLong(7, entity.getLike());
         stmt.bindLong(8, entity.getComment());
-        stmt.bindLong(9, entity.getProfileID());
-        stmt.bindLong(10, entity.getImage1ID());
-        stmt.bindLong(11, entity.getImage2ID());
-        stmt.bindLong(12, entity.getImage3ID());
+ 
+        String profileID = entity.getProfileID();
+        if (profileID != null) {
+            stmt.bindString(9, profileID);
+        }
+ 
+        String image1ID = entity.getImage1ID();
+        if (image1ID != null) {
+            stmt.bindString(10, image1ID);
+        }
+ 
+        String image2ID = entity.getImage2ID();
+        if (image2ID != null) {
+            stmt.bindString(11, image2ID);
+        }
+ 
+        String image3ID = entity.getImage3ID();
+        if (image3ID != null) {
+            stmt.bindString(12, image3ID);
+        }
         stmt.bindLong(13, entity.getPictureID());
         stmt.bindLong(14, entity.getImg_type());
         stmt.bindLong(15, entity.getPersonalstate_id());
@@ -174,10 +190,26 @@ public class PersonalStateDao extends AbstractDao<PersonalState, Long> {
         }
         stmt.bindLong(7, entity.getLike());
         stmt.bindLong(8, entity.getComment());
-        stmt.bindLong(9, entity.getProfileID());
-        stmt.bindLong(10, entity.getImage1ID());
-        stmt.bindLong(11, entity.getImage2ID());
-        stmt.bindLong(12, entity.getImage3ID());
+ 
+        String profileID = entity.getProfileID();
+        if (profileID != null) {
+            stmt.bindString(9, profileID);
+        }
+ 
+        String image1ID = entity.getImage1ID();
+        if (image1ID != null) {
+            stmt.bindString(10, image1ID);
+        }
+ 
+        String image2ID = entity.getImage2ID();
+        if (image2ID != null) {
+            stmt.bindString(11, image2ID);
+        }
+ 
+        String image3ID = entity.getImage3ID();
+        if (image3ID != null) {
+            stmt.bindString(12, image3ID);
+        }
         stmt.bindLong(13, entity.getPictureID());
         stmt.bindLong(14, entity.getImg_type());
         stmt.bindLong(15, entity.getPersonalstate_id());
@@ -206,10 +238,10 @@ public class PersonalStateDao extends AbstractDao<PersonalState, Long> {
             cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // state_time
             cursor.getInt(offset + 6), // like
             cursor.getInt(offset + 7), // comment
-            cursor.getInt(offset + 8), // profileID
-            cursor.getInt(offset + 9), // image1ID
-            cursor.getInt(offset + 10), // image2ID
-            cursor.getInt(offset + 11), // image3ID
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // profileID
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // image1ID
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // image2ID
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // image3ID
             cursor.getInt(offset + 12), // pictureID
             cursor.getInt(offset + 13), // img_type
             cursor.getInt(offset + 14), // personalstate_id
@@ -230,10 +262,10 @@ public class PersonalStateDao extends AbstractDao<PersonalState, Long> {
         entity.setState_time(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
         entity.setLike(cursor.getInt(offset + 6));
         entity.setComment(cursor.getInt(offset + 7));
-        entity.setProfileID(cursor.getInt(offset + 8));
-        entity.setImage1ID(cursor.getInt(offset + 9));
-        entity.setImage2ID(cursor.getInt(offset + 10));
-        entity.setImage3ID(cursor.getInt(offset + 11));
+        entity.setProfileID(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setImage1ID(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setImage2ID(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setImage3ID(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
         entity.setPictureID(cursor.getInt(offset + 12));
         entity.setImg_type(cursor.getInt(offset + 13));
         entity.setPersonalstate_id(cursor.getInt(offset + 14));

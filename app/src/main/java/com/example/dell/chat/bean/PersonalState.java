@@ -22,10 +22,10 @@ public class PersonalState {        //动态类
     private Date state_time;        //发动态的时间
     private int like;               //点赞数
     private int comment;            //评论
-    private int profileID;          //头像
-    private int image1ID;           //图片一
-    private int image2ID;           //图片一
-    private int image3ID;           //图片一
+    private String profileID;          //头像
+    private String image1ID;           //图片一
+    private String image2ID;           //图片一
+    private String image3ID;           //图片一
     private int pictureID;          //点赞图片的样式 这个是实现点赞按钮的动画效果的
     private int img_type;           ////recyclerview类型 1代表一张图片 以此类推
     private int personalstate_id;   //动态id
@@ -70,28 +70,28 @@ public class PersonalState {        //动态类
     public void setPictureID(int pictureID) {
         this.pictureID = pictureID;
     }
-    public int getImage3ID() {
+    public String getImage3ID() {
         return this.image3ID;
     }
-    public void setImage3ID(int image3ID) {
+    public void setImage3ID(String image3ID) {
         this.image3ID = image3ID;
     }
-    public int getImage2ID() {
+    public String getImage2ID() {
         return this.image2ID;
     }
-    public void setImage2ID(int image2ID) {
+    public void setImage2ID(String image2ID) {
         this.image2ID = image2ID;
     }
-    public int getImage1ID() {
+    public String getImage1ID() {
         return this.image1ID;
     }
-    public void setImage1ID(int image1ID) {
+    public void setImage1ID(String image1ID) {
         this.image1ID = image1ID;
     }
-    public int getProfileID() {
+    public String getProfileID() {
         return this.profileID;
     }
-    public void setProfileID(int profileID) {
+    public void setProfileID(String profileID) {
         this.profileID = profileID;
     }
     public int getComment() {
@@ -142,11 +142,12 @@ public class PersonalState {        //动态类
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 8233751)
+    @Generated(hash = 2035981307)
     public PersonalState(Long id, String nickname, String school, String content,
-            String location, Date state_time, int like, int comment, int profileID,
-            int image1ID, int image2ID, int image3ID, int pictureID, int img_type,
-            int personalstate_id, int user_id, int holder_id, Date update_time) {
+            String location, Date state_time, int like, int comment,
+            String profileID, String image1ID, String image2ID, String image3ID,
+            int pictureID, int img_type, int personalstate_id, int user_id,
+            int holder_id, Date update_time) {
         this.id = id;
         this.nickname = nickname;
         this.school = school;

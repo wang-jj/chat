@@ -13,14 +13,9 @@ import com.example.dell.chat.bean.User;
 import com.example.dell.chat.db.PersonalStateDao;
 import com.example.dell.chat.db.UserDao;
 import com.example.dell.chat.model.Callback;
-import com.example.dell.chat.model.Login.LoginModel;
-import com.example.dell.chat.model.Login.LoginModelImpl;
 import com.example.dell.chat.model.Moment.MomentModel;
 import com.example.dell.chat.model.Moment.MomentModelImpl;
 import com.example.dell.chat.presenter.LoginPresenter;
-import com.example.dell.chat.presenter.MomentPresenter;
-
-import org.json.JSONObject;
 
 import java.util.List;
 

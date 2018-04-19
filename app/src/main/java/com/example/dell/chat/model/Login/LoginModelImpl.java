@@ -11,15 +11,11 @@ import com.example.dell.chat.model.Execute;
 import com.example.dell.chat.tools.ThreadTask;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-import org.litepal.crud.DataSupport;
-
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;

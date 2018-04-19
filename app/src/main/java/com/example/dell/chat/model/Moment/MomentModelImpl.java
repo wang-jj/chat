@@ -7,9 +7,6 @@ import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Execute;
 import com.example.dell.chat.tools.ThreadTask;
 
-import org.greenrobot.greendao.Property;
-import org.litepal.crud.DataSupport;
-
 import java.util.List;
 
 /**
