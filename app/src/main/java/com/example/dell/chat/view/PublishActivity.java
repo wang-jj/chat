@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.dell.chat.R;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -74,16 +75,10 @@ public class PublishActivity extends AppCompatActivity {
                 if(image_num==0) {
                     GradientDrawable mGroupDrawable = (GradientDrawable) imageView1.getBackground();
                     mGroupDrawable.setStroke(5, Color.parseColor("#ffffff"));
-                    /*
-                    mGroupDrawable = (GradientDrawable) imageView2.getBackground();
-                    mGroupDrawable.setStroke(5, Color.parseColor("#cccccc"));
-                    imageView2.setImageResource(R.drawable.ic_wallpaper_24dp);
-                    */
-                    PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(3).forResult(PictureConfig.CHOOSE_REQUEST);
-                    //PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(3).enableCrop(true).isDragFrame(false).rotateEnabled(true).hideBottomControls(true).forResult(PictureConfig.CHOOSE_REQUEST);
+                    creatSelect();
+                }else if(image_num>0){
+                    //PictureSelector.create(PublishActivity.this).themeStyle().openExternalPreview(0, selectList);
                 }
-                //设置图片一
-                //imageView1.setImageResource(R.drawable.sample1);
             }
         });
         imageView2.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +96,7 @@ public class PublishActivity extends AppCompatActivity {
                         imageView3.setImageResource(R.drawable.ic_wallpaper_24dp);
                         image_num+=1;
                         */
-                        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(2).forResult(PictureConfig.CHOOSE_REQUEST);
+                       creatSelect();
                     }
                     //设置图片二
                     //imageView2.setImageResource(R.drawable.sample2);
@@ -117,7 +112,7 @@ public class PublishActivity extends AppCompatActivity {
                     if(image_num==2){
                         GradientDrawable mGroupDrawable = (GradientDrawable) imageView3.getBackground();
                         mGroupDrawable.setStroke(5, Color.parseColor("#ffffff"));
-                        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).isGif(true).maxSelectNum(1).forResult(PictureConfig.CHOOSE_REQUEST);
+                        creatSelect();
                     }
                     //设置图片三
                     //imageView3.setImageResource(R.drawable.sample2);
@@ -129,7 +124,6 @@ public class PublishActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("PublishActivity","yes");
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
@@ -143,19 +137,26 @@ public class PublishActivity extends AppCompatActivity {
                     }else if(selectList.size()==1){
                         image_num=1;
                         setbackground(imageView2);
-                        Glide.with(PublishActivity.this).load(selectList.get(0).getPath()).into(imageView1);
+                        RequestOptions requestOptions=new RequestOptions().centerCrop();
+                        String path=getpath(selectList.get(0));
+                        Glide.with(PublishActivity.this).load(path).apply(requestOptions).into(imageView1);
                     }else if(selectList.size()==2){
                         image_num=2;
                         setbackground(imageView3);
-                        Glide.with(PublishActivity.this).load(selectList.get(0).getPath()).into(imageView1);
-                        Glide.with(PublishActivity.this).load(selectList.get(1).getPath()).into(imageView2);
+                        RequestOptions requestOptions=new RequestOptions().centerCrop();
+                        String path1=getpath(selectList.get(0));
+                        String path2=getpath(selectList.get(1));
+                        Glide.with(PublishActivity.this).load(path1).apply(requestOptions).into(imageView1);
+                        Glide.with(PublishActivity.this).load(path2).apply(requestOptions).into(imageView2);
                     }else if(selectList.size()==3){
                         image_num=3;
-                        Glide.with(PublishActivity.this).load(selectList.get(0).getPath()).into(imageView1);
-                        Glide.with(PublishActivity.this).load(selectList.get(1).getPath()).into(imageView2);
-                        Glide.with(PublishActivity.this).load(selectList.get(2).getPath()).into(imageView3);
+                        String path1=getpath(selectList.get(0));
+                        String path2=getpath(selectList.get(1));
+                        String path3=getpath(selectList.get(2));
+                        Glide.with(PublishActivity.this).load(path1).into(imageView1);
+                        Glide.with(PublishActivity.this).load(path2).into(imageView2);
+                        Glide.with(PublishActivity.this).load(path3).into(imageView3);
                     }
-                    Log.e("PublishActivity", String.valueOf(image_num) );
             }
         }
     }
@@ -163,5 +164,19 @@ public class PublishActivity extends AppCompatActivity {
         GradientDrawable mGroupDrawable = (GradientDrawable) imageView.getBackground();
         mGroupDrawable.setStroke(5, Color.parseColor("#cccccc"));
         imageView.setImageResource(R.drawable.ic_wallpaper_24dp);
+    }
+
+    public String getpath(LocalMedia a){
+        String path=a.getPath();
+        if(a.isCut()){//裁剪了
+            path=a.getCutPath();
+        }if(a.isCompressed()){//压缩了
+            path=a.getCompressPath();
+        }
+        return  path;
+    }
+
+    public void creatSelect(){
+        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).enableCrop(true).previewImage(true).compress(true).minimumCompressSize(500).isGif(true).maxSelectNum(3).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
     }
 }

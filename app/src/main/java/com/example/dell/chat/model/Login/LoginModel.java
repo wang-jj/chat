@@ -17,8 +17,10 @@ public interface LoginModel {
     void UpdateUser(final User u);
 
     //插入新用户
-    void CreateUser(final User u,final Callback<User> callback);
+    void CreateUser(final User user,final Callback<User> callback);
 
     //用户输入邮箱登陆
-    void LoginByEmail(final String email,final String password,final Callback<User>callback);
+    void LoginByEmail(final User user,final Callback<User>callback);
+
+    void SentImage(final String path);
 }

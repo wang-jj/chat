@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.PersonalState;
 
@@ -143,15 +144,15 @@ public class HomeFragment extends Fragment {
             personalState.setComment(666);
             personalState.setProfileID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
             if((i-1)%3==0){
-                personalState.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                personalState.setImage1ID("http://119.23.255.222/image/111.jpg");
                 personalState.setImg_type(0);
             }else if((i-1)%3==1){
-                personalState.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                personalState.setImage1ID("http://119.23.255.222/image/111.jpg");
                 personalState.setImage2ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
                 personalState.setImg_type(1);
             }else{
-                personalState.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
-                personalState.setImage2ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                personalState.setImage1ID("http://119.23.255.222/image/111.jpg");
+                personalState.setImage2ID("http://119.23.255.222/image/111.jpg");
                 personalState.setImage3ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
                 personalState.setImg_type(2);
             }
@@ -314,8 +315,9 @@ public class HomeFragment extends Fragment {
                 ((OneViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));      //用以将int类型转换成String类型使用setText显示
                 ((OneViewHolder)holder).stateComment.setText(String.valueOf(personalState.getComment()));
                 //stateProfile 就是一个ImageView
+                RequestOptions requestOptions=new RequestOptions().centerCrop();
                 Glide.with(getActivity()).load(personalState.getProfileID()).into(((OneViewHolder)holder).stateProfile);
-                Glide.with(getActivity()).load(personalState.getImage1ID()).into(((OneViewHolder)holder).stateImage1);
+                Glide.with(getActivity()).load(personalState.getImage1ID()).apply(requestOptions).thumbnail(0.1f).into(((OneViewHolder)holder).stateImage1);
                 //((OneViewHolder)holder).stateProfile.setImageResource(personalState.getProfileID());
                 //((OneViewHolder)holder).stateImage1.setImageResource(personalState.getImage1ID());
                 ((OneViewHolder)holder).stateLikePicture.setImageResource(personalState.getPictureID());

@@ -9,9 +9,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.dell.chat.base.BaseActivity;
@@ -19,6 +21,7 @@ import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.User;
 import com.example.dell.chat.presenter.LoginPresenter;
+import com.google.gson.Gson;
 
 
 //登录Avtivity 判断登录逻辑进入主活动或者进行注册
@@ -128,9 +131,13 @@ public class LoginActivity extends BaseActivity<LoginActivity,LoginPresenter<Log
             @Override
             public void onClick(View view) {
                 isRegistration=false;
-                //判断邮箱密码是否正确 登录成功与否
-                Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(intent);
+                EditText editText1=(EditText)findViewById(R.id.login_mail);
+                EditText editText2=(EditText)findViewById(R.id.login_password);
+                User u=new User();
+                u.setEmail(editText1.getText().toString());
+                u.setPassword(editText2.getText().toString());
+                //Log.e("LoginActivity", new Gson().toJson(u).toString());
+                presenter.LoginByEmail(u);
             }
         });
 

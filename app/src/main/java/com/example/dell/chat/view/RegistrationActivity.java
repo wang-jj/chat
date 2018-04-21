@@ -67,8 +67,8 @@ public class RegistrationActivity extends BaseActivity<RegistrationActivity,Logi
             public void onClick(View view) {
                 //imageView_profile.setImageResource(R.drawable.profile);
                 //Log.e("RegistrationActivity", "王锦杰" );
-                PictureSelector.create(RegistrationActivity.this).openGallery(PictureMimeType.ofImage()).isGif(false).maxSelectNum(1).forResult(PictureConfig.CHOOSE_REQUEST);
-                //PictureSelector.create(RegistrationActivity.this).openGallery(PictureMimeType.ofImage()).isGif(false).maxSelectNum(1).enableCrop(true).isDragFrame(false).rotateEnabled(true).hideBottomControls(true).forResult(PictureConfig.CHOOSE_REQUEST);
+                creatSelect();
+                //PictureSelector.create(RegistrationActivity.this).openGallery(PictureMimeType.ofImage()).isGif(false).maxSelectNum(1).forResult(PictureConfig.CHOOSE_REQUEST);
             }
         });
 
@@ -157,7 +157,6 @@ public class RegistrationActivity extends BaseActivity<RegistrationActivity,Logi
                 }else {
                     u.setGender(2);
                 }
-                MyApplication.setUser(u);
                 presenter.Registration(u);
                 //Toast.makeText(RegistrationActivity.this,"注册成功，请登录",Toast.LENGTH_SHORT).show();
                 //onBackPressed();
@@ -168,15 +167,15 @@ public class RegistrationActivity extends BaseActivity<RegistrationActivity,Logi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("RegistrationActivity", "王锦杰" );
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
                     ImageView imageView_profile=(ImageView) findViewById(R.id.registration_profile);
                     List<LocalMedia> a = PictureSelector.obtainMultipleResult(data);
                     if(a!=null){
-                        Glide.with(RegistrationActivity.this).load(a.get(0).getPath()).into(imageView_profile);
-                        path=a.get(0).getPath();
+                        String p=getpath(a.get(0));
+                        Glide.with(RegistrationActivity.this).load(p).into(imageView_profile);
+                        path=p;
                     }
             }
         }
@@ -188,5 +187,19 @@ public class RegistrationActivity extends BaseActivity<RegistrationActivity,Logi
 
     public String getPath() {
         return path;
+    }
+
+    public void creatSelect(){
+        PictureSelector.create(RegistrationActivity.this).openGallery(PictureMimeType.ofImage()).enableCrop(true).previewImage(true).compress(true).minimumCompressSize(200).isGif(false).maxSelectNum(1).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
+    }
+
+    public String getpath(LocalMedia a){
+        String path1=a.getPath();
+        if(a.isCut()){//裁剪了
+            path1=a.getCutPath();
+        }if(a.isCompressed()){//压缩了
+            path1=a.getCompressPath();
+        }
+        return  path1;
     }
 }

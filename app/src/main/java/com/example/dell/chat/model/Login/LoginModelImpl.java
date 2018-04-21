@@ -32,7 +32,7 @@ public class LoginModelImpl implements LoginModel {
 
     String LoginUrl="http://119.23.255.222/android/logininhis.php";
     String UpdateUrl;
-    String createUrl="http://119.23.255.222/android/login.php\n";
+    String createUrl="http://119.23.255.222/android/register.php";
 
     @Override
     public void FindLastUser(final Callback<User> callback){
@@ -47,14 +47,13 @@ public class LoginModelImpl implements LoginModel {
                 }else {//user表不为空，请求网络判断账号密码是否正确
                     User u=null;
                     try {
-                        Log.e("LoadActivity", new Gson().toJson(users.get(0)).toString());
+                        //Log.e("LoadActivity", new Gson().toJson(users.get(0)).toString());
                         OkHttpClient client=new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
                         RequestBody requestBody=new FormBody.Builder().add("user",new Gson().toJson(users.get(0)).toString()).build();
                         Request request=new Request.Builder().url(LoginUrl+"?user="+new Gson().toJson(users.get(0)).toString()).build();
                         Response response=client.newCall(request).execute();
                         String a=response.body().string();
-                        Log.e("LoadActivity", a);
-                        //u=new Gson().fromJson(a,User.class);
+                        u=new Gson().fromJson(a,User.class);
                     }catch (IOException e){
                         if(e instanceof SocketTimeoutException||e instanceof ConnectException){
                             User exception=new User();
@@ -86,20 +85,20 @@ public class LoginModelImpl implements LoginModel {
     }
 
     @Override
-    public void CreateUser(final User u,final Callback<User> callback){
+    public void CreateUser(final User user,final Callback<User> callback){
         ThreadTask t=new ThreadTask<Void,Void,User>(callback, new Execute<User>() {
             @Override
             public User doExec() {
                 //网络请求
                 User u=null;
                 try {
-                    //Log.e("LoadActivity", new Gson().toJson(MyApplication.getUser()).toString());
+                    Log.e("LoadActivity", new Gson().toJson(user).toString());
                     OkHttpClient client=new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
-                    RequestBody requestBody=new FormBody.Builder().add("user",new Gson().toJson(MyApplication.getUser()).toString()).build();
-                    Request request=new Request.Builder().url(LoginUrl+"?user="+new Gson().toJson(MyApplication.getUser()).toString()).build();
+                    //RequestBody requestBody=new FormBody.Builder().add("user",new Gson().toJson(MyApplication.getUser()).toString()).build();
+                    Request request=new Request.Builder().url(createUrl+"?user="+new Gson().toJson(user).toString()).build();
                     Response response=client.newCall(request).execute();
                     String a=response.body().string();
-                    //Log.e("LoadActivity", a);
+                    Log.e("LoadActivity", a);
                     u=new Gson().fromJson(a,User.class);
                 }catch (IOException e){
                     if(e instanceof SocketTimeoutException||e instanceof ConnectException){
@@ -111,7 +110,6 @@ public class LoginModelImpl implements LoginModel {
                     }
                 }
                 if(u!=null&&u.getUser_id()>0){
-                    String file=MyApplication.getUser().getImage_path();
                     MyApplication.setUser(null);
                     //上传图片
                 }
@@ -122,15 +120,16 @@ public class LoginModelImpl implements LoginModel {
     }
 
     @Override
-    public void LoginByEmail(final String email, final String password, Callback<User> callback) {
+    public void LoginByEmail(final User user, Callback<User> callback) {
         ThreadTask t=new ThreadTask<Void,Void,User>(callback, new Execute<User>() {
             @Override
             public User doExec() {
                 User u=null;
                 try {
+                    Log.e("erroractivity", new Gson().toJson(user).toString() );
                     OkHttpClient client=new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
-                    RequestBody requestBody=new FormBody.Builder().add("email",email).add("password",password).build();
-                    Request request=new Request.Builder().url(createUrl).post(requestBody).build();
+                    //RequestBody requestBody=new FormBody.Builder().add("user",new Gson().toJson(user).toString()).build();
+                    Request request=new Request.Builder().url(LoginUrl+"?user="+new Gson().toJson(user).toString()).build();
                     Response response=client.newCall(request).execute();
                     String a=response.body().string();
                     u=new Gson().fromJson(a,User.class);
@@ -147,5 +146,10 @@ public class LoginModelImpl implements LoginModel {
             }
         });
         t.execute();
+    }
+
+    @Override
+    public void SentImage(String path) {
+
     }
 }

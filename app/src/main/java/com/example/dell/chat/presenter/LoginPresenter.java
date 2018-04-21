@@ -12,6 +12,7 @@ import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.base.BasePresenter;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.User;
+import com.example.dell.chat.db.UserDao;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Login.LoginModel;
 import com.example.dell.chat.model.Login.LoginModelImpl;
@@ -19,6 +20,7 @@ import com.example.dell.chat.view.LoadActivity;
 import com.example.dell.chat.view.LoginActivity;
 import com.example.dell.chat.view.MainActivity;
 import com.example.dell.chat.view.RegistrationActivity;
+import com.google.gson.Gson;
 
 import java.sql.SQLRecoverableException;
 
@@ -68,17 +70,29 @@ public class LoginPresenter<T extends BaseActivity> extends BasePresenter<T>  {
                     Intent intent=new Intent(getView(),LoginActivity.class);
                     getView().startActivity(intent);
                 }
-                Log.e("LoginActivity", String.valueOf(MyApplication.getUser()==null)  );
             }
         });
     }
 
     //通过邮箱登陆
-    public void LoginByEmail(String email,String password){
-        loginModel.LoginByEmail(email, password, new Callback<User>() {
+    public void LoginByEmail(final User u){
+        loginModel.LoginByEmail(u, new Callback<User>() {
             @Override
             public void execute(User datas) {
-
+                if(datas.getUser_id()>0){//登陆成功
+                    //Log.e("LoginActivity", new Gson().toJson(datas).toString());
+                    MyApplication.setUser(datas);
+                    UserDao userDao= MyApplication.getDao().getUserDao();
+                    userDao.insert(datas);
+                    Intent intent=new Intent(getView(),MainActivity.class);
+                    getView().startActivity(intent);
+                }else if(datas.getUser_id()==-1){//密码错误
+                    creatAlert("密码错误，请重写登陆");
+                }else if(datas.getUser_id()==-2){//账号不存在
+                    creatAlert("账号不存在，请重写登陆");
+                }else if(datas.getUser_id()==-3){//网络错误
+                    Toast.makeText(getView(),"网络连接不可用",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -102,7 +116,9 @@ public class LoginPresenter<T extends BaseActivity> extends BasePresenter<T>  {
                     alertDialog.show();
                 }else {
                     Toast.makeText(getView(),"注册成功，请登录",Toast.LENGTH_SHORT).show();
-                    getView().onBackPressed();
+                    Intent intent=new Intent(getView(),LoginActivity.class);
+                    getView().startActivity(intent);
+                    //getView().onBackPressed();
                 }
             }
         });
