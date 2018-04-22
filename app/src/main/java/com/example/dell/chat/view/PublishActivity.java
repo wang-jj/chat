@@ -1,6 +1,7 @@
 package com.example.dell.chat.view;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -77,7 +78,7 @@ public class PublishActivity extends AppCompatActivity {
                     mGroupDrawable.setStroke(5, Color.parseColor("#ffffff"));
                     creatSelect();
                 }else if(image_num>0){
-                    //PictureSelector.create(PublishActivity.this).themeStyle().openExternalPreview(0, selectList);
+                    PictureSelector.create(PublishActivity.this).themeStyle(android.R.style.Theme).openExternalPreview(0,selectList);
                 }
             }
         });

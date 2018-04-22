@@ -24,6 +24,7 @@ public class Dao {
     public void createDao(Context context){
         DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(context, "chat.db", null);
         DaoMaster daoMaster = new DaoMaster(devOpenHelper.getEncryptedWritableDb("123456"));
+        //DaoMaster daoMaster = new DaoMaster(devOpenHelper.getWritableDb());
         DaoSession daoSession = daoMaster.newSession();
         userDao = daoSession.getUserDao();
         personalStateDao=daoSession.getPersonalStateDao();

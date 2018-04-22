@@ -60,8 +60,12 @@ public class LoginPresenter<T extends BaseActivity> extends BasePresenter<T>  {
                         getView().startActivity(intent);
                     }else if(datas.getUser_id()==-1){//密码错误
                         creatAlert("密码错误，请重写登陆");
+                        Intent intent=new Intent(getView(),LoginActivity.class);
+                        getView().startActivity(intent);
                     }else if(datas.getUser_id()==-2){//账号不存在
                         creatAlert("账号不存在，请重写登陆");
+                        Intent intent=new Intent(getView(),LoginActivity.class);
+                        getView().startActivity(intent);
                     }else if(datas.getUser_id()==-3){//网络错误
                         creatAlert("网络连接不可用");
                     }
@@ -81,6 +85,7 @@ public class LoginPresenter<T extends BaseActivity> extends BasePresenter<T>  {
             public void execute(User datas) {
                 if(datas.getUser_id()>0){//登陆成功
                     //Log.e("LoginActivity", new Gson().toJson(datas).toString());
+                    datas.setPassword(u.getPassword());
                     MyApplication.setUser(datas);
                     UserDao userDao= MyApplication.getDao().getUserDao();
                     userDao.insert(datas);
