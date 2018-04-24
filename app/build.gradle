@@ -56,4 +56,8 @@ dependencies {
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
     //implementation 'com.github.bumptech.glide:glide:4.4.0'
     //annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+    //compile 'com.android.support:appcompat-v7:23.4.0'
+    //Optional compile for GCM (Google Cloud Messaging).
+    //compile 'com.google.android.gms:play-services-gcm:9.4.0'
+    //compile 'com.hyphenate:hyphenate-sdk:3.3.0'
 }
