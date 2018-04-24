@@ -21,7 +21,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
+import com.example.dell.chat.bean.MyApplication;
+import com.example.dell.chat.bean.User;
+
+import javax.microedition.khronos.opengles.GL;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -50,13 +55,15 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //初始化侧滑drawer的数据
+        User u= MyApplication.getUser();
         View headerView = navigationView.getHeaderView(0);
         ImageView imageView_drawer_profile=(ImageView)headerView.findViewById(R.id.drawer_profile);
-        imageView_drawer_profile.setImageResource(R.drawable.profile);
+        Glide.with(MainActivity.this).load(u.getImage_path()).into(imageView_drawer_profile);
+        //imageView_drawer_profile.setImageResource(R.drawable.profile);
         TextView textView_drawer_nickname=(TextView)headerView.findViewById(R.id.drawer_nickname);
-        textView_drawer_nickname.setText("麦梓逗比旗");
+        textView_drawer_nickname.setText(u.getUser_name());
         TextView textView_drawer_school=(TextView)headerView.findViewById(R.id.drawer_school);
-        textView_drawer_school.setText("华南理工大学");
+        textView_drawer_school.setText(u.getSchool());
 
         bottomNavigationView=(BottomNavigationView)findViewById(R.id.navigation);
         textView=(TextView)findViewById(R.id.toolbar_title);

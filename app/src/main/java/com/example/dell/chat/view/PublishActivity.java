@@ -2,6 +2,8 @@ package com.example.dell.chat.view;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -16,18 +18,22 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.dell.chat.R;
+import com.example.dell.chat.base.BaseActivity;
+import com.example.dell.chat.presenter.LoginPresenter;
+import com.example.dell.chat.presenter.MomentPresenter;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 
 
 //动态发布Activity
-public class PublishActivity extends AppCompatActivity {
+public class PublishActivity extends BaseActivity<PublishActivity,MomentPresenter<PublishActivity>> {
 
     private int image_num=0;
     private int CHOOSE_REQUEST=5;
@@ -55,7 +61,7 @@ public class PublishActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //发布动态逻辑
-                onBackPressed();
+                //onBackPressed();
             }
         });
 
@@ -78,7 +84,7 @@ public class PublishActivity extends AppCompatActivity {
                     mGroupDrawable.setStroke(5, Color.parseColor("#ffffff"));
                     creatSelect();
                 }else if(image_num>0){
-                    PictureSelector.create(PublishActivity.this).themeStyle(android.R.style.Theme).openExternalPreview(0,selectList);
+                    PictureSelector.create(PublishActivity.this).externalPicturePreview(0,selectList);
                 }
             }
         });
@@ -88,19 +94,13 @@ public class PublishActivity extends AppCompatActivity {
                 if(image_num<1){
                     //小于一时，无动作
                 } else if(image_num>=1){
-                    if(image_num==1){
+                    if(image_num==1){//选择第二张
                         GradientDrawable mGroupDrawable = (GradientDrawable) imageView2.getBackground();
                         mGroupDrawable.setStroke(5, Color.parseColor("#ffffff"));
-                        /*
-                        mGroupDrawable = (GradientDrawable) imageView3.getBackground();
-                        mGroupDrawable.setStroke(5, Color.parseColor("#cccccc"));
-                        imageView3.setImageResource(R.drawable.ic_wallpaper_24dp);
-                        image_num+=1;
-                        */
                        creatSelect();
+                    }else {//查看第二张
+                        PictureSelector.create(PublishActivity.this).externalPicturePreview(1,selectList);
                     }
-                    //设置图片二
-                    //imageView2.setImageResource(R.drawable.sample2);
                 }
             }
         });
@@ -110,13 +110,13 @@ public class PublishActivity extends AppCompatActivity {
                 if(image_num<2){
                     //小于二时，无动作
                 }else if(image_num>=2){
-                    if(image_num==2){
+                    if(image_num==2){//选择第三张
                         GradientDrawable mGroupDrawable = (GradientDrawable) imageView3.getBackground();
                         mGroupDrawable.setStroke(5, Color.parseColor("#ffffff"));
                         creatSelect();
+                    }else {//查看第三章
+                        PictureSelector.create(PublishActivity.this).externalPicturePreview(2,selectList);
                     }
-                    //设置图片三
-                    //imageView3.setImageResource(R.drawable.sample2);
                 }
             }
         });
@@ -179,5 +179,10 @@ public class PublishActivity extends AppCompatActivity {
 
     public void creatSelect(){
         PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).enableCrop(true).previewImage(true).compress(true).minimumCompressSize(500).isGif(true).maxSelectNum(3).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
+    }
+
+    @Override
+    protected MomentPresenter createPresenter() {
+        return new MomentPresenter();
     }
 }

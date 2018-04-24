@@ -98,11 +98,22 @@ public class LoginModelImpl implements LoginModel {
             public User doExec() {
                 //网络请求
                 User u=null;
+                String encodedString =null;
                 try {
-                    //Log.e("LoadActivity", new Gson().toJson(user).toString());
+                    File file = new File(user.getImage_path());
+                    FileInputStream inputFile = null;
+                    try {
+                        inputFile = new FileInputStream(file);
+                        byte[] buffer = new byte[(int) file.length()];
+                        inputFile.read(buffer);
+                        inputFile.close();
+                        encodedString = Base64.encodeToString(buffer, Base64.NO_WRAP);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     OkHttpClient client=new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
-                    //RequestBody requestBody=new FormBody.Builder().add("user",new Gson().toJson(MyApplication.getUser()).toString()).build();
-                    Request request=new Request.Builder().url(createUrl+"?user="+new Gson().toJson(user).toString()).build();
+                    RequestBody requestBody=new FormBody.Builder().add("user",new Gson().toJson(user).toString()).add("image",encodedString).build();
+                    Request request=new Request.Builder().url(createUrl).post(requestBody).build();
                     Response response=client.newCall(request).execute();
                     String a=response.body().string();
                     //Log.e("LoadActivity", a);
@@ -120,7 +131,8 @@ public class LoginModelImpl implements LoginModel {
                     MultipartBody requestBody = builder.build();
                     */
 
-                    File file = new File("/storage/emulated/0/Android/data/com.example.dell.chat/cache/luban_disk_cache/1524310777712611.JPEG");
+                    /*
+                    File file = new File(user.getImage_path());
                     FileInputStream inputFile = null;
                     String encodedString =null;
                     try {
@@ -141,9 +153,10 @@ public class LoginModelImpl implements LoginModel {
                             .build();
                     Response res=client.newCall(req).execute();
                     String b=res.body().string();
-                    Log.e("LoadActivity", String.valueOf(encodedString.length()));
-                    Log.e("LoadActivity", String.valueOf(b.length()));
-                    Log.e("LoadActivity", b);
+                    Log.e("LoadActivity", user.getImage_path());
+                    //Log.e("LoadActivity", String.valueOf(b.length()));
+                    //Log.e("LoadActivity", b);
+                    */
                 }catch (IOException e){
                     if(e instanceof SocketTimeoutException||e instanceof ConnectException){
                         User exception=new User();

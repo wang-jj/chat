@@ -20,8 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Album;
+import com.example.dell.chat.bean.MyApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,16 +48,17 @@ public class AlbumActivity extends AppCompatActivity {
         //初始化顶部简介
         //初始化头像
         ImageView imageView_profile=(ImageView)findViewById(R.id.album_profile);
-        imageView_profile.setImageResource(R.drawable.profile);
+        Glide.with(AlbumActivity.this).load(MyApplication.getUser().getImage_path()).into(imageView_profile);
+        //imageView_profile.setImageResource(R.drawable.profile);
         //初始化昵称
         TextView textView_nickname=(TextView)findViewById(R.id.album_nickname);
-        textView_nickname.setText("麦梓逗比旗");
+        textView_nickname.setText(MyApplication.getUser().getUser_name());
         //初始化学校
         TextView textView_school=(TextView)findViewById(R.id.album_school);
-        textView_school.setText("中山纪念小学");
+        textView_school.setText(MyApplication.getUser().getSchool());
         //初始化简介
         TextView textView_pre=(TextView)findViewById(R.id.album_pre);
-        textView_pre.setText("我是在场所有人的爸爸啊，你们这群废物！");
+        textView_pre.setText(MyApplication.getUser().getUser_motto());
 
         final LinearLayout progressLayout=(LinearLayout)findViewById(R.id.album_progress);
         progressLayout.setVisibility(View.VISIBLE);

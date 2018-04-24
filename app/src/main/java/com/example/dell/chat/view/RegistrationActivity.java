@@ -157,6 +157,7 @@ public class RegistrationActivity extends BaseActivity<RegistrationActivity,Logi
                 }else {
                     u.setGender(2);
                 }
+                Log.e("LoadActivity",u.getImage_path());
                 presenter.Registration(u);
                 //Toast.makeText(RegistrationActivity.this,"注册成功，请登录",Toast.LENGTH_SHORT).show();
                 //onBackPressed();
