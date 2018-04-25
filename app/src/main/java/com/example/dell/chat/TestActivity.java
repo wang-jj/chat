@@ -195,10 +195,12 @@ public class TestActivity extends BaseActivity<TestActivity,LoginPresenter<TestA
 
     //动态获取权限
     private void requestPermission(){
-        requestRunTimePermission(new String[]{Manifest.permission.CAMERA,
+        requestRunTimePermission(new String[]{
+                        Manifest.permission.CAMERA,
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.RECORD_AUDIO}
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}
                 , new PermissionListener() {
                     @Override
                     public void onGranted() {  //所有权限授权成功
