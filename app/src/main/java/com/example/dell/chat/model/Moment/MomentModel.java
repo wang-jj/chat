@@ -1,5 +1,6 @@
 package com.example.dell.chat.model.Moment;
 
+import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.model.Callback;
 
 /**
@@ -9,4 +10,6 @@ import com.example.dell.chat.model.Callback;
 public interface MomentModel {
 
     void LoadMoment(int holder_id, int offset, int limit, final Callback callback);
+
+    void Publish(PersonalState personalState,final Callback callback);
 }

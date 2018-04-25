@@ -1,6 +1,7 @@
 package com.example.dell.chat.bean;
 
 import android.app.Application;
+import android.content.Context;
 
 
 import com.example.dell.chat.tools.Dao;
@@ -31,15 +32,22 @@ public class MyApplication extends Application {
 
     public static int timeout=5;
 
+    private static Context context;
+
     @Override
     public void onCreate(){
         super.onCreate();
         LitePal.initialize(this);
         this.user=null;
         dao=new Dao(this);
+        MyApplication.context = getApplicationContext();
     }
 
     public static int getTimeout() {
         return timeout;
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }

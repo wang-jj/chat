@@ -79,6 +79,7 @@
                 android:src="@drawable/ic_place_24dp"/>
 
             <TextView
+                android:id="@+id/mylocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="所在位置"

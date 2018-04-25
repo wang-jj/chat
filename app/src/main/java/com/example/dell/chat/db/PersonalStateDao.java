@@ -42,6 +42,8 @@ public class PersonalStateDao extends AbstractDao<PersonalState, Long> {
         public final static Property User_id = new Property(15, int.class, "user_id", false, "USER_ID");
         public final static Property Holder_id = new Property(16, int.class, "holder_id", false, "HOLDER_ID");
         public final static Property Update_time = new Property(17, java.util.Date.class, "update_time", false, "UPDATE_TIME");
+        public final static Property Latitude = new Property(18, double.class, "Latitude", false, "LATITUDE");
+        public final static Property Longitude = new Property(19, double.class, "Longitude", false, "LONGITUDE");
     };
 
 
@@ -74,7 +76,9 @@ public class PersonalStateDao extends AbstractDao<PersonalState, Long> {
                 "\"PERSONALSTATE_ID\" INTEGER NOT NULL ," + // 14: personalstate_id
                 "\"USER_ID\" INTEGER NOT NULL ," + // 15: user_id
                 "\"HOLDER_ID\" INTEGER NOT NULL ," + // 16: holder_id
-                "\"UPDATE_TIME\" INTEGER);"); // 17: update_time
+                "\"UPDATE_TIME\" INTEGER," + // 17: update_time
+                "\"LATITUDE\" REAL NOT NULL ," + // 18: Latitude
+                "\"LONGITUDE\" REAL NOT NULL );"); // 19: Longitude
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_PERSONAL_STATE_HOLDER_ID ON PERSONAL_STATE" +
                 " (\"HOLDER_ID\" ASC);");
@@ -153,6 +157,8 @@ public class PersonalStateDao extends AbstractDao<PersonalState, Long> {
         if (update_time != null) {
             stmt.bindLong(18, update_time.getTime());
         }
+        stmt.bindDouble(19, entity.getLatitude());
+        stmt.bindDouble(20, entity.getLongitude());
     }
 
     @Override
@@ -220,6 +226,8 @@ public class PersonalStateDao extends AbstractDao<PersonalState, Long> {
         if (update_time != null) {
             stmt.bindLong(18, update_time.getTime());
         }
+        stmt.bindDouble(19, entity.getLatitude());
+        stmt.bindDouble(20, entity.getLongitude());
     }
 
     @Override
@@ -247,7 +255,9 @@ public class PersonalStateDao extends AbstractDao<PersonalState, Long> {
             cursor.getInt(offset + 14), // personalstate_id
             cursor.getInt(offset + 15), // user_id
             cursor.getInt(offset + 16), // holder_id
-            cursor.isNull(offset + 17) ? null : new java.util.Date(cursor.getLong(offset + 17)) // update_time
+            cursor.isNull(offset + 17) ? null : new java.util.Date(cursor.getLong(offset + 17)), // update_time
+            cursor.getDouble(offset + 18), // Latitude
+            cursor.getDouble(offset + 19) // Longitude
         );
         return entity;
     }
@@ -272,6 +282,8 @@ public class PersonalStateDao extends AbstractDao<PersonalState, Long> {
         entity.setUser_id(cursor.getInt(offset + 15));
         entity.setHolder_id(cursor.getInt(offset + 16));
         entity.setUpdate_time(cursor.isNull(offset + 17) ? null : new java.util.Date(cursor.getLong(offset + 17)));
+        entity.setLatitude(cursor.getDouble(offset + 18));
+        entity.setLongitude(cursor.getDouble(offset + 19));
      }
     
     @Override

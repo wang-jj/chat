@@ -34,6 +34,9 @@ public class PersonalState {        //动态类
     private int holder_id;          //当前登录账号的id
     @Index
     private Date update_time;       //刷新这条朋友圈的时间
+    private double Latitude;        //纬度
+    private double Longitude;       //经度
+
     public Date getUpdate_time() {
         return this.update_time;
     }
@@ -142,12 +145,24 @@ public class PersonalState {        //动态类
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 2035981307)
+    public double getLongitude() {
+        return this.Longitude;
+    }
+    public void setLongitude(double Longitude) {
+        this.Longitude = Longitude;
+    }
+    public double getLatitude() {
+        return this.Latitude;
+    }
+    public void setLatitude(double Latitude) {
+        this.Latitude = Latitude;
+    }
+    @Generated(hash = 1139132238)
     public PersonalState(Long id, String nickname, String school, String content,
             String location, Date state_time, int like, int comment,
             String profileID, String image1ID, String image2ID, String image3ID,
             int pictureID, int img_type, int personalstate_id, int user_id,
-            int holder_id, Date update_time) {
+            int holder_id, Date update_time, double Latitude, double Longitude) {
         this.id = id;
         this.nickname = nickname;
         this.school = school;
@@ -166,6 +181,8 @@ public class PersonalState {        //动态类
         this.user_id = user_id;
         this.holder_id = holder_id;
         this.update_time = update_time;
+        this.Latitude = Latitude;
+        this.Longitude = Longitude;
     }
     @Generated(hash = 981515077)
     public PersonalState() {
