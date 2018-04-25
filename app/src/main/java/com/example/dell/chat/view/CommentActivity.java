@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Comment;
+import com.example.dell.chat.bean.MyApplication;
+import com.example.dell.chat.bean.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,8 @@ public class CommentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
+        User u= MyApplication.getUser();
+        Log.e("comment",String.valueOf(u==null));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -163,11 +168,14 @@ public class CommentActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {   //重载back函数 当edit显示为回复某人时 先设置为空 若edit以为空 则直接返回到上一个activity
+        /*
         if (editText.getHint().toString().isEmpty()) {
             super.onBackPressed();
         } else {
             editText.setHint("");
         }
+        */
+        super.onBackPressed();
     }
 
     //recyclerview的adapter定义

@@ -22,5 +22,4 @@ public interface LoginModel {
     //用户输入邮箱登陆
     void LoginByEmail(final User user,final Callback<User>callback);
 
-    void SentImage(final String path);
 }

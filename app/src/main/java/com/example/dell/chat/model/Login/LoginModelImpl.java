@@ -49,6 +49,8 @@ public class LoginModelImpl implements LoginModel {
                 List<User> users=userDao.loadAll();
                 if(users.size()==0){//user表空，返回空
                     return null;
+                }else if(users.get(0).getPassword()==null||users.get(0).getPassword()==""){//注销了，需要重新输入密码
+                    return users.get(0);
                 }else {//user表不为空，请求网络判断账号密码是否正确
                     User u=null;
                     try {
@@ -61,6 +63,8 @@ public class LoginModelImpl implements LoginModel {
                         Response response=client.newCall(request).execute();
                         String a=response.body().string();
                         u=new Gson().fromJson(a,User.class);
+                        u.setPassword(users.get(0).getPassword());
+                        u.setId(users.get(0).getId());
                     }catch (IOException e){
                         if(e instanceof SocketTimeoutException||e instanceof ConnectException){
                             User exception=new User();
@@ -118,45 +122,6 @@ public class LoginModelImpl implements LoginModel {
                     String a=response.body().string();
                     //Log.e("LoadActivity", a);
                     u=new Gson().fromJson(a,User.class);
-
-                    /*
-                    Log.e("LoadActivity", user.getImage_path());
-                    MediaType MEDIA_TYPE_PNG = MediaType.parse("image/jpeg");
-                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                    File f=new File("/storage/emulated/0/Android/data/com.example.dell.chat/cache/luban_disk_cache/1524310777712611.JPEG");
-                    Log.e("LoadActivity", user.getImage_path());
-                    if (f!=null) {
-                        builder.addFormDataPart("image", f.getName(), RequestBody.create(MEDIA_TYPE_PNG, f));
-                    }
-                    MultipartBody requestBody = builder.build();
-                    */
-
-                    /*
-                    File file = new File(user.getImage_path());
-                    FileInputStream inputFile = null;
-                    String encodedString =null;
-                    try {
-                        inputFile = new FileInputStream(file);
-                        byte[] buffer = new byte[(int) file.length()];
-                        inputFile.read(buffer);
-                        inputFile.close();
-                        encodedString = Base64.encodeToString(buffer, Base64.NO_WRAP);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    RequestBody requestBody=new FormBody.Builder().add("image",encodedString).build();
-                    //构建请求
-                    Request req = new Request.Builder()
-                            .url("http://119.23.255.222/android/try.php")//地址
-                            .post(requestBody)//添加请求体
-                            .build();
-                    Response res=client.newCall(req).execute();
-                    String b=res.body().string();
-                    Log.e("LoadActivity", user.getImage_path());
-                    //Log.e("LoadActivity", String.valueOf(b.length()));
-                    //Log.e("LoadActivity", b);
-                    */
                 }catch (IOException e){
                     if(e instanceof SocketTimeoutException||e instanceof ConnectException){
                         User exception=new User();
@@ -205,8 +170,4 @@ public class LoginModelImpl implements LoginModel {
         t.execute();
     }
 
-    @Override
-    public void SentImage(String path) {
-
-    }
 }

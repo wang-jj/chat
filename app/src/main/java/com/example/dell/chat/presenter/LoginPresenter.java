@@ -55,9 +55,15 @@ public class LoginPresenter<T extends BaseActivity> extends BasePresenter<T>  {
             public void execute(User datas) {
                 if(datas!=null){//不为空，判断返回的user的userid
                     if(datas.getUser_id()>0){//登陆成功
-                        MyApplication.setUser(datas);
-                        Intent intent=new Intent(getView(),MainActivity.class);
-                        getView().startActivity(intent);
+                        if(datas.getPassword()!=null&&datas.getPassword()!=""){//账号密码完整
+                            MyApplication.setUser(datas);
+                            Intent intent=new Intent(getView(),MainActivity.class);
+                            getView().startActivity(intent);
+                        }else{//不完整
+                            MyApplication.setUser(datas);
+                            Intent intent=new Intent(getView(),LoginActivity.class);
+                            getView().startActivity(intent);
+                        }
                     }else if(datas.getUser_id()==-1){//密码错误
                         creatAlert("密码错误，请重写登陆");
                         Intent intent=new Intent(getView(),LoginActivity.class);
@@ -84,10 +90,10 @@ public class LoginPresenter<T extends BaseActivity> extends BasePresenter<T>  {
             @Override
             public void execute(User datas) {
                 if(datas.getUser_id()>0){//登陆成功
-                    //Log.e("LoginActivity", new Gson().toJson(datas).toString());
                     datas.setPassword(u.getPassword());
                     MyApplication.setUser(datas);
                     UserDao userDao= MyApplication.getDao().getUserDao();
+                    userDao.deleteAll();
                     userDao.insert(datas);
                     Intent intent=new Intent(getView(),MainActivity.class);
                     getView().startActivity(intent);
@@ -128,4 +134,5 @@ public class LoginPresenter<T extends BaseActivity> extends BasePresenter<T>  {
             }
         });
     }
+
 }

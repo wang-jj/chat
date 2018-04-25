@@ -16,11 +16,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.example.dell.chat.base.BaseActivity;
 
 import com.example.dell.chat.R;
+import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.User;
 import com.example.dell.chat.presenter.LoginPresenter;
+import com.example.dell.chat.tools.CircleImageView;
 import com.google.gson.Gson;
 
 
@@ -106,9 +110,13 @@ public class LoginActivity extends BaseActivity<LoginActivity,LoginPresenter<Log
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
-
+        User us= MyApplication.getUser();
+        if(us!=null){//有账号密码信息
+            ((EditText)findViewById(R.id.login_mail)).setText(us.getEmail());
+            CircleImageView circleImageView=(CircleImageView)findViewById(R.id.login_profile);
+            Glide.with(LoginActivity.this).load(us.getImage_path()).into(circleImageView);
+        }
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);

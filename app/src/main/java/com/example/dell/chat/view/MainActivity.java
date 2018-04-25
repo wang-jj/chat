@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,13 +24,17 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
+import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.User;
+import com.example.dell.chat.presenter.LoginPresenter;
+import com.example.dell.chat.presenter.MainPresenter;
 
 import javax.microedition.khronos.opengles.GL;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainActivity>>
         implements NavigationView.OnNavigationItemSelectedListener {
+
 
     private TextView textView;
     private BottomNavigationView bottomNavigationView;
@@ -58,6 +63,7 @@ public class MainActivity extends AppCompatActivity
         User u= MyApplication.getUser();
         View headerView = navigationView.getHeaderView(0);
         ImageView imageView_drawer_profile=(ImageView)headerView.findViewById(R.id.drawer_profile);
+        Log.e("main",String.valueOf(u==null));
         Glide.with(MainActivity.this).load(u.getImage_path()).into(imageView_drawer_profile);
         //imageView_drawer_profile.setImageResource(R.drawable.profile);
         TextView textView_drawer_nickname=(TextView)headerView.findViewById(R.id.drawer_nickname);
@@ -177,12 +183,18 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_setting) {
 
         } else if (id == R.id.nav_cancel) {
-            finish();
+            presenter.SignOut();
+            //finish();
         }
 
         item.setChecked(false);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected MainPresenter createPresenter() {
+        return new MainPresenter();
     }
 }
