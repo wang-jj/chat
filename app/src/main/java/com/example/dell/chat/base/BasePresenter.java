@@ -9,7 +9,7 @@ import java.lang.ref.WeakReference;
  */
 
 public class BasePresenter<T> {
-/*
+
     protected WeakReference<T> mViewRef;
 
     //关联
@@ -27,7 +27,7 @@ public class BasePresenter<T> {
     protected T getView() {
         return mViewRef.get();
     }
-*/
+/*
     protected T mViewRef;
     public void attachView(T view) {
         mViewRef = view;
@@ -41,5 +41,6 @@ public class BasePresenter<T> {
     protected T getView() {
         return mViewRef;
     }
+    */
 
 }
