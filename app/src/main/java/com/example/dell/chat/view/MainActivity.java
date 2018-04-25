@@ -148,12 +148,15 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
 
     @Override
     public void onBackPressed() {
+        /*
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+        */
+        super.onBackPressed();
     }
 
     @Override
@@ -196,5 +199,11 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
     @Override
     protected MainPresenter createPresenter() {
         return new MainPresenter();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("MAIN", "onDestroy: " );
     }
 }

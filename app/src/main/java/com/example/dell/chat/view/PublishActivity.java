@@ -13,12 +13,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.dell.chat.R;
 import com.example.dell.chat.base.BaseActivity;
+import com.example.dell.chat.bean.MyApplication;
+import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.presenter.LoginPresenter;
 import com.example.dell.chat.presenter.MomentPresenter;
 import com.luck.picture.lib.PictureSelector;
@@ -41,6 +44,7 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
     ImageView imageView2;
     ImageView imageView3;
     List<LocalMedia> selectList =new ArrayList<LocalMedia>();
+    EditText editText=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +60,27 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
             }
         });
 
-
+        editText=(EditText)findViewById(R.id.moment_context);
         final ImageView imageView=(ImageView)findViewById(R.id.publish_pub);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //发布动态逻辑
                 //onBackPressed();
+                PersonalState personalState=new PersonalState();
+                personalState.setContent(editText.getText().toString());
+                personalState.setImg_type(selectList.size());
+                personalState.setUser_id(MyApplication.getUser().getUser_id());
+                if(selectList.size()>0){
+                    personalState.setImage1ID(getpath(selectList.get(0)));
+                }
+                if(selectList.size()>1){
+                    personalState.setImage2ID(getpath(selectList.get(1)));
+                }
+                if(selectList.size()>2){
+                    personalState.setImage3ID(getpath(selectList.get(2)));
+                }
+                presenter.Publish(personalState);
             }
         });
 
@@ -170,6 +188,9 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
 
     public String getpath(LocalMedia a){
         String path=a.getPath();
+        if(path.substring(path.length()-3).equals("gif")){
+            return path;
+        }
         if(a.isCut()){//裁剪了
             path=a.getCutPath();
         }if(a.isCompressed()){//压缩了
@@ -179,7 +200,7 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
     }
 
     public void creatSelect(){
-        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).enableCrop(true).previewImage(true).compress(true).minimumCompressSize(500).isGif(true).maxSelectNum(3).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
+        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).enableCrop(true).compress(true).minimumCompressSize(200).previewImage(true).isGif(true).maxSelectNum(3).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
     }
 
     @Override

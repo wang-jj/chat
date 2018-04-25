@@ -1,5 +1,7 @@
 package com.example.dell.chat.base;
 
+import android.support.v7.app.AppCompatActivity;
+
 import java.lang.ref.WeakReference;
 
 /**
@@ -7,7 +9,7 @@ import java.lang.ref.WeakReference;
  */
 
 public class BasePresenter<T> {
-
+/*
     protected WeakReference<T> mViewRef;
 
     //关联
@@ -21,9 +23,23 @@ public class BasePresenter<T> {
             mViewRef.clear();
         }
     }
-
     //得到view
     protected T getView() {
         return mViewRef.get();
     }
+*/
+    protected T mViewRef;
+    public void attachView(T view) {
+        mViewRef = view;
+    }
+
+    public void detachView() {
+        if (mViewRef != null) {
+            mViewRef=null;
+        }
+    }
+    protected T getView() {
+        return mViewRef;
+    }
+
 }

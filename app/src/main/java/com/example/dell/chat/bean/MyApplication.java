@@ -30,7 +30,7 @@ public class MyApplication extends Application {
         return dao;
     }
 
-    public static int timeout=5;
+    public static int timeout=10;
 
     private static Context context;
 

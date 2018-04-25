@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -40,6 +41,10 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
         super();
     }
 
+    private double latitude ;    //获取纬度信息
+    private double longitude ;    //获取经度信息
+    private String addr ;            //获取地址
+
     public void LoadMoment(){
         MyApplication myApplication=(MyApplication) (getView().getApplication());
         int user_id=myApplication.getUser().getUser_id();
@@ -55,22 +60,69 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
     }
 
     public void Publish(final PersonalState personalState){
-        //获取时间
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-        Date date = new Date(System.currentTimeMillis());
-        personalState.setState_time(date);
-        LocationClient locationClient=new LocationClient(MyApplication.getContext());
-        locationClient.registerLocationListener(new BDAbstractLocationListener() {//设置回调
-            @Override
-            public void onReceiveLocation(BDLocation bdLocation) {
-                double latitude = bdLocation.getLatitude();    //获取纬度信息
-                double longitude = bdLocation.getLongitude();    //获取经度信息
-                String addr = bdLocation.getAddrStr();            //获取地址
-                personalState.setLocation(addr);
-                personalState.setLatitude(latitude);
-                personalState.setLongitude(longitude);
-            }
-        });
+        //判断地理位置有没有开启
+        if(ContextCompat.checkSelfPermission(getView(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getView(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        }
+        //判断能否联网
+
+        else{
+            personalState.setLocation(addr);
+            personalState.setLatitude(latitude);
+            personalState.setLongitude(longitude);
+            Log.e("Test", MyApplication.getUser().getUser_name() );
+            momentModel.Publish(personalState, new Callback<String>() {//联网发动态
+                @Override
+                public void execute(String datas) {
+                    if(datas.equals("no")){//连接超时
+                        Toast.makeText(getView(),"网络错误，请检测你的网络设置",Toast.LENGTH_LONG).show();
+                        Log.e("Publish", datas );
+                    }else if(datas!=null){
+                        Log.e("Publish", datas );
+                        getView().finish();
+                    }
+                }
+            });
+            //获取时间
+            //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+            //Date date = new Date(System.currentTimeMillis());
+            //personalState.setState_time(date);
+            /*
+            LocationClient locationClient=new LocationClient(MyApplication.getContext());
+            locationClient.registerLocationListener(new BDAbstractLocationListener() {//设置回调
+                @Override
+                public void onReceiveLocation(BDLocation bdLocation) {
+                    double latitude = bdLocation.getLatitude();    //获取纬度信息
+                    double longitude = bdLocation.getLongitude();    //获取经度信息
+                    String addr = bdLocation.getAddrStr();            //获取地址
+                    personalState.setLocation(addr);
+                    personalState.setLatitude(latitude);
+                    personalState.setLongitude(longitude);
+                    Log.e("Test", MyApplication.getUser().getUser_name() );
+                    momentModel.Publish(personalState, new Callback<String>() {//联网发动态
+                        @Override
+                        public void execute(String datas) {
+                            if(datas.equals("no")){//连接超时
+                                //Toast.makeText(getView(),"网络错误，请检测你的网络设置",Toast.LENGTH_LONG).show();
+                                Log.e("Publish", datas );
+                            }else if(datas!=null){
+                                Log.e("Publish", datas );
+                                getView().finish();
+                            }
+                        }
+                    });
+                }
+            });
+            LocationClientOption option = new LocationClientOption();
+            option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+            option.setIsNeedAddress(true);//地址
+            option.setCoorType("bd09ll");
+            option.setOpenGps(true);
+            locationClient.setLocOption(option);
+            locationClient.start();
+            */
+
+        }
     }
 
     public void setLocation(){
@@ -78,7 +130,9 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
         locationClient.registerLocationListener(new BDAbstractLocationListener() {//设置回调
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {
-                String addr = bdLocation.getAddrStr();//获取地址
+                addr = bdLocation.getAddrStr();//获取地址
+                latitude = bdLocation.getLatitude();    //获取纬度信息
+                longitude = bdLocation.getLongitude();    //获取经度信息
                 if(addr==null){
                     return;
                 }
@@ -86,8 +140,12 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
             }
         });
         LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         option.setIsNeedAddress(true);//地址
+        option.setCoorType("bd09ll");
+        option.setOpenGps(true);
         locationClient.setLocOption(option);
+        locationClient.start();
         /*
         if(ContextCompat.checkSelfPermission(getView(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(getView(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
@@ -95,7 +153,6 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
             locationClient.start();
         }
         */
-        locationClient.start();
     }
 
 }
