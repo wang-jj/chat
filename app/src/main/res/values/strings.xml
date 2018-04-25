@@ -13,6 +13,7 @@
     <string name="title_activity_publish">PublishActivity</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_test">TestActivity</string>
 
     <string name="title_activity_login">LoginActivity</string>
     <string name="login_introduce">请使用注册时的邮箱、密码进行登录,尚未注册的用户需先进行注册</string>
