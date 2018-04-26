@@ -14,6 +14,7 @@ import com.example.dell.chat.db.UserDao;
 public class Dao {
 
     private UserDao userDao;
+    
 
     private PersonalStateDao personalStateDao;
 
