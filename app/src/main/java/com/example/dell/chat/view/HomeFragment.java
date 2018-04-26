@@ -3,11 +3,13 @@ package com.example.dell.chat.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,23 +38,36 @@ import static java.lang.Thread.sleep;
 //动态的fragment
 public class HomeFragment extends Fragment {
 
+    private View view;
+    private StateAdapter adapter;
+    private RecyclerView stateRecyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        final View view=inflater.inflate(R.layout.home_fragment,container,false);
+        Log.e("HOME", "oncreate" );
+        view=inflater.inflate(R.layout.home_fragment,container,false);
 
         final LinearLayout progressLayout=(LinearLayout)view.findViewById(R.id.state_progress);
         progressLayout.setVisibility(View.VISIBLE);
 
+        //动画
+        //final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_fall_down);
+        //final RecyclerView stateRecyclerView=(RecyclerView)view.findViewById(R.id.state_recycler_view);
+        //stateRecyclerView.setLayoutAnimation(controller);
+        //stateRecyclerView.setAdapter(adapter);
+
         final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_fall_down);
 
-        final RecyclerView stateRecyclerView=(RecyclerView)view.findViewById(R.id.state_recycler_view);
+
+        stateRecyclerView=(RecyclerView)view.findViewById(R.id.state_recycler_view);
         stateRecyclerView.setNestedScrollingEnabled(false);
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
 
         stateRecyclerView.setLayoutManager(layoutManager);
 
         //设置适配器以及list用以显示数据
-        final StateAdapter adapter=new StateAdapter(getState());    //通过getState()初始化adapter
+        adapter=new StateAdapter(getState());    //通过getState()初始化adapter
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -102,7 +117,7 @@ public class HomeFragment extends Fragment {
         });
 
         //顶部刷新函数 顶部刷新的逻辑写在此函数
-        final SwipeRefreshLayout swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipe_state_recycler);
+        swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipe_state_recycler);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {   //顶部刷新
@@ -164,11 +179,15 @@ public class HomeFragment extends Fragment {
     }
 
     //动态内容RecyclerView Adapter定义
-    class StateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    public class StateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         private List<PersonalState> mStateList;
         private static final int TYPE_ONE_IMAGE=0;
         private static final int TYPE_TWO_IMAGE=1;
         private static final int TYPE_THREE_IMAGE=2;
+
+        public List<PersonalState> getmStateList() {
+            return mStateList;
+        }
 
         public StateAdapter(List<PersonalState> stateList){
             mStateList=stateList;
@@ -483,5 +502,31 @@ public class HomeFragment extends Fragment {
                 stateLinear=(LinearLayout)view.findViewById(R.id.state_linear);
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("HOME", "ondestory" );
+    }
+
+
+    //动画
+    public void act() {
+        final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_fall_down);
+        final RecyclerView stateRecyclerView=(RecyclerView)view.findViewById(R.id.state_recycler_view);
+        stateRecyclerView.setLayoutAnimation(controller);
+    }
+
+    public StateAdapter getAdapter() {
+        return adapter;
+    }
+
+    public RecyclerView getStateRecyclerView() {
+        return stateRecyclerView;
+    }
+
+    public SwipeRefreshLayout getSwipeRefreshLayout() {
+        return swipeRefreshLayout;
     }
 }

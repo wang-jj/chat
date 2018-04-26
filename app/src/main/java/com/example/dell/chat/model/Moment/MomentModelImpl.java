@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -53,6 +55,59 @@ public class MomentModelImpl implements MomentModel {
             @Override
             public String doExec() {
                 String a="no";
+                MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+                MediaType MEDIA_TYPE_JPG = MediaType.parse("image/jpeg");
+                MediaType MEDIA_TYPE_GIF = MediaType.parse("image/gif");
+                MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder();
+                multipartBodyBuilder.setType(MultipartBody.FORM);
+                multipartBodyBuilder.addFormDataPart("personalState",new Gson().toJson(personalState));
+                if(personalState.getImg_type()>0){//一张照片
+                    String s=personalState.getImage1ID();
+                    File file=new File(s);
+                    if(s.substring(s.length()-3).equals("gif")) {
+                        multipartBodyBuilder.addFormDataPart("image", file.getName(), RequestBody.create(MEDIA_TYPE_GIF, file));
+                    }else if(s.substring(s.length()-3).equals("jpg")||s.substring(s.length()-4).equals("jpeg")){
+                        multipartBodyBuilder.addFormDataPart("image", file.getName(), RequestBody.create(MEDIA_TYPE_JPG, file));
+                    }else {
+                        multipartBodyBuilder.addFormDataPart("image", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file));
+                    }
+                }
+                if(personalState.getImg_type()>1){//两张照片
+                    String s=personalState.getImage2ID();
+                    File file=new File(s);
+                    if(s.substring(s.length()-3).equals("gif")) {
+                        multipartBodyBuilder.addFormDataPart("image", file.getName(), RequestBody.create(MEDIA_TYPE_GIF, file));
+                    }else if(s.substring(s.length()-3).equals("jpg")||s.substring(s.length()-4).equals("jpeg")){
+                        multipartBodyBuilder.addFormDataPart("image", file.getName(), RequestBody.create(MEDIA_TYPE_JPG, file));
+                    }else {
+                        multipartBodyBuilder.addFormDataPart("image", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file));
+                    }
+                }
+                if(personalState.getImg_type()>2){//三张照片
+                    String s=personalState.getImage3ID();
+                    File file=new File(s);
+                    if(s.substring(s.length()-3).equals("gif")) {
+                        multipartBodyBuilder.addFormDataPart("image", file.getName(), RequestBody.create(MEDIA_TYPE_GIF, file));
+                    }else if(s.substring(s.length()-3).equals("jpg")||s.substring(s.length()-4).equals("jpeg")){
+                        multipartBodyBuilder.addFormDataPart("image", file.getName(), RequestBody.create(MEDIA_TYPE_JPG, file));
+                    }else {
+                        multipartBodyBuilder.addFormDataPart("image", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file));
+                    }
+                }
+                try{//构建请求
+                    OkHttpClient client=new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
+                    MultipartBody multipartBody=multipartBodyBuilder.build();
+                    Request request=new Request.Builder().url(PublishUrl).post(multipartBody).build();
+                    Response response=client.newCall(request).execute();
+                    a=response.body().string();
+                }catch (Exception e){
+                    if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时
+                        a="no";
+                    }else {
+                        e.printStackTrace();
+                    }
+                }
+                /*
                 String encodeString1=translate(personalState.getImage1ID());
                 String encodeString2=translate(personalState.getImage2ID());
                 String encodeString3=translate(personalState.getImage3ID());
@@ -93,6 +148,7 @@ public class MomentModelImpl implements MomentModel {
                     }else {
                         requestBody=new FormBody.Builder().add("image1",encodeString1).add("image2",encodeString2).add("image3",encodeString3).add("personalState",new Gson().toJson(personalState).toString()).build();
                     }
+                    Log.e("Test", new Gson().toJson(personalState).toString() );
                     Request request=new Request.Builder().url(PublishUrl).post(requestBody).build();
                     Response response=client.newCall(request).execute();
                     a=response.body().string();
@@ -104,6 +160,7 @@ public class MomentModelImpl implements MomentModel {
                         e.printStackTrace();
                     }
                 }
+                */
                 return a;
             }
         });

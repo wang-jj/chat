@@ -75,7 +75,7 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
                 @Override
                 public void execute(String datas) {
                     if(datas.equals("no")){//连接超时
-                        Toast.makeText(getView(),"网络错误，请检测你的网络设置",Toast.LENGTH_LONG).show();
+                        Toast.makeText(MyApplication.getContext(),"网络错误，请检测你的网络设置",Toast.LENGTH_LONG).show();
                         Log.e("Publish", datas );
                     }else if(datas!=null){
                         Log.e("Publish", datas );

@@ -5,33 +5,14 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.baidu.location.BDAbstractLocationListener;
-import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.bumptech.glide.Glide;
 import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.base.PermissionListener;
-import com.example.dell.chat.bean.MyApplication;
-import com.example.dell.chat.bean.MyLocationListener;
-import com.example.dell.chat.bean.PersonalState;
-import com.example.dell.chat.bean.User;
-import com.example.dell.chat.db.PersonalStateDao;
-import com.example.dell.chat.db.UserDao;
-import com.example.dell.chat.model.Callback;
-import com.example.dell.chat.model.Moment.MomentModel;
-import com.example.dell.chat.model.Moment.MomentModelImpl;
 import com.example.dell.chat.presenter.LoginPresenter;
-import com.example.dell.chat.view.PublishActivity;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
@@ -46,7 +27,6 @@ import java.util.List;
 public class TestActivity extends BaseActivity<TestActivity,LoginPresenter<TestActivity>> {
 
     public LocationClient mLocationClient = null;
-    private MyLocationListener myListener = new MyLocationListener();
     //BDAbstractLocationListener为7.2版本新增的Abstract类型的监听接口
     //原有BDLocationListener接口暂时同步保留。具体介绍请参考后文中的说明
 

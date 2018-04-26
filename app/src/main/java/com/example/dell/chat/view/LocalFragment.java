@@ -33,8 +33,10 @@ import com.example.dell.chat.bean.Recommend;
 
 public class LocalFragment extends Fragment {
 
+    private View view;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view=inflater.inflate(R.layout.local_fragment,container,false);
+        view=inflater.inflate(R.layout.local_fragment,container,false);
 
         final LinearLayout progressLayout=(LinearLayout)view.findViewById(R.id.location_progress);
         progressLayout.setVisibility(View.VISIBLE);

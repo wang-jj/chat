@@ -1,14 +1,20 @@
 package com.example.dell.chat.view;
 
 
+import android.Manifest;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,13 +28,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
 import com.example.dell.chat.base.BaseActivity;
+import com.example.dell.chat.base.PermissionListener;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.User;
 import com.example.dell.chat.presenter.LoginPresenter;
 import com.example.dell.chat.presenter.MainPresenter;
+
+import java.util.List;
 
 import javax.microedition.khronos.opengles.GL;
 
@@ -41,6 +54,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
     private HomeFragment homeFragment;
     private LocalFragment localFragment;
     private MsgFragment msgFragment;
+    private android.support.v4.app.Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,15 +149,61 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
         setFragment(homeFragment);
         imageView.setVisibility(View.VISIBLE);
         imageView1.setVisibility(View.GONE);
+
+        //位置
+        //requestPermission();
+        LocationClient locationClient=new LocationClient(MyApplication.getContext());
+        locationClient.registerLocationListener(new BDAbstractLocationListener() {//设置回调
+            @Override
+            public void onReceiveLocation(BDLocation bdLocation) {
+                String addr = bdLocation.getAddrStr();//获取地址
+                double latitude = bdLocation.getLatitude();    //获取纬度信息
+                double longitude = bdLocation.getLongitude();    //获取经度信息
+                presenter.SendLocation(latitude,longitude);
+                Log.e("MAIN", addr );
+            }
+        });
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setIsNeedAddress(true);//地址
+        option.setCoorType("bd09ll");
+        option.setScanSpan(10000);
+        option.setOpenGps(true);
+        locationClient.setLocOption(option);
+        //locationClient.start();
     }
 
     //切换fragment函数
     private void setFragment(android.support.v4.app.Fragment fragment){
+        /*
         android.support.v4.app.FragmentManager fragmentManager=getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction transaction=fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.replace(R.id.change_fragment,fragment);
         transaction.commit();
+        */
+
+        if(fragment==currentFragment){
+            return;
+        }
+        android.support.v4.app.FragmentManager fragmentManager=getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction transaction=fragmentManager.beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        if(!fragment.isAdded()){
+            transaction.add(R.id.change_fragment,fragment);
+        }else {
+            transaction.show(fragment);
+            if(fragment==homeFragment){
+                homeFragment.act();
+            }
+        }
+        if(currentFragment!=null){
+            transaction.hide(currentFragment);
+        }
+        currentFragment=fragment;
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.commit();
+
     }
 
     @Override
@@ -201,9 +261,28 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
         return new MainPresenter();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.e("MAIN", "onDestroy: " );
+
+    private void requestPermission(){
+        requestRunTimePermission(new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}
+                , new PermissionListener() {
+                    @Override
+                    public void onGranted() {  //所有权限授权成功
+
+                    }
+
+                    @Override
+                    public void onGranted(List<String> grantedPermission) { //授权失败权限集合
+
+                    }
+
+                    @Override
+                    public void onDenied(List<String> deniedPermission) { //授权成功权限集合
+
+                    }
+                });
     }
 }
