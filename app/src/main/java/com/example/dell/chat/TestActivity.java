@@ -28,11 +28,14 @@ import com.example.dell.chat.bean.User;
 import com.example.dell.chat.db.PersonalStateDao;
 import com.example.dell.chat.db.UserDao;
 import com.example.dell.chat.model.Callback;
+import com.example.dell.chat.model.Execute;
 import com.example.dell.chat.model.Moment.MomentModel;
 import com.example.dell.chat.model.Moment.MomentModelImpl;
 import com.example.dell.chat.presenter.LoginPresenter;
+import com.example.dell.chat.tools.ThreadTask;
 import com.example.dell.chat.view.PublishActivity;
 import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.exceptions.HyphenateException;
@@ -106,16 +109,22 @@ public class TestActivity extends BaseActivity<TestActivity,LoginPresenter<TestA
         sign_in_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    //注册失败会抛出HyphenateException
-                    EMClient.getInstance().createAccount("j", "123654");//同步方法
+                ThreadTask t = new ThreadTask<Void,Void,Void>(null, new Execute<Void>(){
+                @Override
+                public Void doExec() {
+                    try {
+                        //注册失败会抛出HyphenateException
+                        EMClient.getInstance().createAccount("new_usr", "123654");//同步方法
+                    } catch (HyphenateException e) {
+                        Log.e("TestActivity", "sign in failed");
+                    }
+                    return null;
                 }
-                catch (HyphenateException e)
-                {
-                    Log.e("TestActivity", "sign in failed");
-                }
+                });
+                t.execute();
             }
         });
+
 
         //登录环信
         login_button.setOnClickListener(new View.OnClickListener() {
