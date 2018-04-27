@@ -11,6 +11,9 @@ import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Execute;
 import com.example.dell.chat.tools.ThreadTask;
 import com.google.gson.Gson;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,6 +68,27 @@ public class LoginModelImpl implements LoginModel {
                         u=new Gson().fromJson(a,User.class);
                         u.setPassword(users.get(0).getPassword());
                         u.setId(users.get(0).getId());
+                        //登录环信
+                        String user_id=String.valueOf(u.getUser_id());
+                        String password=u.getPassword();
+                        EMClient.getInstance().login(user_id,password,new EMCallBack() {//回调
+                            @Override
+                            public void onSuccess() {
+                                EMClient.getInstance().groupManager().loadAllGroups();
+                                EMClient.getInstance().chatManager().loadAllConversations();
+                                Log.d("log in", "登录聊天服务器成功！");
+                            }
+
+                            @Override
+                            public void onProgress(int progress, String status) {
+
+                            }
+
+                            @Override
+                            public void onError(int code, String message) {
+                                Log.d("log in", "登录聊天服务器失败！");
+                            }
+                        });
                     }catch (IOException e){
                         if(e instanceof SocketTimeoutException||e instanceof ConnectException){
                             User exception=new User();
@@ -122,6 +146,16 @@ public class LoginModelImpl implements LoginModel {
                     String a=response.body().string();
                     //Log.e("LoadActivity", a);
                     u=new Gson().fromJson(a,User.class);
+                    if(u.getUser_id()!=-1){//注册环信
+                        String user_id=String.valueOf(user.getUser_id());
+                        String password=user.getPassword();
+                        try {
+                            //注册失败会抛出HyphenateException
+                            EMClient.getInstance().createAccount(user_id, password);//同步方法
+                        } catch (HyphenateException e) {
+                            Log.e("sign up", "sign up failed");
+                        }
+                    }
                 }catch (IOException e){
                     if(e instanceof SocketTimeoutException||e instanceof ConnectException){
                         User exception=new User();
@@ -155,6 +189,29 @@ public class LoginModelImpl implements LoginModel {
                     Response response=client.newCall(request).execute();
                     String a=response.body().string();
                     u=new Gson().fromJson(a,User.class);
+                    u.setPassword(user.getPassword());
+                    if(u.getUser_id()>0){//登录环信
+                        String user_id=String.valueOf(u.getUser_id());
+                        String password=u.getPassword();
+                        EMClient.getInstance().login(user_id,password,new EMCallBack() {//回调
+                            @Override
+                            public void onSuccess() {
+                                EMClient.getInstance().groupManager().loadAllGroups();
+                                EMClient.getInstance().chatManager().loadAllConversations();
+                                Log.d("log in", "登录聊天服务器成功！");
+                            }
+
+                            @Override
+                            public void onProgress(int progress, String status) {
+
+                            }
+
+                            @Override
+                            public void onError(int code, String message) {
+                                Log.d("log in", "登录聊天服务器失败！");
+                            }
+                        });
+                    }
                 }catch (IOException e){
                     if(e instanceof SocketTimeoutException||e instanceof ConnectException){
                         User exception=new User();

@@ -1,18 +1,29 @@
 package com.example.dell.chat.view;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.dell.chat.R;
+import com.example.dell.chat.base.PermissionListener;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.User;
 import com.example.dell.chat.db.UserDao;
 import com.example.dell.chat.presenter.LoginPresenter;
 import com.example.dell.chat.base.BaseActivity;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMOptions;
+
+import java.util.Iterator;
+import java.util.List;
 
 //初始化加载时的activity 判断是进入登录界面 还是进入程序主界面
 /**
@@ -125,7 +136,46 @@ public class LoadActivity extends BaseActivity<LoadActivity,LoginPresenter<LoadA
         }, 2000);
         */
         presenter.connect();
+
+        //获取动态权限
+        requestPermission();
+
+        //初始化环信sdk
+        //
+        EMOptions options = new EMOptions();
+        // 默认添加好友时，是不需要验证的，改成需要验证
+        options.setAcceptInvitationAlways(false);
+        //自动登录 除非手动登出
+        options.setAutoLogin(false);
+        // 是否自动将消息附件上传到环信服务器，默认为True是使用环信服务器上传下载，如果设为 false，需要开发者自己处理附件消息的上传和下载
+        options.setAutoTransferMessageAttachments(true);
+        // 是否自动下载附件类消息的缩略图等，默认为 true 这里和上边这个参数相关联
+        options.setAutoDownloadThumbnail(true);
+
+        //应对第三方服务
+        //
+        Context appContext = this;
+        int pid = android.os.Process.myPid();
+        String processAppName = getAppName(pid);
+        // 如果APP启用了远程的service，此application:onCreate会被调用2次
+        // 为了防止环信SDK被初始化2次，加此判断会保证SDK被初始化1次
+        // 默认的APP会在以包名为默认的process name下运行，如果查到的process name不是APP的process name就立即返回
+
+        if (processAppName == null ||!processAppName.equalsIgnoreCase(appContext.getPackageName())) {
+            Log.e("TestActivity", "enter the service process!");
+
+            // 则此application::onCreate 是被service 调用的，直接返回
+            return;
+        }
+
+        //初始化
+        EMClient.getInstance().init(getApplicationContext(), options);
+        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+        EMClient.getInstance().setDebugMode(true);
+        Log.d("test", "i get there");
     }
+
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -189,5 +239,52 @@ public class LoadActivity extends BaseActivity<LoadActivity,LoginPresenter<LoadA
     @Override
     protected LoginPresenter createPresenter() {
         return new LoginPresenter();
+    }
+
+    //获取当前应用名用于判断是否为环信在调用
+    private String getAppName(int pID) {
+        String processName = null;
+        ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+        List l = am.getRunningAppProcesses();
+        Iterator i = l.iterator();
+        PackageManager pm = this.getPackageManager();
+        while (i.hasNext()) {
+            ActivityManager.RunningAppProcessInfo info = (ActivityManager.RunningAppProcessInfo) (i.next());
+            try {
+                if (info.pid == pID) {
+                    processName = info.processName;
+                    return processName;
+                }
+            } catch (Exception e) {
+                // Log.d("Process", "Error>> :"+ e.toString());
+            }
+        }
+        return processName;
+    }
+
+    //动态获取权限
+    private void requestPermission() {
+        requestRunTimePermission(new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                new PermissionListener() {
+                    @Override
+                    public void onGranted() {  //所有权限授权成功
+
+                    }
+
+                    @Override
+                    public void onGranted(List<String> grantedPermission) { //授权失败权限集合
+
+                    }
+
+                    @Override
+                    public void onDenied(List<String> deniedPermission) { //授权成功权限集合
+
+                    }
+                });
     }
 }

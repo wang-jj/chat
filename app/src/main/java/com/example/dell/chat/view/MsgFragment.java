@@ -71,6 +71,7 @@ public class MsgFragment extends Fragment {
                         progressLayout.setVisibility(View.VISIBLE);
                     }
                     final Message message=new Message();
+
                     message.setContact_name("谢欣逗比言");
                     message.setLatest_content("你还欠我无数顿饭呢！");
                     //message.setLatest_time("19:61");
@@ -111,18 +112,19 @@ public class MsgFragment extends Fragment {
 
     private List<Message> getMessage(){     //初始化recycler的list
         List<Message> messageList=new ArrayList<>();
+
         for(int i=1;i<=10;i++){
             Message message=new Message();
-            message.setContact_name("谢欣逗比言"+i);
-            message.setLatest_content("你还欠我"+i+"顿饭呢！");
-            //message.setLatest_time("19:"+(i+43));
-            if(i%3==0){
-                //message.setProfileID(R.drawable.sample1);
-            }else if(i%3==1){
-                //message.setProfileID(R.drawable.sample2);
-            }else {
-                //message.setProfileID(R.drawable.sample3);
-            }
+//            message.setContact_name("谢欣逗比言"+i);
+//            message.setLatest_content("你还欠我"+i+"顿饭呢！");
+//            //message.setLatest_time("19:"+(i+43));
+//            if(i%3==0){
+//                //message.setProfileID(R.drawable.sample1);
+//            }else if(i%3==1){
+//                //message.setProfileID(R.drawable.sample2);
+//            }else {
+//                //message.setProfileID(R.drawable.sample3);
+//            }
             messageList.add(message);   //添加入stateList中
         }
         return messageList;
@@ -170,6 +172,7 @@ public class MsgFragment extends Fragment {
             View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item,parent,false);
             final MsgFragment.MessageAdapter.ViewHolder holder=new MsgFragment.MessageAdapter.ViewHolder(view);
 
+            //删除最近联系人
             holder.messageDel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -179,7 +179,7 @@ public class TestActivity extends BaseActivity<TestActivity,LoginPresenter<TestA
                     @Override
                     public void onError(int code, String message) {
                         // TODO Auto-generated method stub
-                        Log.d("test", "登出聊天服务器失败");
+                        Log.d("test", "登出聊天服务器失败！");
                     }
                 });
             }
@@ -211,7 +211,6 @@ public class TestActivity extends BaseActivity<TestActivity,LoginPresenter<TestA
 
         // 创建接收消息监听器
         EMMessageListener msgListener = new EMMessageListener() {
-
             @Override
             public void onMessageReceived(List<EMMessage> messages) {
                 int i = messages.size();
@@ -290,8 +289,8 @@ public class TestActivity extends BaseActivity<TestActivity,LoginPresenter<TestA
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.READ_PHONE_STATE,
                         Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE}
-                , new PermissionListener() {
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                 new PermissionListener() {
                     @Override
                     public void onGranted() {  //所有权限授权成功
 
