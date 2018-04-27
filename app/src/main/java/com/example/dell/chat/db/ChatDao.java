@@ -29,7 +29,7 @@ public class ChatDao extends AbstractDao<Chat, Long> {
         public final static Property User_id = new Property(2, int.class, "user_id", false, "USER_ID");
         public final static Property Contact_id = new Property(3, int.class, "contact_id", false, "CONTACT_ID");
         public final static Property Content = new Property(4, String.class, "content", false, "CONTENT");
-        public final static Property Time = new Property(5, int.class, "time", false, "TIME");
+        public final static Property Time = new Property(5, long.class, "time", false, "TIME");
         public final static Property Type = new Property(6, int.class, "type", false, "TYPE");
     };
 
@@ -114,7 +114,7 @@ public class ChatDao extends AbstractDao<Chat, Long> {
             cursor.getInt(offset + 2), // user_id
             cursor.getInt(offset + 3), // contact_id
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // content
-            cursor.getInt(offset + 5), // time
+            cursor.getLong(offset + 5), // time
             cursor.getInt(offset + 6) // type
         );
         return entity;
@@ -127,7 +127,7 @@ public class ChatDao extends AbstractDao<Chat, Long> {
         entity.setUser_id(cursor.getInt(offset + 2));
         entity.setContact_id(cursor.getInt(offset + 3));
         entity.setContent(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setTime(cursor.getInt(offset + 5));
+        entity.setTime(cursor.getLong(offset + 5));
         entity.setType(cursor.getInt(offset + 6));
      }
     

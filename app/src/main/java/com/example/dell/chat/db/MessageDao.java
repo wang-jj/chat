@@ -30,7 +30,7 @@ public class MessageDao extends AbstractDao<Message, Long> {
         public final static Property Image_path = new Property(3, String.class, "image_path", false, "IMAGE_PATH");
         public final static Property Contact_name = new Property(4, String.class, "contact_name", false, "CONTACT_NAME");
         public final static Property Latest_content = new Property(5, String.class, "latest_content", false, "LATEST_CONTENT");
-        public final static Property Latest_time = new Property(6, int.class, "latest_time", false, "LATEST_TIME");
+        public final static Property Latest_time = new Property(6, long.class, "latest_time", false, "LATEST_TIME");
         public final static Property Unread = new Property(7, int.class, "unread", false, "UNREAD");
     };
 
@@ -135,7 +135,7 @@ public class MessageDao extends AbstractDao<Message, Long> {
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // image_path
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // contact_name
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // latest_content
-            cursor.getInt(offset + 6), // latest_time
+            cursor.getLong(offset + 6), // latest_time
             cursor.getInt(offset + 7) // unread
         );
         return entity;
@@ -149,7 +149,7 @@ public class MessageDao extends AbstractDao<Message, Long> {
         entity.setImage_path(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setContact_name(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setLatest_content(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setLatest_time(cursor.getInt(offset + 6));
+        entity.setLatest_time(cursor.getLong(offset + 6));
         entity.setUnread(cursor.getInt(offset + 7));
      }
     

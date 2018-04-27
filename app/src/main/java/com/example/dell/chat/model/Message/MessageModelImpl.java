@@ -1,6 +1,13 @@
 package com.example.dell.chat.model.Message;
 
+import android.util.Log;
+import android.widget.Toast;
+
+import com.example.dell.chat.bean.Chat;
 import com.example.dell.chat.bean.Message;
+import com.example.dell.chat.bean.MyApplication;
+import com.example.dell.chat.db.ChatDao;
+import com.example.dell.chat.db.MessageDao;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Execute;
 import com.example.dell.chat.tools.ThreadTask;
@@ -18,9 +25,10 @@ public class MessageModelImpl implements MessageModel {
     public void InitContact(final Callback<List<Message>> callback){
         ThreadTask t = new ThreadTask<Void,Void,List<Message>>(callback, new Execute<List<Message>>() {
             @Override
-            public List<Message> doExec() {
-                //获取联系人列表List<Message>
-                return null;
+            public List<Message> doExec() { //获取联系人列表List<Message>
+                MessageDao messageDao = MyApplication.getDao().getMessageDao();
+                List<Message> messages = messageDao.loadAll();
+                return messages;
             }
         });
         t.execute();
@@ -31,8 +39,23 @@ public class MessageModelImpl implements MessageModel {
     public void DelContact(final int contact_id, final Callback<Void> callback){
         ThreadTask t = new ThreadTask<Void,Void,Void>(callback, new Execute<Void>() {
             @Override
-            public Void doExec() {
-                //删除M、C表中对应记录
+            public Void doExec() {//删除M、C表中对应记录
+                int user_id = MyApplication.getUser().getUser_id();
+                MessageDao messageDao = MyApplication.getDao().getMessageDao();
+                List<Message> messages  = messageDao.queryBuilder().
+                        where(MessageDao.Properties.User_id.eq(user_id),
+                               MessageDao.Properties.Contact_id.eq(contact_id)).build().list();
+                for (Message msg : messages){
+                    messageDao.delete(msg);
+                }
+
+                ChatDao chatDao = MyApplication.getDao().getChatDao();
+                List<Chat> chats = chatDao.queryBuilder().
+                        where(ChatDao.Properties.User_id.eq(user_id),
+                                ChatDao.Properties.Contact_id.eq(contact_id)).build().list();
+                for (Chat chat : chats){
+                    chatDao.delete(chat);
+                }
                 return null;
             }
         });
@@ -44,8 +67,19 @@ public class MessageModelImpl implements MessageModel {
     public void ClickContact(final int contact_id, final Callback<Void> callback){
         ThreadTask t = new ThreadTask<Void,Void,Void>(callback, new Execute<Void>() {
             @Override
-            public Void doExec() {
-                //更新M表中联系人信息为已读
+            public Void doExec() {//更新M表中联系人信息为已读
+                int user_id = MyApplication.getUser().getUser_id();
+                MessageDao messageDao = MyApplication.getDao().getMessageDao();
+                Message msg = messageDao.queryBuilder().
+                        where(MessageDao.Properties.User_id.eq(user_id),
+                                MessageDao.Properties.Contact_id.eq(contact_id)).build().unique();
+                if(msg == null){
+                    Log.d("message","contact does not exist");
+                }
+                else{
+                    msg.setUnread(0);
+                    messageDao.update(msg);
+                }
                 return null;
             }
         });
