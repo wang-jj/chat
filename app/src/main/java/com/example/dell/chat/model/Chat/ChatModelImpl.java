@@ -12,6 +12,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessageBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -117,7 +118,7 @@ public class ChatModelImpl implements ChatModel{
                 long time ;
                 EMMessageBody body ;
                 EMMessage.Type type ;
-                List<Chat> chats = null;
+                List<Chat> chats = new ArrayList<Chat>();
 
                 //环信接受信息
                 for(EMMessage msg : messages){

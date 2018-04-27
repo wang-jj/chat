@@ -113,8 +113,8 @@ public class MsgFragment extends Fragment {
     private List<Message> getMessage(){     //初始化recycler的list
         List<Message> messageList=new ArrayList<>();
 
-        for(int i=1;i<=10;i++){
-            Message message=new Message();
+//        for(int i=1;i<=10;i++){
+//            Message message=new Message();
 //            message.setContact_name("谢欣逗比言"+i);
 //            message.setLatest_content("你还欠我"+i+"顿饭呢！");
 //            //message.setLatest_time("19:"+(i+43));
@@ -125,8 +125,8 @@ public class MsgFragment extends Fragment {
 //            }else {
 //                //message.setProfileID(R.drawable.sample3);
 //            }
-            messageList.add(message);   //添加入stateList中
-        }
+//            messageList.add(message);   //添加入stateList中
+//        }
         return messageList;
     }
 

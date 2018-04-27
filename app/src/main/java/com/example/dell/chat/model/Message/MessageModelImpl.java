@@ -27,7 +27,7 @@ public class MessageModelImpl implements MessageModel {
             @Override
             public List<Message> doExec() { //获取联系人列表List<Message>
                 MessageDao messageDao = MyApplication.getDao().getMessageDao();
-                List<Message> messages = messageDao.loadAll();
+                List<Message> messages = messageDao.queryBuilder().where(null).orderDesc(MessageDao.Properties.Latest_time).list();
                 return messages;
             }
         });
