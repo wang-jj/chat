@@ -21,8 +21,10 @@ import android.widget.Toast;
 
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Message;
+import com.example.dell.chat.presenter.MessagePresenter;
 import com.example.dell.chat.tools.SwipeItemLayout;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +34,10 @@ import java.util.List;
 
 //聊天信息提示fragment
 public class MsgFragment extends Fragment {
+
+
+
+    MessagePresenter presenter = new MessagePresenter();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.msg_fragment,container,false);
