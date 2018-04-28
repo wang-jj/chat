@@ -71,7 +71,7 @@ public class MsgFragment extends Fragment {
                         progressLayout.setVisibility(View.VISIBLE);
                     }
                     final Message message=new Message();
-                    message.setNickname("谢欣逗比言");
+                    message.setContact_name("谢欣逗比言");
                     message.setLatest_content("你还欠我无数顿饭呢！");
                     //message.setLatest_time("19:61");
                     //message.setProfileID(R.drawable.sample1);
@@ -93,7 +93,7 @@ public class MsgFragment extends Fragment {
             @Override
             public void onRefresh() {   //顶部刷新
                 Message message=new Message();
-                message.setNickname("谢欣逗比言");
+                message.setContact_name("谢欣逗比言");
                 message.setLatest_content("你还欠我无数顿饭呢！");
                 //message.setLatest_time("19:61");
                 //message.setProfileID(R.drawable.sample1);
@@ -113,7 +113,7 @@ public class MsgFragment extends Fragment {
         List<Message> messageList=new ArrayList<>();
         for(int i=1;i<=10;i++){
             Message message=new Message();
-            message.setNickname("谢欣逗比言"+i);
+            message.setContact_name("谢欣逗比言"+i);
             message.setLatest_content("你还欠我"+i+"顿饭呢！");
             //message.setLatest_time("19:"+(i+43));
             if(i%3==0){
@@ -188,7 +188,7 @@ public class MsgFragment extends Fragment {
                     int position=holder.getAdapterPosition();
                     Message message=mMessageList.get(position);
                     //获取头像 昵称 传值到聊天界面
-                    String nickname=message.getNickname();
+                    String nickname=message.getContact_name();
                     //int profile=message.getProfileID();
                     Intent intent=new Intent(view.getContext(),ChatActivity.class);
                     intent.putExtra("nickname",nickname);
@@ -203,7 +203,7 @@ public class MsgFragment extends Fragment {
         @Override
         public void onBindViewHolder(MsgFragment.MessageAdapter.ViewHolder holder, int position){
             Message message=mMessageList.get(position);
-            holder.messageNickName.setText(message.getNickname());
+            holder.messageNickName.setText(message.getContact_name());
             holder.messageContent.setText(message.getLatest_content());
             //holder.messageTime.setText(message.getLatest_time());
             //holder.messageProfile.setImageResource(message.getProfileID());

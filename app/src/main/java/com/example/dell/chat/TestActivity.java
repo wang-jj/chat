@@ -8,13 +8,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.baidu.location.LocationClient;
 import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.base.PermissionListener;
 import com.example.dell.chat.presenter.LoginPresenter;
+
+import com.example.dell.chat.model.Execute;
+
+import com.example.dell.chat.tools.ThreadTask;
 import com.hyphenate.EMCallBack;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessageBody;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.exceptions.HyphenateException;
 import com.luck.picture.lib.PictureSelector;
@@ -33,6 +41,8 @@ public class TestActivity extends BaseActivity<TestActivity,LoginPresenter<TestA
     public Button sign_in_button;
     public Button login_button;
     public Button logout_button;
+    public Button send_button;
+    public TextView text;
 
 
     @Override
@@ -44,6 +54,8 @@ public class TestActivity extends BaseActivity<TestActivity,LoginPresenter<TestA
         sign_in_button = (Button)findViewById(R.id.signin_button);
         login_button = (Button)findViewById(R.id.login_button);
         logout_button = (Button)findViewById(R.id.logout_button);
+        send_button = (Button)findViewById(R.id.send_button);
+        text = (TextView)findViewById(R.id.textview1);
 
         //获取动态权限
         requestPermission();
@@ -86,22 +98,28 @@ public class TestActivity extends BaseActivity<TestActivity,LoginPresenter<TestA
         sign_in_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    //注册失败会抛出HyphenateException
-                    EMClient.getInstance().createAccount("j", "123654");//同步方法
+                ThreadTask t = new ThreadTask<Void,Void,Void>(null, new Execute<Void>(){
+                @Override
+                public Void doExec() {
+                    try {
+                        //注册失败会抛出HyphenateException
+                        EMClient.getInstance().createAccount("new_usr", "123654");//同步方法
+                    } catch (HyphenateException e) {
+                        Log.e("TestActivity", "sign in failed");
+                    }
+                    return null;
                 }
-                catch (HyphenateException e)
-                {
-                    Log.e("TestActivity", "sign in failed");
-                }
+                });
+                t.execute();
             }
         });
+
 
         //登录环信
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EMClient.getInstance().login("jr","123654",new EMCallBack() {//回调
+                EMClient.getInstance().login("new_usr","123654",new EMCallBack() {//回调
                     @Override
                     public void onSuccess() {
                         EMClient.getInstance().groupManager().loadAllGroups();
@@ -148,6 +166,80 @@ public class TestActivity extends BaseActivity<TestActivity,LoginPresenter<TestA
                 });
             }
         });
+
+
+        //环信发送文本消息
+        send_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //创建一条文本消息，content为消息文字内容，toChatUsername为对方用户或者群聊的id，后文皆是如此
+                EMMessage msg = EMMessage.createTxtSendMessage("hellooo", "new_usr");
+                //发送消息
+                EMClient.getInstance().chatManager().sendMessage(msg);
+                String sender = msg.getFrom();
+                String receiver = msg.getTo();
+                long time = msg.getMsgTime();
+                EMMessageBody body = msg.getBody();
+                EMMessage.Type type = msg.getType();
+                Log.d("time", String.valueOf(time));
+                Log.d("type", String.valueOf(type));
+                Log.d("body", body.toString());
+                Log.d("sender", sender);
+                Log.d("receiver", receiver);
+                text.setText(body.toString()+" "+String.valueOf(type)+" "+0);
+            }
+        });
+
+
+        // 创建接收消息监听器
+        EMMessageListener msgListener = new EMMessageListener() {
+
+            @Override
+            public void onMessageReceived(List<EMMessage> messages) {
+                int i = messages.size();
+                for(int c = 0;c < i;c++){
+                    EMMessage msg = messages.get(c);
+                    String sender = msg.getFrom();
+                    String receiver = msg.getTo();
+                    long time = msg.getMsgTime();
+                    EMMessageBody body = msg.getBody();
+                    EMMessage.Type type = msg.getType();
+
+                    Log.d("time", String.valueOf(time));
+                    Log.d("type", String.valueOf(type));
+                    Log.d("body", body.toString());
+                    Log.d("sender", sender);
+                    Log.d("receiver", receiver);
+                    text.setText(body.toString()+" "+String.valueOf(type)+" "+1);
+                    //收到消息
+                }
+            }
+
+            @Override
+            public void onCmdMessageReceived(List<EMMessage> messages) {
+                //收到透传消息
+            }
+
+            @Override
+            public void onMessageRead(List<EMMessage> messages) {
+                //收到已读回执
+            }
+
+            @Override
+            public void onMessageDelivered(List<EMMessage> message) {
+                //收到已送达回执
+            }
+            @Override
+            public void onMessageRecalled(List<EMMessage> messages) {
+                //消息被撤回
+            }
+
+            @Override
+            public void onMessageChanged(EMMessage message, Object change) {
+                //消息状态变动
+            }
+        };
+        EMClient.getInstance().chatManager().addMessageListener(msgListener);
     }
 
 
