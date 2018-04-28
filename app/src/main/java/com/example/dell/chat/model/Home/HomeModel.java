@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface HomeModel {
     //更新朋友圈
-    void UpdateMoment(double latitude,double longitude,final Callback<List<PersonalState>> callback);
+    void UpdateMoment(double latitude,double longitude,List<PersonalState> list,final Callback<List<PersonalState>> callback);
 }

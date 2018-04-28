@@ -15,6 +15,9 @@ import com.example.dell.chat.model.Home.HomeModel;
 import com.example.dell.chat.model.Home.HomeModelIlpl;
 import com.example.dell.chat.view.HomeFragment;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -38,22 +41,18 @@ public class HomePresenter {
                 String addr = bdLocation.getAddrStr();//获取地址
                 double latitude = bdLocation.getLatitude();    //获取纬度信息
                 double longitude = bdLocation.getLongitude();    //获取经度信息
-                homeModel.UpdateMoment(latitude, longitude, new Callback<List<PersonalState>>() {
+                final HomeFragment.StateAdapter adapter=view.getAdapter();
+                final RecyclerView stateRecyclerView=view.getStateRecyclerView();
+                final SwipeRefreshLayout swipeRefreshLayout=view.getSwipeRefreshLayout();
+                final List<PersonalState> old=adapter.getmStateList();
+                homeModel.UpdateMoment(latitude, longitude,old, new Callback<List<PersonalState>>() {
                     @Override
                     public void execute(List<PersonalState> datas) {
-                        HomeFragment.StateAdapter adapter=view.getAdapter();
-                        RecyclerView stateRecyclerView=view.getStateRecyclerView();
-                        SwipeRefreshLayout swipeRefreshLayout=view.getSwipeRefreshLayout();
-                        List<PersonalState> old=adapter.getmStateList();
-                        for(PersonalState i:datas){
-                            i.setUpdate_time(new Date(System.currentTimeMillis()));
-                            for (PersonalState j:old){
-                                if(i.getPersonalstate_id()==j.getPersonalstate_id()){
-                                    datas.remove(i);
-                                    break;
-                                }
-                            }
-                        }
+                        old.addAll(0,datas);
+                        adapter.notify();
+                        stateRecyclerView.scrollToPosition(0);
+                        swipeRefreshLayout.setRefreshing(false);
+                        Log.e("MAIN", "success update moment" );
                     }
                 });
                 Log.e("MAIN", addr );

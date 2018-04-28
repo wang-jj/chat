@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,9 +12,7 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
-import com.example.dell.chat.TestActivity;
 import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.base.BasePresenter;
 import com.example.dell.chat.bean.MyApplication;
@@ -23,10 +20,10 @@ import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Moment.MomentModel;
 import com.example.dell.chat.model.Moment.MomentModelImpl;
-import com.example.dell.chat.view.PublishActivity;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -71,7 +68,7 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
             personalState.setLatitude(latitude);
             personalState.setLongitude(longitude);
             Log.e("Test", MyApplication.getUser().getUser_name() );
-            momentModel.Publish(personalState, new Callback<String>() {//联网发动态
+            momentModel.Publish(personalState, new com.example.dell.chat.model.Callback<String>() {//联网发动态
                 @Override
                 public void execute(String datas) {
                     if(datas.equals("no")){//连接超时
@@ -79,7 +76,7 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
                         Log.e("Publish", datas );
                     }else if(datas!=null){
                         Log.e("Publish", datas );
-                        getView().finish();
+                        //getView().finish();
                     }
                 }
             });
