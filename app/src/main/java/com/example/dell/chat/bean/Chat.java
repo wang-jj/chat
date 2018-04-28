@@ -16,11 +16,11 @@ import org.greenrobot.greendao.annotation.Generated;
 public class Chat{
     @Id(autoincrement = true)
     private Long id;
-    private int msg_id;    //该条聊天记录的ID
+    private int msg_id;    //该条聊天记录的ID 可能去除
     private int user_id;    //本用户的ID
     private int contact_id;    //联系人ID
     private String content; //聊天内容或文件路径
-    private int time;  //信息时间
+    private long time;  //信息时间
     private int type;  //信息类型
     //0为发送文本，1为接收文本，2为发送图片，3为接收图片
     public int getType() {
@@ -29,10 +29,10 @@ public class Chat{
     public void setType(int type) {
         this.type = type;
     }
-    public int getTime() {
+    public long getTime() {
         return this.time;
     }
-    public void setTime(int time) {
+    public void setTime(long time) {
         this.time = time;
     }
     public String getContent() {
@@ -65,9 +65,9 @@ public class Chat{
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 2125345582)
+    @Generated(hash = 1640304005)
     public Chat(Long id, int msg_id, int user_id, int contact_id, String content,
-            int time, int type) {
+            long time, int type) {
         this.id = id;
         this.msg_id = msg_id;
         this.user_id = user_id;

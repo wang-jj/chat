@@ -20,7 +20,7 @@ public class Message  {
     private String image_path;   //联系人头像路径
     private String contact_name;   //联系人用户名
     private String latest_content;   //最后一条信息
-    private int latest_time;   //最后一条信息的时间
+    private long latest_time;   //最后一条信息的时间
     private int unread;   //是否有未读消息 0为已读，1为未读
     public int getUnread() {
         return this.unread;
@@ -28,10 +28,10 @@ public class Message  {
     public void setUnread(int unread) {
         this.unread = unread;
     }
-    public int getLatest_time() {
+    public long getLatest_time() {
         return this.latest_time;
     }
-    public void setLatest_time(int latest_time) {
+    public void setLatest_time(long latest_time) {
         this.latest_time = latest_time;
     }
     public String getLatest_content() {
@@ -70,9 +70,9 @@ public class Message  {
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 578486652)
+    @Generated(hash = 601982840)
     public Message(Long id, int user_id, int contact_id, String image_path,
-            String contact_name, String latest_content, int latest_time, int unread) {
+            String contact_name, String latest_content, long latest_time, int unread) {
         this.id = id;
         this.user_id = user_id;
         this.contact_id = contact_id;
