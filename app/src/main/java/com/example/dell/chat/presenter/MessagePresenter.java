@@ -1,13 +1,15 @@
 package com.example.dell.chat.presenter;
 
-import com.example.dell.chat.base.BaseActivity;
-import com.example.dell.chat.base.BasePresenter;
+import android.util.Log;
+
 import com.example.dell.chat.bean.Message;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Message.MessageModel;
 import com.example.dell.chat.model.Message.MessageModelImpl;
+import com.example.dell.chat.view.MsgFragment;
 
-import java.lang.ref.WeakReference;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,27 +18,12 @@ import java.util.List;
 
 public class MessagePresenter {
 
-//    protected WeakReference<T> mViewRef;
-//
-//    //关联
-//    public void attachView(T view) {
-//        mViewRef = new WeakReference<T>(view);
-//    }
-//
-//    //解除关联
-//    public void detachView() {
-//        if (mViewRef != null) {
-//            mViewRef.clear();
-//        }
-//    }
-//    //得到view
-//    protected T getView() {
-//        return mViewRef.get();
-//    }
+    private MsgFragment view;
     private MessageModel messageModel = new MessageModelImpl();
 
-    public MessagePresenter(){
+    public MessagePresenter(MsgFragment view){
         super();
+        this.view = view;
     }
 
     //展示最近联系人
@@ -44,7 +31,13 @@ public class MessagePresenter {
         messageModel.InitContact(new Callback<List<Message>>() {
             @Override
             public void execute(List<Message> datas) {
-
+                //测试
+//                Message m = new Message();
+//                m.setLatest_content("msg");
+//                m.setContact_id(456);
+//                datas.add(m);
+                view.getAdapter().setAdapter(datas);
+                return;
             }
         });
     }
@@ -54,7 +47,7 @@ public class MessagePresenter {
         messageModel.DelContact(contact_id, new Callback<Void>() {
             @Override
             public void execute(Void datas) {
-
+                return;
             }
         });
     }
@@ -64,7 +57,7 @@ public class MessagePresenter {
         messageModel.ClickContact(contact_id, new Callback<Void>() {
             @Override
             public void execute(Void datas) {
-
+                return;
             }
         });
     }

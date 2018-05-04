@@ -36,14 +36,16 @@ import java.util.List;
 public class MsgFragment extends Fragment {
 
 
-
-    MessagePresenter presenter = new MessagePresenter();
+    private MessagePresenter presenter = new MessagePresenter(this);
+    private MessageAdapter adapter;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.msg_fragment,container,false);
 
         final LinearLayout progressLayout=(LinearLayout)view.findViewById(R.id.message_progress);
         progressLayout.setVisibility(View.VISIBLE);
+
+
 
         final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_slide_right);
         final RecyclerView messageRecyclerView=(RecyclerView)view.findViewById(R.id.message_recycler_view);
@@ -54,7 +56,9 @@ public class MsgFragment extends Fragment {
         messageRecyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(getActivity()));
 
         //设置适配器以及list用以显示数据
-        final MessageAdapter adapter=new MessageAdapter(getMessage());
+        adapter = new MessageAdapter();
+        presenter.dispContact();
+        //adapter.setAdapter(getMessage());
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -116,27 +120,15 @@ public class MsgFragment extends Fragment {
         return view;
     }
 
-    private List<Message> getMessage(){     //初始化recycler的list
-        List<Message> messageList=new ArrayList<>();
+//    public void setMessages(List<Message> messages){     //初始化recycler的list
+//        //List<Message> messages=new ArrayList<>();
+//
+//
+//        adapter.setAdapter(messages);
+//        return ;
+//    }
 
-//        for(int i=1;i<=10;i++){
-//            Message message=new Message();
-//            message.setContact_name("谢欣逗比言"+i);
-//            message.setLatest_content("你还欠我"+i+"顿饭呢！");
-//            //message.setLatest_time("19:"+(i+43));
-//            if(i%3==0){
-//                //message.setProfileID(R.drawable.sample1);
-//            }else if(i%3==1){
-//                //message.setProfileID(R.drawable.sample2);
-//            }else {
-//                //message.setProfileID(R.drawable.sample3);
-//            }
-//            messageList.add(message);   //添加入stateList中
-//        }
-        return messageList;
-    }
-
-    class MessageAdapter extends RecyclerView.Adapter<MsgFragment.MessageAdapter.ViewHolder>{
+    public class MessageAdapter extends RecyclerView.Adapter<MsgFragment.MessageAdapter.ViewHolder>{
         private List<Message> mMessageList;
 
         class ViewHolder extends RecyclerView.ViewHolder{
@@ -159,9 +151,15 @@ public class MsgFragment extends Fragment {
                 messageLinear=(LinearLayout)view.findViewById(R.id.message_linear);
             }
         }
-        public MessageAdapter(List<Message> messageList){
-            mMessageList=messageList;
+
+        public MessageAdapter(){
+            //mMessageList = null;
         }
+
+        public void setAdapter(List<Message> list){
+            mMessageList = list;
+        }
+
 
         public void MessageAdd(int position,Message message){
             mMessageList.add(position,message);
@@ -187,6 +185,8 @@ public class MsgFragment extends Fragment {
                     mMessageList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position,mMessageList.size());
+
+                    presenter.delContact(message.getContact_id());
                 }
             });
 
@@ -196,16 +196,16 @@ public class MsgFragment extends Fragment {
                     holder.messageTips.setVisibility(View.GONE);    //让新消息角标隐藏
                     int position=holder.getAdapterPosition();
                     Message message=mMessageList.get(position);
+                    presenter.clickContact(message.getContact_id());
                     //获取头像 昵称 传值到聊天界面
                     String nickname=message.getContact_name();
-                    //int profile=message.getProfileID();
+                    String profile=message.getImage_path();
                     Intent intent=new Intent(view.getContext(),ChatActivity.class);
                     intent.putExtra("nickname",nickname);
-                    //intent.putExtra("profile",profile);
+                    intent.putExtra("profile",profile);
                     startActivity(intent);
                 }
             });
-
             return holder;
         }
 
@@ -214,14 +214,21 @@ public class MsgFragment extends Fragment {
             Message message=mMessageList.get(position);
             holder.messageNickName.setText(message.getContact_name());
             holder.messageContent.setText(message.getLatest_content());
-            //holder.messageTime.setText(message.getLatest_time());
-            //holder.messageProfile.setImageResource(message.getProfileID());
+            holder.messageTime.setText(String.valueOf(message.getLatest_time()));
+            //holder.messageTips. 新消息角标设置
+            //holder.messageProfile.setImageResource(message.getImage_path()); 解析图片路径
         }
 
         @Override
         public int getItemCount(){
             return mMessageList.size();
         }
+
+
+    }
+
+    public MessageAdapter getAdapter(){
+        return adapter;
     }
 
 }

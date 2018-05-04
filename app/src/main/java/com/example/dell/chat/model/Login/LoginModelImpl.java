@@ -152,8 +152,9 @@ public class LoginModelImpl implements LoginModel {
                         try {
                             //注册失败会抛出HyphenateException
                             EMClient.getInstance().createAccount(user_id, password);//同步方法
+                            Log.d("sign up", "注册成功！");
                         } catch (HyphenateException e) {
-                            Log.e("sign up", "sign up failed");
+                            Log.e("sign up", "注册失败！");
                         }
                     }
                 }catch (IOException e){
