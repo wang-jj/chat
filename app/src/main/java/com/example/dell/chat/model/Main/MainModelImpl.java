@@ -1,5 +1,7 @@
 package com.example.dell.chat.model.Main;
 
+import android.util.Log;
+
 import com.example.dell.chat.bean.Location;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.User;
@@ -7,10 +9,13 @@ import com.example.dell.chat.db.UserDao;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Execute;
 import com.example.dell.chat.tools.ThreadTask;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hyphenate.chat.EMClient;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
@@ -26,7 +31,8 @@ import okhttp3.Response;
 
 public class MainModelImpl implements MainModel {
 
-    private String LocationUrl="";
+    private String LocationUrl="http://119.23.255.222/android/upaddress.php";
+    private String UpdateNearbyURL="http://119.23.255.222/android/tryforme.php";
 
     @Override
     public void SignOut(final Callback<Void> callback) {
@@ -73,4 +79,5 @@ public class MainModelImpl implements MainModel {
         });
         threadTask.execute();
     }
+
 }

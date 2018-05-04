@@ -9,8 +9,10 @@ import android.view.View;
 
 import com.example.dell.chat.R;
 
+
 //地图界面Activity
 public class MapActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

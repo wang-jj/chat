@@ -6,13 +6,18 @@ import android.widget.Toast;
 
 import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.base.BasePresenter;
+import com.example.dell.chat.bean.Location;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.model.Callback;
+import com.example.dell.chat.model.Home.HomeModel;
+import com.example.dell.chat.model.Home.HomeModelIlpl;
 import com.example.dell.chat.model.Login.LoginModel;
 import com.example.dell.chat.model.Login.LoginModelImpl;
 import com.example.dell.chat.model.Main.MainModel;
 import com.example.dell.chat.model.Main.MainModelImpl;
 import com.example.dell.chat.view.LoginActivity;
+
+import java.util.List;
 
 /**
  * Created by wang on 2018/4/25.
@@ -21,6 +26,7 @@ import com.example.dell.chat.view.LoginActivity;
 public class MainPresenter<T extends BaseActivity> extends BasePresenter<T> {
 
     private MainModel mainModel=new MainModelImpl();
+    private HomeModel homeModel=new HomeModelIlpl();
 
     public MainPresenter(){
         super();
@@ -37,7 +43,6 @@ public class MainPresenter<T extends BaseActivity> extends BasePresenter<T> {
         });
     }
 
-    //更新位置
     public void SendLocation(double Latitude,double Longitude){
         mainModel.sendLocation(Latitude, Longitude, new Callback<String>() {
             @Override
@@ -50,5 +55,4 @@ public class MainPresenter<T extends BaseActivity> extends BasePresenter<T> {
             }
         });
     }
-
 }

@@ -9,6 +9,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Location;
 import com.example.dell.chat.bean.Recommend;
+import com.example.dell.chat.presenter.HomePresenter;
+import com.example.dell.chat.presenter.LocalPresenter;
+import com.google.gson.Gson;
+
 
 /**
  * Created by Staroul on 2018/3/30.
@@ -34,12 +40,15 @@ import com.example.dell.chat.bean.Recommend;
 public class LocalFragment extends Fragment {
 
     private View view;
+    private LocalPresenter localPresenter=new LocalPresenter(this);
+    private LocationAdapter adapter;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view=inflater.inflate(R.layout.local_fragment,container,false);
 
         final LinearLayout progressLayout=(LinearLayout)view.findViewById(R.id.location_progress);
         progressLayout.setVisibility(View.VISIBLE);
+
 
         //定义推荐 recyclerview
         final RecyclerView recommendRecyclerView=(RecyclerView)view.findViewById(R.id.recommend_recycler_view);
@@ -58,7 +67,7 @@ public class LocalFragment extends Fragment {
         locationRecyclerView.setLayoutManager(layoutManager);
 
         //设置 定位 适配器以及list用以显示数据
-        final LocationAdapter adapter=new LocationAdapter(getLocation());
+        adapter=new LocationAdapter(getLocation());
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -85,10 +94,10 @@ public class LocalFragment extends Fragment {
                     location.setNickname("谢欣逗比言");
                     location.setSchool("华北理工小学");
                     location.setIntroduction("这个逗比太懒了，并没有自我介绍。");
-                    location.setProfileID(R.drawable.sample1);
-                    location.setImage1ID(R.drawable.sample1);
-                    location.setImage2ID(R.drawable.sample2);
-                    location.setImage3ID(R.drawable.sample3);
+                    location.setProfileID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                    location.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                    location.setImage2ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                    location.setImage3ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
                     location.setImg_type(2);
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -111,15 +120,16 @@ public class LocalFragment extends Fragment {
                 location.setNickname("谢欣逗比言");
                 location.setSchool("华北理工小学");
                 location.setIntroduction("这个逗比太懒了，并没有自我介绍。");
-                location.setProfileID(R.drawable.sample1);
-                location.setImage1ID(R.drawable.sample1);
-                location.setImage2ID(R.drawable.sample2);
-                location.setImage3ID(R.drawable.sample3);
+                location.setProfileID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                location.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                location.setImage2ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                location.setImage3ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
                 location.setImg_type(2);
                 adapter.LocationAdd(0,location);
                 adapter.notifyItemInserted(0);
                 locationRecyclerView.scrollToPosition(0);
                 swipeRefreshLayout.setRefreshing(false);
+                localPresenter.UpdatePerson();
             }
         });
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorWhite));
@@ -145,23 +155,24 @@ public class LocalFragment extends Fragment {
 
     private List<Location> getLocation(){                   //初始化定位list
         List<Location> locationList=new ArrayList<>();
-        for(int i=1;i<=10;i++){
+        for(int i=1;i<=3;i++){
             Location location=new Location();
             location.setNickname("谢欣逗比言"+i);
             location.setSchool("华北理工小学");
-            location.setProfileID(R.drawable.sample1);
+            location.setProfileID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
             location.setIntroduction("这个逗比太懒了，并没有自我介绍。");
+            location.setUser_id(123+i);
             if((i-1)%3==0){
-                location.setImage1ID(R.drawable.sample1);
+                location.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
                 location.setImg_type(0);
             }else if((i-1)%3==1){
-                location.setImage1ID(R.drawable.sample1);
-                location.setImage2ID(R.drawable.sample2);
+                location.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                location.setImage2ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
                 location.setImg_type(1);
             }else{
-                location.setImage1ID(R.drawable.sample1);
-                location.setImage2ID(R.drawable.sample2);
-                location.setImage3ID(R.drawable.sample3);
+                location.setImage1ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                location.setImage2ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
+                location.setImage3ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
                 location.setImg_type(2);
             }
             locationList.add(location);
@@ -235,6 +246,10 @@ public class LocalFragment extends Fragment {
         private static final int TYPE_TWO_IMAGE=1;
         private static final int TYPE_THREE_IMAGE=2;
 
+        public List<Location> getmLocationList() {
+            return mLocationList;
+        }
+
         public LocationAdapter(List<Location> locationList){
             mLocationList=locationList;
         }
@@ -244,9 +259,13 @@ public class LocalFragment extends Fragment {
             return;
         }
 
-        public void LocationRemove(int position){
-            mLocationList.remove(position);
+        public void LocationRemoveAll(){
+            mLocationList.clear();
             return;
+        }
+
+        public void setmLocationList(List<Location> mLocationList) {
+            this.mLocationList = mLocationList;
         }
 
         @Override
@@ -294,30 +313,49 @@ public class LocalFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position){
+            String url="http://119.23.255.222/android";
             if(holder instanceof OneViewHolder){
                 Location location=mLocationList.get(position);
                 ((OneViewHolder)holder).locationNickName.setText(location.getNickname());
                 ((OneViewHolder)holder).locationSchool.setText(location.getSchool());
                 ((OneViewHolder)holder).locationIntroduction.setText(location.getIntroduction());
-                ((OneViewHolder)holder).locationProfile.setImageResource(location.getProfileID());
-                ((OneViewHolder)holder).locationImage1.setImageResource(location.getImage1ID());
+                if(location.getProfileID()!=null){
+                    Glide.with(getActivity()).load(location.getProfileID()).into(((OneViewHolder)holder).locationProfile);
+                }
+                if(location.getImage1ID()!=null){
+                    Glide.with(getActivity()).load(url+location.getImage1ID()).into(((OneViewHolder)holder).locationImage1);
+                }
             }else if(holder instanceof TwoViewHolder){
                 Location location=mLocationList.get(position);
                 ((TwoViewHolder)holder).locationNickName.setText(location.getNickname());
                 ((TwoViewHolder)holder).locationSchool.setText(location.getSchool());
                 ((TwoViewHolder)holder).locationIntroduction.setText(location.getIntroduction());
-                ((TwoViewHolder)holder).locationProfile.setImageResource(location.getProfileID());
-                ((TwoViewHolder)holder).locationImage1.setImageResource(location.getImage1ID());
-                ((TwoViewHolder)holder).locationImage2.setImageResource(location.getImage2ID());
+                if(location.getProfileID()!=null){
+                    Glide.with(getActivity()).load(location.getProfileID()).into(((TwoViewHolder)holder).locationProfile);
+                }
+                if(location.getImage1ID()!=null){
+                    Glide.with(getActivity()).load(url+location.getImage1ID()).into(((TwoViewHolder)holder).locationImage1);
+                }
+                if(location.getImage2ID()!=null){
+                    Glide.with(getActivity()).load(url+location.getImage2ID()).into(((TwoViewHolder)holder).locationImage2);
+                }
             }else{
                 Location location=mLocationList.get(position);
                 ((ViewHolder)holder).locationNickName.setText(location.getNickname());
                 ((ViewHolder)holder).locationSchool.setText(location.getSchool());
                 ((ViewHolder)holder).locationIntroduction.setText(location.getIntroduction());
-                ((ViewHolder)holder).locationProfile.setImageResource(location.getProfileID());
-                ((ViewHolder)holder).locationImage1.setImageResource(location.getImage1ID());
-                ((ViewHolder)holder).locationImage2.setImageResource(location.getImage2ID());
-                ((ViewHolder)holder).locationImage3.setImageResource(location.getImage3ID());
+                if(location.getProfileID()!=null){
+                    Glide.with(getActivity()).load(location.getProfileID()).into(((ViewHolder)holder).locationProfile);
+                }
+                if(location.getImage1ID()!=null){
+                    Glide.with(getActivity()).load(url+location.getImage1ID()).into(((ViewHolder)holder).locationImage1);
+                }
+                if(location.getImage2ID()!=null){
+                    Glide.with(getActivity()).load(url+location.getImage2ID()).into(((ViewHolder)holder).locationImage2);
+                }
+                if(location.getImage3ID()!=null){
+                    Glide.with(getActivity()).load(url+location.getImage3ID()).into(((ViewHolder)holder).locationImage3);
+                }
             }
         }
 
@@ -400,5 +438,14 @@ public class LocalFragment extends Fragment {
                 locationLinear=(LinearLayout)view.findViewById(R.id.local_linear);
             }
         }
+    }
+
+    public LocationAdapter getAdapter() {
+        return adapter;
+    }
+
+    public void UpdatePerson(List<Location>locations){
+        adapter.setmLocationList(locations);
+        adapter.notifyDataSetChanged();
     }
 }

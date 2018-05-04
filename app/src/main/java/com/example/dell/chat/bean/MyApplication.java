@@ -34,6 +34,11 @@ public class MyApplication extends Application {
 
     private static Context context;
 
+    private static double Latitude;        //纬度
+    private static double Longitude;       //经度
+
+    private static int UpdateLocationTime=10000;
+
     @Override
     public void onCreate(){
         super.onCreate();
@@ -49,5 +54,25 @@ public class MyApplication extends Application {
 
     public static Context getContext() {
         return context;
+    }
+
+    public static double getLatitude() {
+        return Latitude;
+    }
+
+    public static double getLongitude() {
+        return Longitude;
+    }
+
+    public static void setLatitude(double latitude) {
+        Latitude = latitude;
+    }
+
+    public static void setLongitude(double longitude) {
+        Longitude = longitude;
+    }
+
+    public static int getUpdateLocationTime() {
+        return UpdateLocationTime;
     }
 }

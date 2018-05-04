@@ -54,6 +54,7 @@ public class MomentModelImpl implements MomentModel {
         threadTask.execute();
     }
 
+    //发朋友圈
     @Override
     public void Publish(final PersonalState personalState, Callback callback) {
         ThreadTask threadTask=new ThreadTask<Void,Void,String>(callback, new Execute<String>() {
@@ -125,7 +126,7 @@ public class MomentModelImpl implements MomentModel {
                 String personalState_id=SendMassage(personalState);//发personalstate类
                 //return personalState_id;
                 Log.e("Publish", personalState_id );
-                Log.e("Publish", encodeString3 );
+                Log.e("Publish", String.valueOf(personalState.getImg_type()) );
                 String restul1=null;
                 if(personalState.getImg_type()>0){
                     String image_type=null;
@@ -164,7 +165,7 @@ public class MomentModelImpl implements MomentModel {
                     }
                     restul3=SendImage(personalState_id,image_type,3,encodeString3);
                 }
-                return restul3;
+                return "yes";
                 /*
                 try {
                     OkHttpClient client=new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();

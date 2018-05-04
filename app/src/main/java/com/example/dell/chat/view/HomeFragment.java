@@ -21,10 +21,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.dell.chat.R;
+import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.PersonalState;
+import com.example.dell.chat.presenter.HomePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +48,13 @@ public class HomeFragment extends Fragment {
     private StateAdapter adapter;
     private RecyclerView stateRecyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private HomePresenter homePresenter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         Log.e("HOME", "oncreate" );
         view=inflater.inflate(R.layout.home_fragment,container,false);
-
+        homePresenter=new HomePresenter(this);
         final LinearLayout progressLayout=(LinearLayout)view.findViewById(R.id.state_progress);
         progressLayout.setVisibility(View.VISIBLE);
 
@@ -141,7 +148,6 @@ public class HomeFragment extends Fragment {
         });
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorWhite));
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.colorPrimary));
-
         return view;
     }
 

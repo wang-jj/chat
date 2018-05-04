@@ -76,7 +76,7 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
                         Log.e("Publish", datas );
                     }else if(datas!=null){
                         Log.e("Publish", datas );
-                        //getView().finish();
+                        getView().finish();
                     }
                 }
             });
@@ -134,12 +134,13 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
                     return;
                 }
                 ((TextView)getView().findViewById(R.id.mylocation)).setText(addr);
+                Log.e("locations", String.valueOf(latitude) );
             }
         });
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         option.setIsNeedAddress(true);//地址
-        option.setCoorType("bd09ll");
+        option.setCoorType("wgs84");
         option.setOpenGps(true);
         locationClient.setLocOption(option);
         locationClient.start();

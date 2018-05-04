@@ -55,15 +55,16 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
     private LocalFragment localFragment;
     private MsgFragment msgFragment;
     private android.support.v4.app.Fragment currentFragment;
+    private LocationClient locationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sendLocation();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -150,28 +151,8 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
         imageView.setVisibility(View.VISIBLE);
         imageView1.setVisibility(View.GONE);
 
-        //位置
-        //requestPermission();
-        LocationClient locationClient=new LocationClient(MyApplication.getContext());
-        locationClient.registerLocationListener(new BDAbstractLocationListener() {//设置回调
-            @Override
-            public void onReceiveLocation(BDLocation bdLocation) {
-                String addr = bdLocation.getAddrStr();//获取地址
-                double latitude = bdLocation.getLatitude();    //获取纬度信息
-                double longitude = bdLocation.getLongitude();    //获取经度信息
-                presenter.SendLocation(latitude,longitude);
-                Log.e("MAIN", addr );
-            }
-        });
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        option.setIsNeedAddress(true);//地址
-        option.setCoorType("bd09ll");
-        option.setScanSpan(10000);
-        option.setOpenGps(true);
-        locationClient.setLocOption(option);
-        //locationClient.start();
     }
+
 
     //切换fragment函数
     private void setFragment(android.support.v4.app.Fragment fragment){
@@ -284,5 +265,38 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
 
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("locations", String.valueOf(1) );
+        locationClient.stop();
+    }
+
+    //位置
+    private void sendLocation(){
+        locationClient=new LocationClient(MyApplication.getContext());
+        locationClient.registerLocationListener(new BDAbstractLocationListener() {//设置回调
+            @Override
+            public void onReceiveLocation(BDLocation bdLocation) {
+                String addr = bdLocation.getAddrStr();//获取地址
+                double latitude = bdLocation.getLatitude();    //获取纬度信息
+                double longitude = bdLocation.getLongitude();    //获取经度信息
+                Log.e("locations", String.valueOf(latitude) );
+                Log.e("locations", String.valueOf(longitude) );
+                MyApplication.setLongitude(longitude);
+                MyApplication.setLatitude(latitude);
+                presenter.SendLocation(latitude,longitude);
+            }
+        });
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setIsNeedAddress(true);//地址
+        option.setCoorType("wgs84");
+        option.setScanSpan(5*60*1000);
+        option.setOpenGps(true);
+        locationClient.setLocOption(option);
+        locationClient.start();
     }
 }

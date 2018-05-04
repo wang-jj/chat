@@ -1,5 +1,8 @@
 package com.example.dell.chat.model.Home;
 
+import android.util.Log;
+
+import com.example.dell.chat.bean.Location;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.db.PersonalStateDao;
@@ -31,6 +34,7 @@ import okhttp3.Response;
 public class HomeModelIlpl implements HomeModel {
 
     private String updateMomentUrl="";
+    private String UpdateNearbyURL="http://119.23.255.222/android/personnearby.php";
     @Override
     public void UpdateMoment(final double latitude,final double longitude,final List<PersonalState> list,final Callback<List<PersonalState>> callback){
         ThreadTask<Void,Void,List<PersonalState>> threadTask=new ThreadTask<Void,Void,List<PersonalState>>(callback, new Execute<List<PersonalState>>() {
@@ -46,6 +50,7 @@ public class HomeModelIlpl implements HomeModel {
                     personalStates =new Gson().fromJson(result, new TypeToken<List<PersonalState>>() {}.getType());
                     for(PersonalState i:personalStates){
                         i.setUpdate_time(new Date(System.currentTimeMillis()));
+                        i.setHolder_id(MyApplication.getUser().getUser_id());
                         for (PersonalState j:list){
                             if(i.getPersonalstate_id()==j.getPersonalstate_id()){
                                 personalStates.remove(i);
@@ -71,6 +76,34 @@ public class HomeModelIlpl implements HomeModel {
                     }
                 }
                 return personalStates;
+            }
+        });
+        threadTask.execute();
+    }
+
+    @Override
+    public void UpdatePerson(final double latitude,final double longitude, Callback<List<Location>> callback) {
+        ThreadTask<Void,Void,List<Location>>threadTask=new ThreadTask<>(callback, new Execute<List<Location>>() {
+            @Override
+            public List<Location> doExec() {
+                List<Location> locations=null;
+                try{//构建请求
+                    OkHttpClient client=new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
+                    RequestBody requestBody=new FormBody.Builder().add("latitude",String.valueOf(latitude)).add("longitude",String.valueOf(longitude)).build();
+                    Request request=new Request.Builder().url(UpdateNearbyURL).post(requestBody).build();
+                    Response response=client.newCall(request).execute();
+                    String result=response.body().string();
+                    //locations=new Gson().fromJson(result,new TypeToken<List<Location>>(){}.getType());
+                    //locations.remove(0);
+                    Log.e("location", result );
+                }catch (Exception e){
+                    if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时
+                        Log.e("updateperson", "outoftime" );
+                    }else {
+                        e.printStackTrace();
+                    }
+                }
+                return locations;
             }
         });
         threadTask.execute();
