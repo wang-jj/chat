@@ -4,9 +4,9 @@ import android.app.Application;
 import android.content.Context;
 
 
+import com.baidu.mapapi.SDKInitializer;
 import com.example.dell.chat.tools.Dao;
 
-import org.litepal.LitePal;
 
 /**
  * Created by wang on 2018/4/12.
@@ -42,7 +42,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate(){
         super.onCreate();
-        LitePal.initialize(this);
+        //LitePal.initialize(this);
+        SDKInitializer.initialize(this);
         this.user=null;
         dao=new Dao(this);
         MyApplication.context = getApplicationContext();

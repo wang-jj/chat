@@ -3,8 +3,6 @@ package com.example.dell.chat.bean;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
-import org.litepal.annotation.Column;
-import org.litepal.crud.DataSupport;
 
 import java.util.Date;
 import org.greenrobot.greendao.annotation.Generated;

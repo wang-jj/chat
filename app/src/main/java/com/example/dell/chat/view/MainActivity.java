@@ -78,7 +78,6 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
         User u= MyApplication.getUser();
         View headerView = navigationView.getHeaderView(0);
         ImageView imageView_drawer_profile=(ImageView)headerView.findViewById(R.id.drawer_profile);
-        Log.e("main",String.valueOf(u==null));
         Glide.with(MainActivity.this).load(u.getImage_path()).into(imageView_drawer_profile);
         //imageView_drawer_profile.setImageResource(R.drawable.profile);
         TextView textView_drawer_nickname=(TextView)headerView.findViewById(R.id.drawer_nickname);
