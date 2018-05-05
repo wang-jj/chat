@@ -24,7 +24,8 @@ import android.widget.Toast;
 
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Chat;
-
+import com.example.dell.chat.presenter.ChatPresenter;
+import com.example.dell.chat.base.BaseActivity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,8 @@ import java.util.List;
 public class ChatActivity extends AppCompatActivity {
 
     private int profile;
+    public ChatAdapter adapter;
+    public ChatPresenter presenter = new ChatPresenter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +60,15 @@ public class ChatActivity extends AppCompatActivity {
         final RecyclerView chatRecyclerView=(RecyclerView)findViewById(R.id.chat_recycler_view);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         chatRecyclerView.setLayoutManager(layoutManager);
-        final ChatAdapter adapter=new ChatAdapter(getChat());   //通过getAlbum()初始化list
+
+        adapter = new ChatAdapter();
+        presenter.showChat();  //通过getAlbum()初始化list
         chatRecyclerView.setAdapter(adapter);
 
         //进入activity后默认跳转到最新的聊天记录
-        chatRecyclerView.scrollToPosition(adapter.getItemCount()-1);
+        if(adapter.getItemCount()>0) {
+            chatRecyclerView.scrollToPosition(adapter.getItemCount() - 1);
+        }
 
         //设置点击头像跳转至个人资料Activity
         ImageView imageView_chat=(ImageView)findViewById(R.id.chat_data);
@@ -91,7 +98,9 @@ public class ChatActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        chatRecyclerView.scrollToPosition(adapter.getItemCount()-1);
+                        if(adapter.getItemCount()>0) {
+                            chatRecyclerView.scrollToPosition(adapter.getItemCount() - 1 );
+                        }
                     }
                 }, 200);
             }
@@ -127,8 +136,10 @@ public class ChatActivity extends AppCompatActivity {
                     //chat.setProfileID(R.drawable.profile);
                     chat.setType(0);
                     adapter.ChatAdd(adapter.getItemCount(), chat);
-                    adapter.notifyItemInserted(adapter.getItemCount() - 1);
-                    chatRecyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                    if(adapter.getItemCount()>0) {
+                        adapter.notifyItemInserted(adapter.getItemCount() - 1);
+                        chatRecyclerView.smoothScrollToPosition(adapter.getItemCount() - 1 );
+                    }
                     editText.setText("");
                 }
             }
@@ -144,49 +155,55 @@ public class ChatActivity extends AppCompatActivity {
                 chat.setType(2);
                 //chat.setImage(R.drawable.profile);
                 adapter.ChatAdd(adapter.getItemCount(),chat);
+                if(adapter.getItemCount()>0){
                 adapter.notifyItemInserted(adapter.getItemCount()-1);
-                chatRecyclerView.smoothScrollToPosition(adapter.getItemCount()-1);
+                chatRecyclerView.smoothScrollToPosition(adapter.getItemCount()-1);}
             }
         });
     }
 
-    private List<Chat> getChat(){   //初始化recyclerview的list
-        List<Chat> chatList=new ArrayList<>();
-        for(int i=1;i<=20;i++){
-            Chat chat=new Chat();
-            if((i-1)%4==0){//发送文字初始化
-                chat.setContent("你才欠我"+i+"顿饭呢.");
-                //chat.setProfileID(R.drawable.profile);
-                chat.setType(0);
-            }else if((i-1)%4==1){//接收文字初始化
-                chat.setContent("你才欠我"+i+"顿饭呢.");
-                //chat.setProfileID(R.drawable.sample1);    使用Intent传过来的值作为默认头像
-                chat.setType(1);
-            }else if((i-1)%4==2){//发送图片初始化
-                //chat.setProfileID(R.drawable.profile);
-                chat.setType(2);
-                //chat.setImage(R.drawable.profile);
-            }else{//接收图片初始化
-                //chat.setProfileID(R.drawable.sample1);    使用Intent传过来的值作为默认头像
-                chat.setType(3);
-                //chat.setImage(R.drawable.profile);
-            }
-            chatList.add(chat);
-        }
-
-        return chatList;
-    }
+//    private List<Chat> getChat(){   //初始化recyclerview的list
+//        List<Chat> chatList=new ArrayList<>();
+//        for(int i=1;i<=20;i++){
+//            Chat chat=new Chat();
+//            if((i-1)%4==0){//发送文字初始化
+//                chat.setContent("你才欠我"+i+"顿饭呢.");
+//                //chat.setProfileID(R.drawable.profile);
+//                chat.setType(0);
+//            }else if((i-1)%4==1){//接收文字初始化
+//                chat.setContent("你才欠我"+i+"顿饭呢.");
+//                //chat.setProfileID(R.drawable.sample1);    使用Intent传过来的值作为默认头像
+//                chat.setType(1);
+//            }else if((i-1)%4==2){//发送图片初始化
+//                //chat.setProfileID(R.drawable.profile);
+//                chat.setType(2);
+//                //chat.setImage(R.drawable.profile);
+//            }else{//接收图片初始化
+//                //chat.setProfileID(R.drawable.sample1);    使用Intent传过来的值作为默认头像
+//                chat.setType(3);
+//                //chat.setImage(R.drawable.profile);
+//            }
+//            chatList.add(chat);
+//        }
+//
+//        return chatList;
+//    }
 
     //recyclerview的adapter定义
-    class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         private List<Chat> mChatList;
         private static final int TYPE_SENT=0;
         private static final int TYPE_RECEIVED=1;
         private static final int TYPE_SENT_IMAGE=2;
         private static final int TYPE_RECEIVED_IMAGE=3;
 
-        public ChatAdapter(List<Chat> chatList){
-            mChatList=chatList;
+        public ChatAdapter(){
+            //mChatList=chatList;
+        }
+
+        public void setAdapter(List<Chat> chatList){
+            mChatList = chatList;
+            return;
         }
 
         public void ChatAdd(int position,Chat chat){
@@ -321,4 +338,8 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+//    @Override
+//    protected ChatPresenter createPresenter(){
+//        return new ChatPresenter();
+//    }
 }
