@@ -71,10 +71,7 @@
             android:label="@string/title_activity_test"
             >
             <!--测试主活动-->
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
         </activity>
 
         <activity
