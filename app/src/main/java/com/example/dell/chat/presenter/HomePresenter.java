@@ -11,6 +11,7 @@ import com.baidu.location.LocationClientOption;
 import com.example.dell.chat.bean.Location;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.PersonalState;
+import com.example.dell.chat.db.PersonalStateDao;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Home.HomeModel;
 import com.example.dell.chat.model.Home.HomeModelIlpl;
@@ -49,13 +50,16 @@ public class HomePresenter {
         homeModel.UpdateMoment(MyApplication.getLatitude(), MyApplication.getLongitude(),old, new Callback<List<PersonalState>>() {
             @Override
             public void execute(List<PersonalState> datas) {
-                /*
-                old.addAll(0,datas);
-                adapter.notify();
-                stateRecyclerView.scrollToPosition(0);
-                swipeRefreshLayout.setRefreshing(false);
-                Log.e("MAIN", "success update moment" );
-                */
+                view.UpdateMoment(datas);
+            }
+        });
+    }
+
+    public void LoadMoment(){
+        homeModel.LoadMoment(new Callback<List<PersonalState>>() {
+            @Override
+            public void execute(List<PersonalState> datas) {
+                view.LoadMoment(datas);
             }
         });
     }

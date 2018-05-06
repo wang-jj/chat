@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -36,6 +37,7 @@ public class HomeModelIlpl implements HomeModel {
 
     private String updateMomentUrl="http://119.23.255.222/android/discoverynearby.php";
     private String UpdateNearbyURL="http://119.23.255.222/android/personnearby.php";
+    private String url="http://119.23.255.222/android";
     @Override
     public void UpdateMoment(final double latitude,final double longitude,final List<PersonalState> list,final Callback<List<PersonalState>> callback){
         ThreadTask<Void,Void,List<PersonalState>> threadTask=new ThreadTask<Void,Void,List<PersonalState>>(callback, new Execute<List<PersonalState>>() {
@@ -50,35 +52,54 @@ public class HomeModelIlpl implements HomeModel {
                     String result=response.body().string();
                     Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                     personalStates =gson.fromJson(result, new TypeToken<List<PersonalState>>() {}.getType());
-                    Log.e("moment1", new Gson().toJson(result) );
-                    for(PersonalState i:personalStates){
+                    //Log.e("moment1", new Gson().toJson(result) );
+                    List<Integer> a=new ArrayList<>();
+                    for(int q=personalStates.size()-1;q>=0;q--){
+                        PersonalState i=personalStates.get(q);
                         i.setUpdate_time(new Date(System.currentTimeMillis()));
                         i.setHolder_id(MyApplication.getUser().getUser_id());
-                        /*
-                        for (PersonalState j:list){
+                        for (int w=0;w<list.size();w++){
+                            PersonalState j=list.get(w);
                             if(i.getPersonalstate_id()==j.getPersonalstate_id()){
-                                personalStates.remove(i);
+                                j.setProfileID(i.getProfileID());
+                                j.setNickname(i.getNickname());
+                                j.setSchool(i.getSchool());
+                                j.setLike(i.getLike());
+                                j.setComment(i.getComment());
+                                a.add(new Integer(q));
                                 break;
                             }
                         }
-                        */
+                    }
+                    for(Integer integer:a){
+                        personalStates.remove(integer.intValue());
                     }
                     //排序
-                    Collections.sort(personalStates, new Comparator<PersonalState>() {
-                        @Override
-                        public int compare(PersonalState personalState1, PersonalState personalState2) {
-                            return personalState2.getState_time().compareTo(personalState1.getState_time());
+                    if(personalStates.size()>1){
+                        Collections.sort(personalStates, new Comparator<PersonalState>() {
+                            @Override
+                            public int compare(PersonalState personalState1, PersonalState personalState2) {
+                                return personalState2.getState_time().compareTo(personalState1.getState_time());
+                            }
+                        });
+                    }
+                    for(PersonalState i:personalStates){
+                        if(i.getImage1ID()!=null){
+                            i.setImage1ID(url+i.getImage1ID().substring(1));
                         }
-                    });
+                        if(i.getImage2ID()!=null){
+                            i.setImage2ID(url+i.getImage2ID().substring(1));
+                        }
+                        if(i.getImage3ID()!=null){
+                            i.setImage3ID(url+i.getImage3ID().substring(1));
+                        }
+                    }
                     PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
-                    personalStateDao.insertInTx(personalStates);
-                    List<PersonalState> a=personalStateDao.loadAll();
-                    Log.e("moment1", new Gson().toJson(a) );
-                    /*
+                    if(personalStates.size()>0){
+                        personalStateDao.insertInTx(personalStates);
+                    }
                     //跟新数据库
-                    PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
-                    personalStateDao.updateInTx(personalStates);
-                    */
+                    personalStateDao.updateInTx(list);
                 }catch (Exception e){
                     if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时
 
@@ -115,6 +136,35 @@ public class HomeModelIlpl implements HomeModel {
                     }
                 }
                 return locations;
+            }
+        });
+        threadTask.execute();
+    }
+
+    @Override
+    public void LoadMoment(Callback<List<PersonalState>> callback) {
+        ThreadTask<Void,Void,List<PersonalState>> threadTask=new ThreadTask<Void,Void,List<PersonalState>>(callback, new Execute<List<PersonalState>>(){
+            @Override
+            public List<PersonalState> doExec() {
+                List<PersonalState> personalStates=new ArrayList<>();
+                PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
+                List<PersonalState> result=personalStateDao.queryBuilder().where(PersonalStateDao.Properties.Holder_id.eq(MyApplication.getUser().getUser_id())).orderDesc(PersonalStateDao.Properties.State_time).list();
+                Log.e("home", String.valueOf(result.size()) );
+                /*
+                for(PersonalState i:result){
+                    if(i.getImage1ID()!=null){
+                        i.setImage1ID(url+i.getImage1ID().substring(1));
+                    }
+                    if(i.getImage2ID()!=null){
+                        i.setImage2ID(url+i.getImage2ID().substring(1));
+                    }
+                    if(i.getImage3ID()!=null){
+                        i.setImage3ID(url+i.getImage3ID().substring(1));
+                    }
+                }
+                */
+                personalStates.addAll(result);
+                return personalStates;
             }
         });
         threadTask.execute();

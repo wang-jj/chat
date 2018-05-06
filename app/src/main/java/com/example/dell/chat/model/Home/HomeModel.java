@@ -15,4 +15,6 @@ public interface HomeModel {
     void UpdateMoment(double latitude,double longitude,List<PersonalState> list,final Callback<List<PersonalState>> callback);
     //更新附近的人
     void UpdatePerson(double latitude,double longitude,final Callback<List<Location>> callback);
+    //从数据库加载朋友圈
+    void LoadMoment(final Callback<List<PersonalState>> callback);
 }

@@ -41,7 +41,7 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
     private LayoutAnimationController controller;
     private LinearLayout progressLayout;
     private String url="http://119.23.255.222/android";
-    RequestOptions requestOptions=new RequestOptions().centerCrop();
+    private RequestOptions requestOptions=new RequestOptions().centerCrop();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

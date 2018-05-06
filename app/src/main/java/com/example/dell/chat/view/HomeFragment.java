@@ -32,6 +32,7 @@ import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.presenter.HomePresenter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,14 +49,17 @@ public class HomeFragment extends Fragment {
     private StateAdapter adapter;
     private RecyclerView stateRecyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout progressLayout;
     private HomePresenter homePresenter;
+    private LayoutAnimationController controller;
+    private RequestOptions requestOptions=new RequestOptions().centerCrop();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         Log.e("HOME", "oncreate" );
         view=inflater.inflate(R.layout.home_fragment,container,false);
         homePresenter=new HomePresenter(this);
-        final LinearLayout progressLayout=(LinearLayout)view.findViewById(R.id.state_progress);
+        progressLayout=(LinearLayout)view.findViewById(R.id.state_progress);
         progressLayout.setVisibility(View.VISIBLE);
 
         //动画
@@ -64,7 +68,7 @@ public class HomeFragment extends Fragment {
         //stateRecyclerView.setLayoutAnimation(controller);
         //stateRecyclerView.setAdapter(adapter);
 
-        final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_fall_down);
+        controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_fall_down);
 
 
         stateRecyclerView=(RecyclerView)view.findViewById(R.id.state_recycler_view);
@@ -74,9 +78,10 @@ public class HomeFragment extends Fragment {
         stateRecyclerView.setLayoutManager(layoutManager);
 
         //设置适配器以及list用以显示数据
-        adapter=new StateAdapter(getState());    //通过getState()初始化adapter
+        adapter=new StateAdapter(new ArrayList<PersonalState>());    //通过getState()初始化adapter
 
         final Handler handler = new Handler();
+        /*
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {//设置延时看动画效果  模拟实际运行时使用的时间  正式使用时去掉handler
@@ -85,6 +90,8 @@ public class HomeFragment extends Fragment {
                 progressLayout.setVisibility(View.GONE);
             }
         }, 1000);
+        */
+
 
         //底部刷新函数 底部刷新时逻辑写在此函数
         final NestedScrollView nestedScrollView=(NestedScrollView)view.findViewById(R.id.home_scroll_view);
@@ -128,6 +135,7 @@ public class HomeFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {   //顶部刷新
+                /*
                 PersonalState personalState=new PersonalState();
                 personalState.setNickname("麦梓逗比旗");
                 personalState.setSchool("华南理工大学");
@@ -144,11 +152,13 @@ public class HomeFragment extends Fragment {
                 adapter.notifyItemInserted(0);
                 stateRecyclerView.scrollToPosition(0);
                 swipeRefreshLayout.setRefreshing(false);
+                */
+                homePresenter.UpdateMoment();
             }
         });
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorWhite));
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.colorPrimary));
-        homePresenter.UpdateMoment();
+        homePresenter.LoadMoment();
         return view;
     }
 
@@ -191,6 +201,10 @@ public class HomeFragment extends Fragment {
         private static final int TYPE_ONE_IMAGE=0;
         private static final int TYPE_TWO_IMAGE=1;
         private static final int TYPE_THREE_IMAGE=2;
+
+        public void setmStateList(List<PersonalState> mStateList) {
+            this.mStateList = mStateList;
+        }
 
         public List<PersonalState> getmStateList() {
             return mStateList;
@@ -331,17 +345,17 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder,int position){
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             if(holder instanceof OneViewHolder){
                 PersonalState personalState=mStateList.get(position);
                 ((OneViewHolder)holder).stateNickName.setText(personalState.getNickname());
                 ((OneViewHolder)holder).stateSchool.setText(personalState.getSchool());
                 ((OneViewHolder)holder).stateContent.setText(personalState.getContent());
                 ((OneViewHolder)holder).stateLocation.setText(personalState.getLocation());
-                //((OneViewHolder)holder).stateTime.setText(personalState.getState_time());
+                ((OneViewHolder)holder).stateTime.setText(simpleDateFormat.format(personalState.getState_time()));
                 ((OneViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));      //用以将int类型转换成String类型使用setText显示
                 ((OneViewHolder)holder).stateComment.setText(String.valueOf(personalState.getComment()));
                 //stateProfile 就是一个ImageView
-                RequestOptions requestOptions=new RequestOptions().centerCrop();
                 Glide.with(getActivity()).load(personalState.getProfileID()).into(((OneViewHolder)holder).stateProfile);
                 Glide.with(getActivity()).load(personalState.getImage1ID()).apply(requestOptions).thumbnail(0.1f).into(((OneViewHolder)holder).stateImage1);
                 //((OneViewHolder)holder).stateProfile.setImageResource(personalState.getProfileID());
@@ -353,12 +367,12 @@ public class HomeFragment extends Fragment {
                 ((TwoViewHolder)holder).stateSchool.setText(personalState.getSchool());
                 ((TwoViewHolder)holder).stateContent.setText(personalState.getContent());
                 ((TwoViewHolder)holder).stateLocation.setText(personalState.getLocation());
-                //((TwoViewHolder)holder).stateTime.setText(personalState.getState_time());
+                ((TwoViewHolder)holder).stateTime.setText(simpleDateFormat.format(personalState.getState_time()));
                 ((TwoViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));      //用以将int类型转换成String类型使用setText显示
                 ((TwoViewHolder)holder).stateComment.setText(String.valueOf(personalState.getComment()));
                 Glide.with(getActivity()).load(personalState.getProfileID()).into(((TwoViewHolder)holder).stateProfile);
-                Glide.with(getActivity()).load(personalState.getImage1ID()).into(((TwoViewHolder)holder).stateImage1);
-                Glide.with(getActivity()).load(personalState.getImage2ID()).into(((TwoViewHolder)holder).stateImage2);
+                Glide.with(getActivity()).load(personalState.getImage1ID()).apply(requestOptions).thumbnail(0.1f).into(((TwoViewHolder)holder).stateImage1);
+                Glide.with(getActivity()).load(personalState.getImage2ID()).apply(requestOptions).thumbnail(0.1f).into(((TwoViewHolder)holder).stateImage2);
                 /*
                 ((TwoViewHolder)holder).stateProfile.setImageResource(personalState.getProfileID());
                 ((TwoViewHolder)holder).stateImage1.setImageResource(personalState.getImage1ID());
@@ -372,12 +386,13 @@ public class HomeFragment extends Fragment {
                 ((ViewHolder)holder).stateContent.setText(personalState.getContent());
                 ((ViewHolder)holder).stateLocation.setText(personalState.getLocation());
                 //((ViewHolder)holder).stateTime.setText(personalState.getState_time());
+                ((ViewHolder)holder).stateTime.setText(simpleDateFormat.format(personalState.getState_time()));
                 ((ViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));      //用以将int类型转换成String类型使用setText显示
                 ((ViewHolder)holder).stateComment.setText(String.valueOf(personalState.getComment()));
                 Glide.with(getActivity()).load(personalState.getProfileID()).into(((ViewHolder)holder).stateProfile);
-                Glide.with(getActivity()).load(personalState.getImage1ID()).into(((ViewHolder)holder).stateImage1);
-                Glide.with(getActivity()).load(personalState.getImage2ID()).into(((ViewHolder)holder).stateImage2);
-                Glide.with(getActivity()).load(personalState.getImage3ID()).into(((ViewHolder)holder).stateImage3);
+                Glide.with(getActivity()).load(personalState.getImage1ID()).apply(requestOptions).thumbnail(0.1f).into(((ViewHolder)holder).stateImage1);
+                Glide.with(getActivity()).load(personalState.getImage2ID()).apply(requestOptions).thumbnail(0.1f).into(((ViewHolder)holder).stateImage2);
+                Glide.with(getActivity()).load(personalState.getImage3ID()).apply(requestOptions).thumbnail(0.1f).into(((ViewHolder)holder).stateImage3);
                 /*
                 ((ViewHolder)holder).stateProfile.setImageResource(personalState.getProfileID());
                 ((ViewHolder)holder).stateImage1.setImageResource(personalState.getImage1ID());
@@ -535,5 +550,21 @@ public class HomeFragment extends Fragment {
 
     public SwipeRefreshLayout getSwipeRefreshLayout() {
         return swipeRefreshLayout;
+    }
+
+    public void LoadMoment(List<PersonalState>personalStates){
+        adapter.setmStateList(personalStates);
+        stateRecyclerView.setLayoutAnimation(controller);
+        stateRecyclerView.setAdapter(adapter);
+        progressLayout.setVisibility(View.GONE);
+    }
+
+    public void UpdateMoment(List<PersonalState> personalStates){
+        if(personalStates.size()>0){
+            adapter.getmStateList().addAll(0,personalStates);
+            adapter.notifyDataSetChanged();
+        }
+        stateRecyclerView.scrollToPosition(0);
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
