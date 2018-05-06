@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ChatModel {
     //初始化聊天
-    void InitChat(final Callback<List<Chat>> callback);
+    List<Chat> InitChat(final int contact_id);
 
     //发送消息
     void SendMessage(final int contact_id, final String content, final int type, final Callback<Void> callback);

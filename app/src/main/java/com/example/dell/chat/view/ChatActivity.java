@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Chat;
+import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.presenter.ChatPresenter;
 import com.example.dell.chat.base.BaseActivity;
 import java.util.ArrayList;
@@ -33,8 +35,9 @@ import java.util.List;
 public class ChatActivity extends AppCompatActivity {
 
     private int profile;
+    private int contact_id;
     public ChatAdapter adapter;
-    public ChatPresenter presenter = new ChatPresenter(this);
+    public ChatPresenter presenter  = new ChatPresenter(this, MyApplication.getFrag());;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,11 @@ public class ChatActivity extends AppCompatActivity {
         //从MsgFragment跳转过来的Intent 使用nickname获取昵称 profile获取头像
         Intent intent_msg=getIntent();
         String nickname=intent_msg.getStringExtra("nickname");
+        final int contact_id = intent_msg.getIntExtra("contact_id",-1);
+        this.contact_id = contact_id;
         //profile=intent_msg.getIntExtra("profile",-1);     //合并项目时 设置图片的方式改变，记得去掉注释 修改设置图片的方法
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //初始化标题栏名称 使用nickname
@@ -61,14 +68,15 @@ public class ChatActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         chatRecyclerView.setLayoutManager(layoutManager);
 
+
         adapter = new ChatAdapter();
-        presenter.showChat();  //通过getAlbum()初始化list
+        presenter.showChat(contact_id);  //初始化list
+
         chatRecyclerView.setAdapter(adapter);
 
         //进入activity后默认跳转到最新的聊天记录
-        if(adapter.getItemCount()>0) {
             chatRecyclerView.scrollToPosition(adapter.getItemCount() - 1);
-        }
+
 
         //设置点击头像跳转至个人资料Activity
         ImageView imageView_chat=(ImageView)findViewById(R.id.chat_data);
@@ -133,14 +141,18 @@ public class ChatActivity extends AppCompatActivity {
                 if(!editText.getText().toString().isEmpty()){
                     Chat chat = new Chat();
                     chat.setContent(editText.getText().toString());
-                    //chat.setProfileID(R.drawable.profile);
+                    //chat.setProfileID(R.drawable.
+                    // );
                     chat.setType(0);
                     adapter.ChatAdd(adapter.getItemCount(), chat);
                     if(adapter.getItemCount()>0) {
                         adapter.notifyItemInserted(adapter.getItemCount() - 1);
                         chatRecyclerView.smoothScrollToPosition(adapter.getItemCount() - 1 );
                     }
+                    presenter.send(contact_id,editText.getText().toString(),0);//
                     editText.setText("");
+
+
                 }
             }
         });
@@ -155,9 +167,9 @@ public class ChatActivity extends AppCompatActivity {
                 chat.setType(2);
                 //chat.setImage(R.drawable.profile);
                 adapter.ChatAdd(adapter.getItemCount(),chat);
-                if(adapter.getItemCount()>0){
                 adapter.notifyItemInserted(adapter.getItemCount()-1);
-                chatRecyclerView.smoothScrollToPosition(adapter.getItemCount()-1);}
+                chatRecyclerView.smoothScrollToPosition(adapter.getItemCount()-1);
+                //presenter.send(contact_id,editText.getText().toString(),2); //在第二个参数要换为发送的图片路径
             }
         });
     }
@@ -337,9 +349,8 @@ public class ChatActivity extends AppCompatActivity {
             }
         }
     }
+    public ChatAdapter getAdapter(){
+        return adapter;
+    }
 
-//    @Override
-//    protected ChatPresenter createPresenter(){
-//        return new ChatPresenter();
-//    }
 }

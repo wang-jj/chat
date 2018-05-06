@@ -8,6 +8,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,14 @@ import android.widget.Toast;
 
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Message;
+import com.example.dell.chat.bean.MyApplication;
+import com.example.dell.chat.model.Chat.ChatModelImpl;
 import com.example.dell.chat.presenter.MessagePresenter;
 import com.example.dell.chat.tools.SwipeItemLayout;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessageBody;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -38,27 +45,32 @@ public class MsgFragment extends Fragment {
 
     private MessagePresenter presenter = new MessagePresenter(this);
     private MessageAdapter adapter;
+    private RecyclerView messageRecyclerView;
+    private EMMessageListener msgListener;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.msg_fragment,container,false);
 
+        Log.e("Fragment 1", "onCreateView");
+
         final LinearLayout progressLayout=(LinearLayout)view.findViewById(R.id.message_progress);
         progressLayout.setVisibility(View.VISIBLE);
 
-
-
         final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_slide_right);
-        final RecyclerView messageRecyclerView=(RecyclerView)view.findViewById(R.id.message_recycler_view);
+        messageRecyclerView=(RecyclerView)view.findViewById(R.id.message_recycler_view);
         messageRecyclerView.setNestedScrollingEnabled(false);
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
         messageRecyclerView.setLayoutManager(layoutManager);
 
         messageRecyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(getActivity()));
 
+        MyApplication.setFrag(this);
+
         //设置适配器以及list用以显示数据
         adapter = new MessageAdapter();
         presenter.dispContact();
-        //adapter.setAdapter(getMessage());
+
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -69,6 +81,8 @@ public class MsgFragment extends Fragment {
                 progressLayout.setVisibility(View.GONE);
             }
         }, 1000);
+
+
 
         //底部刷新函数
         final NestedScrollView nestedScrollView=(NestedScrollView)view.findViewById(R.id.msg_scroll_view);
@@ -108,6 +122,7 @@ public class MsgFragment extends Fragment {
                 message.setLatest_content("你还欠我无数顿饭呢！");
                 //message.setLatest_time("19:61");
                 //message.setProfileID(R.drawable.sample1);
+
                 adapter.MessageAdd(0,message);
                 adapter.notifyItemInserted(0);
                 messageRecyclerView.scrollToPosition(0);
@@ -117,16 +132,20 @@ public class MsgFragment extends Fragment {
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorWhite));
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.colorPrimary));
 
+
+
+
+        //测试
+        presenter.create(93,"221");
+        presenter.create(90,"220");
+        presenter.create(93,"221");
+        presenter.create(90,"220");
+
+
         return view;
     }
 
-//    public void setMessages(List<Message> messages){     //初始化recycler的list
-//        //List<Message> messages=new ArrayList<>();
-//
-//
-//        adapter.setAdapter(messages);
-//        return ;
-//    }
+
 
     public class MessageAdapter extends RecyclerView.Adapter<MsgFragment.MessageAdapter.ViewHolder>{
         private List<Message> mMessageList;
@@ -185,8 +204,8 @@ public class MsgFragment extends Fragment {
                     mMessageList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position,mMessageList.size());
+                    presenter.delContact(message.getContact_id()); //在本地数据库中删除
 
-                    presenter.delContact(message.getContact_id());
                 }
             });
 
@@ -196,13 +215,15 @@ public class MsgFragment extends Fragment {
                     holder.messageTips.setVisibility(View.GONE);    //让新消息角标隐藏
                     int position=holder.getAdapterPosition();
                     Message message=mMessageList.get(position);
-                    presenter.clickContact(message.getContact_id());
-                    //获取头像 昵称 传值到聊天界面
+                    presenter.clickContact(message.getContact_id()); //在本地数据库去除角标
+                    //获取头像 昵称 联系人id 传值到聊天界面
                     String nickname=message.getContact_name();
                     String profile=message.getImage_path();
+                    int contact_id = message.getContact_id();
                     Intent intent=new Intent(view.getContext(),ChatActivity.class);
                     intent.putExtra("nickname",nickname);
                     intent.putExtra("profile",profile);
+                    intent.putExtra("contact_id",contact_id);
                     startActivity(intent);
                 }
             });
@@ -215,7 +236,13 @@ public class MsgFragment extends Fragment {
             holder.messageNickName.setText(message.getContact_name());
             holder.messageContent.setText(message.getLatest_content());
             holder.messageTime.setText(String.valueOf(message.getLatest_time()));
-            //holder.messageTips. 新消息角标设置
+            if(message.getUnread()==0){//新消息角标设置
+                holder.messageTips.setVisibility(View.GONE);
+            }
+            else {
+                holder.messageTips.setVisibility(View.VISIBLE);
+            }
+
             //holder.messageProfile.setImageResource(message.getImage_path()); 解析图片路径
         }
 
@@ -231,4 +258,98 @@ public class MsgFragment extends Fragment {
         return adapter;
     }
 
+    public  RecyclerView getMessageRecyclerView(){
+        return messageRecyclerView;
+    }
+
+    public  MessagePresenter getPresenter(){
+        return presenter;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.e("Fragment 1", "onDestroyView");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("Fragment 1", "onDestroy");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+// 创建接收消息监听器
+        msgListener = new EMMessageListener() {
+            @Override
+            public void onMessageReceived(List<EMMessage> messages) {
+                int i = messages.size();
+                Log.e("message",String.valueOf(i));
+                for(int c = 0;c < i;c++){
+                    EMMessage msg = messages.get(c);
+                    String sender = msg.getFrom();
+                    String receiver = msg.getTo();
+                    long time = msg.getMsgTime();
+                    EMMessageBody body = msg.getBody();
+                    EMMessage.Type type = msg.getType();
+
+                    Log.d("time", String.valueOf(time));
+                    Log.d("type", String.valueOf(type));
+                    Log.d("body", body.toString());
+                    Log.d("sender", sender);
+                    Log.d("receiver", receiver);
+                }
+                //收到消息
+                presenter.receive(messages);
+            }
+
+            @Override
+            public void onCmdMessageReceived(List<EMMessage> messages) {
+                //收到透传消息
+            }
+
+            @Override
+            public void onMessageRead(List<EMMessage> messages) {
+                //收到已读回执
+            }
+
+            @Override
+            public void onMessageDelivered(List<EMMessage> message) {
+                //收到已送达回执
+            }
+            @Override
+            public void onMessageRecalled(List<EMMessage> messages) {
+                //消息被撤回
+            }
+
+            @Override
+            public void onMessageChanged(EMMessage message, Object change) {
+                //消息状态变动
+            }
+        };
+        EMClient.getInstance().chatManager().addMessageListener(msgListener);
+        Log.e("Fragment 1", "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("Fragment 1", "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EMClient.getInstance().chatManager().removeMessageListener(msgListener);
+        Log.e("Fragment 1", "onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        Log.e("Fragment 1", "onStop");
+    }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public interface MessageModel {
 
     //初始化最近联系人
-    void InitContact(final Callback<List<Message>> callback);
+    List<Message> InitContact();
 
     //删除联系人
     void DelContact(final int contact_id, final Callback<Void> callback);
@@ -20,5 +20,6 @@ public interface MessageModel {
     //点击联系人
     void ClickContact(final int contact_id, final Callback<Void> callback);
 
-
+    //新建联系人
+    void CreateContact(final int contact_id, final String contact_name, final Callback<Void> callback);
 }

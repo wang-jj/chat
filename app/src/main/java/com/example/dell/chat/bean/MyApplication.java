@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.example.dell.chat.tools.Dao;
+import com.example.dell.chat.view.MsgFragment;
 
 
 /**
@@ -38,6 +39,8 @@ public class MyApplication extends Application {
     private static double Longitude;       //经度
 
     private static int UpdateLocationTime=10000;
+
+    private static MsgFragment Frag;
 
     @Override
     public void onCreate(){
@@ -75,5 +78,14 @@ public class MyApplication extends Application {
 
     public static int getUpdateLocationTime() {
         return UpdateLocationTime;
+    }
+
+    public static MsgFragment getFrag(){
+        return Frag;
+    }
+
+    public static void setFrag(MsgFragment frag){
+        Frag = frag;
+
     }
 }
