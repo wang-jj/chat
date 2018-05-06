@@ -7,6 +7,7 @@ import android.content.Context;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.dell.chat.tools.Dao;
 import com.example.dell.chat.view.MsgFragment;
+import com.hyphenate.EMMessageListener;
 
 
 /**
@@ -41,6 +42,8 @@ public class MyApplication extends Application {
     private static int UpdateLocationTime=10000;
 
     private static MsgFragment Frag;
+
+    private static EMMessageListener Listener;
 
     @Override
     public void onCreate(){
@@ -87,5 +90,13 @@ public class MyApplication extends Application {
     public static void setFrag(MsgFragment frag){
         Frag = frag;
 
+    }
+
+    public static void setListener(EMMessageListener listener){
+        Listener = listener;
+    }
+
+    public static EMMessageListener getListener(){
+        return Listener;
     }
 }

@@ -19,7 +19,10 @@ import com.example.dell.chat.bean.User;
 import com.example.dell.chat.db.UserDao;
 import com.example.dell.chat.presenter.LoginPresenter;
 import com.example.dell.chat.base.BaseActivity;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessageBody;
 import com.hyphenate.chat.EMOptions;
 
 import java.util.Iterator;
@@ -173,6 +176,8 @@ public class LoadActivity extends BaseActivity<LoadActivity,LoginPresenter<LoadA
         //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
         EMClient.getInstance().setDebugMode(true);
         Log.d("test", "i get there");
+
+
     }
 
 

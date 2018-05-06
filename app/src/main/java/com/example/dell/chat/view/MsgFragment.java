@@ -30,9 +30,6 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessageBody;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -281,55 +278,7 @@ public class MsgFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-// 创建接收消息监听器
-        msgListener = new EMMessageListener() {
-            @Override
-            public void onMessageReceived(List<EMMessage> messages) {
-                int i = messages.size();
-                Log.e("message",String.valueOf(i));
-                for(int c = 0;c < i;c++){
-                    EMMessage msg = messages.get(c);
-                    String sender = msg.getFrom();
-                    String receiver = msg.getTo();
-                    long time = msg.getMsgTime();
-                    EMMessageBody body = msg.getBody();
-                    EMMessage.Type type = msg.getType();
 
-                    Log.d("time", String.valueOf(time));
-                    Log.d("type", String.valueOf(type));
-                    Log.d("body", body.toString());
-                    Log.d("sender", sender);
-                    Log.d("receiver", receiver);
-                }
-                //收到消息
-                presenter.receive(messages);
-            }
-
-            @Override
-            public void onCmdMessageReceived(List<EMMessage> messages) {
-                //收到透传消息
-            }
-
-            @Override
-            public void onMessageRead(List<EMMessage> messages) {
-                //收到已读回执
-            }
-
-            @Override
-            public void onMessageDelivered(List<EMMessage> message) {
-                //收到已送达回执
-            }
-            @Override
-            public void onMessageRecalled(List<EMMessage> messages) {
-                //消息被撤回
-            }
-
-            @Override
-            public void onMessageChanged(EMMessage message, Object change) {
-                //消息状态变动
-            }
-        };
-        EMClient.getInstance().chatManager().addMessageListener(msgListener);
         Log.e("Fragment 1", "onStart");
     }
 
@@ -342,7 +291,7 @@ public class MsgFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        EMClient.getInstance().chatManager().removeMessageListener(msgListener);
+        //EMClient.getInstance().chatManager().removeMessageListener(msgListener);
         Log.e("Fragment 1", "onPause");
     }
 
