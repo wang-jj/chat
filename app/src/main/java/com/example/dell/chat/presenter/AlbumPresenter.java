@@ -34,10 +34,9 @@ public class AlbumPresenter<T extends BaseActivity> extends BasePresenter<T>  {
                 Collections.sort(datas, new Comparator<PersonalState>() {
                     @Override
                     public int compare(PersonalState personalState1, PersonalState personalState2) {
-                        return personalState1.getState_time().compareTo(personalState2.getState_time());
+                        return personalState2.getState_time().compareTo(personalState1.getState_time());
                     }
                 });
-                Log.e("album", new Gson().toJson(datas));
                 ((AlbumActivity)getView()).LoadPersonalState(datas);
             }
         });

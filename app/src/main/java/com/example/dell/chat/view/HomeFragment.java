@@ -148,6 +148,7 @@ public class HomeFragment extends Fragment {
         });
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorWhite));
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.colorPrimary));
+        homePresenter.UpdateMoment();
         return view;
     }
 
