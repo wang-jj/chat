@@ -12,6 +12,7 @@ import com.example.dell.chat.model.Execute;
 import com.example.dell.chat.tools.ThreadTask;
 import com.google.gson.Gson;
 import com.hyphenate.EMCallBack;
+import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 
@@ -147,13 +148,19 @@ public class LoginModelImpl implements LoginModel {
                     //Log.e("LoadActivity", a);
                     u=new Gson().fromJson(a,User.class);
                     if(u.getUser_id()!=-1){//注册环信
-                        String user_id=String.valueOf(user.getUser_id());
+                        String user_id=String.valueOf(u.getUser_id());
                         String password=user.getPassword();
+
+
                         try {
                             //注册失败会抛出HyphenateException
+                            //Log.d("the user id",user_id);
+                            Log.d("the passwd",password);
                             EMClient.getInstance().createAccount(user_id, password);//同步方法
+
                             Log.d("sign up", "注册成功！");
                         } catch (HyphenateException e) {
+                            int errorCode=e.getErrorCode();
                             Log.e("sign up", "注册失败！");
                         }
                     }
@@ -189,6 +196,7 @@ public class LoginModelImpl implements LoginModel {
                     Request request=new Request.Builder().url(LoginUrl+"?user="+new Gson().toJson(user).toString()).build();
                     Response response=client.newCall(request).execute();
                     String a=response.body().string();
+                    Log.e("a", a );
                     u=new Gson().fromJson(a,User.class);
                     u.setPassword(user.getPassword());
                     if(u.getUser_id()>0){//登录环信

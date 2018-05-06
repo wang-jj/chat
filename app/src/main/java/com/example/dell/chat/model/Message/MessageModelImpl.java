@@ -22,19 +22,24 @@ public class MessageModelImpl implements MessageModel {
 
     //初始化最近联系人
     @Override
-    public void InitContact(final Callback<List<Message>> callback){
-        ThreadTask t = new ThreadTask<Void,Void,List<Message>>(callback, new Execute<List<Message>>() {
-            @Override
-            public List<Message> doExec() { //获取联系人列表List<Message>
-                MessageDao messageDao = MyApplication.getDao().getMessageDao();
-                List<Message> messages = messageDao.queryBuilder().orderDesc(MessageDao.Properties.Latest_time).list();
-                if(messages == null){
-                    return null;
-                }
-                return messages;
-            }
-        });
-        t.execute();
+    public List<Message> InitContact(){
+//        ThreadTask t = new ThreadTask<Void,Void,List<Message>>(callback, new Execute<List<Message>>() {
+//            @Override
+//            public List<Message> doExec() { //获取联系人列表List<Message>
+//                MessageDao messageDao = MyApplication.getDao().getMessageDao();
+//                List<Message> messages = messageDao.queryBuilder().where(MessageDao.Properties.User_id.eq(MyApplication.getUser().getUser_id())).
+//                        orderDesc(MessageDao.Properties.Latest_time).list();//
+//                if(messages == null){
+//                    return null;
+//                }
+//                return messages;
+//            }
+//        });
+//        t.execute();
+        MessageDao messageDao = MyApplication.getDao().getMessageDao();
+                List<Message> messages = messageDao.queryBuilder().where(MessageDao.Properties.User_id.eq(MyApplication.getUser().getUser_id())).
+                        orderDesc(MessageDao.Properties.Latest_time).list();
+                return  messages;
     }
 
     //删除联系人
@@ -82,6 +87,29 @@ public class MessageModelImpl implements MessageModel {
                 else{
                     msg.setUnread(0);
                     messageDao.update(msg);
+                }
+                return null;
+            }
+        });
+        t.execute();
+    }
+
+    //新建联系人 若已存在则不新建
+    @Override
+    public void CreateContact(final int contact_id, final String contact_name, final Callback<Void> callback){
+        ThreadTask t =new ThreadTask<Void,Void,Void>(callback, new Execute() {
+            @Override
+            public Void doExec() {
+
+                MessageDao messageDao = MyApplication.getDao().getMessageDao();
+                List<Message> list = messageDao.queryBuilder().where(MessageDao.Properties.User_id.eq(MyApplication.getUser().getUser_id()),
+                        MessageDao.Properties.Contact_id.eq(contact_id)).build().list();
+                if(list.size()==0){
+                    Message m = new Message();
+                    m.setUser_id(MyApplication.getUser().getUser_id());
+                    m.setContact_name(contact_name);
+                    m.setContact_id(contact_id);
+                    messageDao.insert(m);
                 }
                 return null;
             }

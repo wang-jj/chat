@@ -11,6 +11,7 @@ import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Chat.ChatModel;
 import com.example.dell.chat.model.Chat.ChatModelImpl;
 import com.example.dell.chat.view.ChatActivity;
+import com.example.dell.chat.view.MsgFragment;
 import com.hyphenate.chat.EMMessage;
 
 import java.util.List;
@@ -22,49 +23,45 @@ import static java.sql.DriverManager.println;
  */
 
 public class ChatPresenter {
-//<ChatActivity extends BaseActivity> extends BasePresenter<ChatActivity>
+
      private ChatModel chatModel = new ChatModelImpl();
      public ChatActivity view;
+     public MsgFragment frag;
 
-
-
-    public ChatPresenter(ChatActivity view){
+    public ChatPresenter(ChatActivity view,MsgFragment frag){
          super();
          this.view = view;
+         this.frag=frag;
      }
 
     //展示聊天内容
-     public void showChat(){
-         chatModel.InitChat(new Callback<List<Chat>>() {
-             @Override
-             public void execute(List<Chat> datas) {
-                 Chat c = new Chat();
-                 c.setContent("hahaha");
-                 c.setType(1);
-                 datas.add(c);
-                 view.adapter.setAdapter(datas);
-                //view.adapter = view.new ChatAdapter(datas);
-             }
-         });
+     public void showChat(int contact_id){
+         List<Chat> datas = chatModel.InitChat(contact_id);
+
+//                 Chat c = new Chat();
+//                 c.setContent("hahaha");
+//                 c.setType(1);
+//                 datas.add(c);
+                 view.getAdapter().setAdapter(datas);
+
+
      }
 
      //发送消息
      public void send(int contact_id, String content,int type){
+
          chatModel.SendMessage(contact_id, content, type, new Callback<Void>() {
              @Override
              public void execute(Void datas) {
+                 frag.getPresenter().dispContact();
+                 frag.getAdapter().notifyDataSetChanged();
+                 view.getAdapter().notifyItemChanged(view.getAdapter().getItemCount()-1);
 
              }
          });
+
+
      }
 
-     //接受消息
-     public void receive(List<EMMessage> messages){
-         chatModel.ReceiveMessage(messages, new Callback<Void>() {
-             @Override
-             public void execute(Void datas) {
 
-             }
-         });
-     }
 }
