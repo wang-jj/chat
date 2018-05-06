@@ -26,7 +26,7 @@ import java.util.List;
 public class MainPresenter<T extends BaseActivity> extends BasePresenter<T> {
 
     private MainModel mainModel=new MainModelImpl();
-    private HomeModel homeModel=new HomeModelIlpl();
+    //private HomeModel homeModel=new HomeModelIlpl();
 
     public MainPresenter(){
         super();

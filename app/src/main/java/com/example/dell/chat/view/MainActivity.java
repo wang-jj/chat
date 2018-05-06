@@ -40,6 +40,7 @@ import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.User;
 import com.example.dell.chat.presenter.LoginPresenter;
 import com.example.dell.chat.presenter.MainPresenter;
+import com.example.dell.chat.tools.Dao;
 
 import java.util.List;
 
@@ -219,6 +220,8 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
             startActivity(intent);
         } else if (id == R.id.nav_album) {
             Intent intent=new Intent(MainActivity.this,AlbumActivity.class);
+            User u=MyApplication.getUser();
+            Dao.SetIntent(intent,u.getUser_id(),u.getImage_path(),u.getUser_motto(),u.getUser_name(),u.getSchool());
             startActivity(intent);
         } else if (id == R.id.nav_collect) {
             Intent intent=new Intent(MainActivity.this,CollectActivity.class);

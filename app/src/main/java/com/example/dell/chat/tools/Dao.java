@@ -1,6 +1,7 @@
 package com.example.dell.chat.tools;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.example.dell.chat.bean.Message;
 import com.example.dell.chat.db.ChatDao;
@@ -52,5 +53,14 @@ public class Dao {
 
     public PersonalStateDao getPersonalStateDao() {
         return personalStateDao;
+    }
+
+    public static Intent SetIntent(Intent intent,int user_id,String profileID,String introduction,String nickname,String school){
+        intent.putExtra("user_id",user_id);
+        intent.putExtra("profileID",profileID);
+        intent.putExtra("introduction",introduction);
+        intent.putExtra("nickname",nickname);
+        intent.putExtra("school",school);
+        return intent;
     }
 }

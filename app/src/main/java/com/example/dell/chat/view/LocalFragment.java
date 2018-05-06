@@ -24,12 +24,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Location;
 import com.example.dell.chat.bean.Recommend;
 import com.example.dell.chat.presenter.HomePresenter;
 import com.example.dell.chat.presenter.LocalPresenter;
+import com.example.dell.chat.tools.Dao;
 import com.google.gson.Gson;
+import com.luck.picture.lib.PictureSelector;
 
 
 /**
@@ -42,16 +45,20 @@ public class LocalFragment extends Fragment {
     private View view;
     private LocalPresenter localPresenter=new LocalPresenter(this);
     private LocationAdapter adapter;
+    private RecyclerView locationRecyclerView;
+    private RecyclerView recommendRecyclerView;
+    private LinearLayout progressLayout;
+    private LayoutAnimationController controller;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view=inflater.inflate(R.layout.local_fragment,container,false);
-
-        final LinearLayout progressLayout=(LinearLayout)view.findViewById(R.id.location_progress);
+        locationRecyclerView=(RecyclerView)view.findViewById(R.id.location_recycler_view);
+        recommendRecyclerView=(RecyclerView)view.findViewById(R.id.recommend_recycler_view);
+        progressLayout=(LinearLayout)view.findViewById(R.id.location_progress);
         progressLayout.setVisibility(View.VISIBLE);
 
 
         //定义推荐 recyclerview
-        final RecyclerView recommendRecyclerView=(RecyclerView)view.findViewById(R.id.recommend_recycler_view);
         recommendRecyclerView.setNestedScrollingEnabled(false);
         LinearLayoutManager layoutManager_recommend=new LinearLayoutManager(getActivity());
         layoutManager_recommend.setOrientation(LinearLayoutManager.HORIZONTAL); //设置横向recyclerview
@@ -60,16 +67,17 @@ public class LocalFragment extends Fragment {
         final RecommendAdapter recommend_adapter=new RecommendAdapter(getRecommend());
 
         //定义附近的人 recyclerview
-        final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_slide_bottom);
-        final RecyclerView locationRecyclerView=(RecyclerView)view.findViewById(R.id.location_recycler_view);
+        controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_slide_bottom);
         locationRecyclerView.setNestedScrollingEnabled(false);
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
         locationRecyclerView.setLayoutManager(layoutManager);
 
         //设置 定位 适配器以及list用以显示数据
-        adapter=new LocationAdapter(getLocation());
+        adapter=new LocationAdapter(new ArrayList<Location>());
 
         final Handler handler = new Handler();
+        recommendRecyclerView.setAdapter(recommend_adapter);
+        /*
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -79,7 +87,9 @@ public class LocalFragment extends Fragment {
                 progressLayout.setVisibility(View.GONE);
             }
         }, 1000);
+        */
 
+        /*
         //底部刷新函数
         final NestedScrollView nestedScrollView=(NestedScrollView)view.findViewById(R.id.local_scroll_view);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -110,6 +120,7 @@ public class LocalFragment extends Fragment {
                 }
             }
         });
+        */
 
         //顶部刷新函数
         final SwipeRefreshLayout swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipe_location_recycler);
@@ -134,7 +145,7 @@ public class LocalFragment extends Fragment {
         });
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorWhite));
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.colorPrimary));
-
+        localPresenter.LoadPerson();
         return view;
     }
 
@@ -245,6 +256,7 @@ public class LocalFragment extends Fragment {
         private static final int TYPE_ONE_IMAGE=0;
         private static final int TYPE_TWO_IMAGE=1;
         private static final int TYPE_THREE_IMAGE=2;
+        private RequestOptions requestOptions=new RequestOptions().centerCrop();
 
         public List<Location> getmLocationList() {
             return mLocationList;
@@ -280,10 +292,24 @@ public class LocalFragment extends Fragment {
                     @Override
                     public void onClick(View v){
                         //跳转个人资料activity
+                        int position=holder.getAdapterPosition();
+                        Location location=mLocationList.get(position);
                         Intent intent=new Intent(v.getContext(),AlbumActivity.class);
+                        Dao.SetIntent(intent,location.getUser_id(),location.getProfileID(),location.getIntroduction(),location.getNickname(),location.getSchool());
                         startActivity(intent);
                     }
                 });
+                /*
+                ((OneViewHolder)holder).locationImage1.getDrawingCache();
+                ((OneViewHolder)holder).locationImage1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position=holder.getAdapterPosition();
+                        Location location=mLocationList.get(position);
+                        //PictureSelector.create(LocalFragment.this).externalPictureAudio("/storage/emulated/0/Android/data/com.example.dell.chat/cache/luban_disk_cache/1525585956070591.png");
+                    }
+                });
+                */
             }else if(viewType==TYPE_TWO_IMAGE){ //两张图片时的布局
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.location_item_two,parent,false);
                 holder=new TwoViewHolder(view);
@@ -291,7 +317,10 @@ public class LocalFragment extends Fragment {
                     @Override
                     public void onClick(View v){
                         //跳转个人资料activity
+                        int position=holder.getAdapterPosition();
+                        Location location=mLocationList.get(position);
                         Intent intent=new Intent(v.getContext(),AlbumActivity.class);
+                        Dao.SetIntent(intent,location.getUser_id(),location.getProfileID(),location.getIntroduction(),location.getNickname(),location.getSchool());
                         startActivity(intent);
                     }
                 });
@@ -302,7 +331,10 @@ public class LocalFragment extends Fragment {
                     @Override
                     public void onClick(View v){
                         //跳转个人资料activity
+                        int position=holder.getAdapterPosition();
+                        Location location=mLocationList.get(position);
                         Intent intent=new Intent(v.getContext(),AlbumActivity.class);
+                        Dao.SetIntent(intent,location.getUser_id(),location.getProfileID(),location.getIntroduction(),location.getNickname(),location.getSchool());
                         startActivity(intent);
                     }
                 });
@@ -323,7 +355,7 @@ public class LocalFragment extends Fragment {
                     Glide.with(getActivity()).load(location.getProfileID()).into(((OneViewHolder)holder).locationProfile);
                 }
                 if(location.getImage1ID()!=null){
-                    Glide.with(getActivity()).load(url+location.getImage1ID()).into(((OneViewHolder)holder).locationImage1);
+                    Glide.with(getActivity()).load(location.getImage1ID()).apply(requestOptions).into(((OneViewHolder)holder).locationImage1);
                 }
             }else if(holder instanceof TwoViewHolder){
                 Location location=mLocationList.get(position);
@@ -334,10 +366,10 @@ public class LocalFragment extends Fragment {
                     Glide.with(getActivity()).load(location.getProfileID()).into(((TwoViewHolder)holder).locationProfile);
                 }
                 if(location.getImage1ID()!=null){
-                    Glide.with(getActivity()).load(url+location.getImage1ID()).into(((TwoViewHolder)holder).locationImage1);
+                    Glide.with(getActivity()).load(location.getImage1ID()).apply(requestOptions).into(((TwoViewHolder)holder).locationImage1);
                 }
                 if(location.getImage2ID()!=null){
-                    Glide.with(getActivity()).load(url+location.getImage2ID()).into(((TwoViewHolder)holder).locationImage2);
+                    Glide.with(getActivity()).load(location.getImage2ID()).apply(requestOptions).into(((TwoViewHolder)holder).locationImage2);
                 }
             }else{
                 Location location=mLocationList.get(position);
@@ -348,13 +380,13 @@ public class LocalFragment extends Fragment {
                     Glide.with(getActivity()).load(location.getProfileID()).into(((ViewHolder)holder).locationProfile);
                 }
                 if(location.getImage1ID()!=null){
-                    Glide.with(getActivity()).load(url+location.getImage1ID()).into(((ViewHolder)holder).locationImage1);
+                    Glide.with(getActivity()).load(location.getImage1ID()).apply(requestOptions).into(((ViewHolder)holder).locationImage1);
                 }
                 if(location.getImage2ID()!=null){
-                    Glide.with(getActivity()).load(url+location.getImage2ID()).into(((ViewHolder)holder).locationImage2);
+                    Glide.with(getActivity()).load(location.getImage2ID()).apply(requestOptions).into(((ViewHolder)holder).locationImage2);
                 }
                 if(location.getImage3ID()!=null){
-                    Glide.with(getActivity()).load(url+location.getImage3ID()).into(((ViewHolder)holder).locationImage3);
+                    Glide.with(getActivity()).load(location.getImage3ID()).apply(requestOptions).into(((ViewHolder)holder).locationImage3);
                 }
             }
         }
@@ -445,7 +477,15 @@ public class LocalFragment extends Fragment {
     }
 
     public void UpdatePerson(List<Location>locations){
+        locationRecyclerView.setLayoutAnimation(controller);
         adapter.setmLocationList(locations);
         adapter.notifyDataSetChanged();
+    }
+
+    public void CreatePerson(List<Location>locations){
+        adapter.setmLocationList(locations);
+        locationRecyclerView.setLayoutAnimation(controller);
+        locationRecyclerView.setAdapter(adapter);
+        progressLayout.setVisibility(View.GONE);
     }
 }
