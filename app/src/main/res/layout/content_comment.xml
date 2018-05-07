@@ -35,21 +35,21 @@
                     android:paddingRight="15dp"
                     android:paddingLeft="15dp">
 
+                    <!--android:src="@drawable/profile"-->
                     <com.example.dell.chat.tools.CircleImageView
                         android:id="@+id/comment_state_profile"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/profile"
                         android:padding="1dp"
                         android:background="@drawable/circle_image_border"/>
 
+                    <!--android:text="麦梓逗比旗"-->
                     <TextView
                         android:id="@+id/comment_state_nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="4dp"
-                        android:text="麦梓逗比旗"
                         android:textColor="@color/colorBlack"
                         android:textStyle="bold"
                         android:textSize="18sp"/>
@@ -64,17 +64,18 @@
                         android:textColor="@color/colorBlack"
                         />
 
+                    <!--android:text="华南理工大学"-->
                     <TextView
                         android:id="@+id/comment_state_school"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="华南理工大学"
                         android:textColor="@color/colorBlue"/>
 
                 </LinearLayout>
 
                 <!--动态内容-->
+                <!--android:text="超级喜欢这种类型的小猫！好想带1只回家的！真想知道怎么养这种小猫！"-->
                 <TextView
                     android:id="@+id/comment_state_content"
                     android:layout_width="match_parent"
@@ -84,7 +85,6 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="10dp"
-                    android:text="超级喜欢这种类型的小猫！好想带1只回家的！真想知道怎么养这种小猫！"
                     android:textColor="@color/colorBlack"
                     android:textSize="16sp" />
 
@@ -96,33 +96,34 @@
                     android:paddingLeft="15dp">
 
                     <!--图片 三张-->
+                    <!--android:src="@drawable/sample1"-->
                     <ImageView
                         android:id="@+id/comment_state_image1"
                         android:layout_width="0dp"
                         android:layout_height="120dp"
                         android:layout_weight="1"
-                        android:layout_margin="1dp"
-                        android:src="@drawable/sample1"/>
+                        android:layout_margin="1dp" />
 
+                    <!--android:src="@drawable/sample2"-->
                     <ImageView
                         android:id="@+id/comment_state_image2"
                         android:layout_width="0dp"
                         android:layout_height="120dp"
                         android:layout_weight="1"
-                        android:layout_margin="1dp"
-                        android:src="@drawable/sample2"/>
+                        android:layout_margin="1dp" />
 
+                    <!--android:src="@drawable/sample3"-->
                     <ImageView
                         android:id="@+id/comment_state_image3"
                         android:layout_width="0dp"
                         android:layout_height="120dp"
                         android:layout_weight="1"
-                        android:layout_margin="1dp"
-                        android:src="@drawable/sample3"/>
+                        android:layout_margin="1dp"/>
 
                 </LinearLayout>
 
                 <!--定位-->
+                <!--android:text="广州·华南理工大学"-->
                 <TextView
                     android:id="@+id/comment_state_location"
                     android:layout_width="wrap_content"
@@ -130,7 +131,6 @@
                     android:paddingLeft="20dp"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp"
-                    android:text="广州·华南理工大学"
                     android:textColor="@color/colorBlue"
                     />
 
@@ -164,12 +164,12 @@
                             android:layout_height="35dp"
                             android:src="@drawable/like"/>
 
+                        <!--android:text="233"-->
                         <TextView
                             android:id="@+id/comment_state_like"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="233"
                             android:textColor="@color/colorStrongGray"
                             android:textSize="15sp"
                             android:textStyle="bold"/>
@@ -194,12 +194,12 @@
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:src="@drawable/comment_checked"/>
+                        <!--android:text="666"-->
                         <TextView
                             android:id="@+id/comment_state_comment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="666"
                             android:textColor="@color/colorWhite"
                             android:textSize="15sp"
                             android:textStyle="bold"/>

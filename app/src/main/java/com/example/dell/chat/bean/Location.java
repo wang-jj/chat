@@ -1,10 +1,12 @@
 package com.example.dell.chat.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Staroul on 2018/4/6.
  */
 
-public class Location {             //附近的人 类
+public class Location implements Serializable{             //附近的人 类
     private String nickname;        //昵称
     private String school;          //学校
     private String introduction;    //简介

@@ -22,25 +22,34 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.dell.chat.R;
+import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.bean.Comment;
 import com.example.dell.chat.bean.MyApplication;
+import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.bean.User;
+import com.example.dell.chat.presenter.CommentPresenter;
+import com.example.dell.chat.presenter.LoginPresenter;
+import com.example.dell.chat.tools.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //动态详情的评论activity
-public class CommentActivity extends AppCompatActivity {
+public class CommentActivity extends BaseActivity<CommentActivity,CommentPresenter<CommentActivity>> {
 
     private EditText editText;
+    private PersonalState personalState;
+    private RequestOptions requestOptions=new RequestOptions().centerCrop();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
-        User u= MyApplication.getUser();
-        Log.e("comment",String.valueOf(u==null));
+        personalState=(PersonalState)getIntent().getSerializableExtra("personalstate");
+        Load();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -249,5 +258,43 @@ public class CommentActivity extends AppCompatActivity {
         public int getItemCount(){
             return mCommentList.size();
         }
+    }
+
+    @Override
+    protected CommentPresenter createPresenter() {
+        return new CommentPresenter();
+    }
+
+    protected void Load(){
+        CircleImageView circleImageView=(CircleImageView)findViewById(R.id.comment_state_profile);
+        Glide.with(CommentActivity.this).load(personalState.getProfileID()).apply(requestOptions).into(circleImageView);
+        TextView nick_name=(TextView)findViewById(R.id.comment_state_nickname);
+        nick_name.setText(personalState.getNickname());
+        TextView school=(TextView)findViewById(R.id.comment_state_school);
+        school.setText(personalState.getSchool());
+        TextView content=(TextView)findViewById(R.id.comment_state_content);
+        content.setText(personalState.getContent());
+        if(personalState.getImage1ID()!=null){
+            ImageView imageView1=(ImageView)findViewById(R.id.comment_state_image1);
+            Glide.with(CommentActivity.this).load(personalState.getImage1ID()).apply(requestOptions).into(imageView1);
+        }
+        if(personalState.getImage2ID()!=null){
+            ImageView imageView2=(ImageView)findViewById(R.id.comment_state_image2);
+            Glide.with(CommentActivity.this).load(personalState.getImage2ID()).apply(requestOptions).into(imageView2);
+        }
+        if(personalState.getImage3ID()!=null){
+            ImageView imageView3=(ImageView)findViewById(R.id.comment_state_image3);
+            Glide.with(CommentActivity.this).load(personalState.getImage3ID()).apply(requestOptions).into(imageView3);
+        }
+        TextView location=(TextView)findViewById(R.id.comment_state_location);
+        location.setText(personalState.getLocation());
+        TextView like=(TextView)findViewById(R.id.comment_state_like);
+        like.setText(String.valueOf(personalState.getLike()));
+        if(personalState.getPictureID()!=0){
+            ImageView like_picture=(ImageView)findViewById(R.id.comment_like_picture);
+            like_picture.setImageResource(R.drawable.like_checked);
+        }
+        TextView comment_num=(TextView)findViewById(R.id.comment_state_comment);
+        comment_num.setText(String.valueOf(personalState.getComment()));
     }
 }

@@ -31,6 +31,7 @@ import com.example.dell.chat.R;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.presenter.HomePresenter;
+import com.example.dell.chat.tools.Dao;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,6 +94,7 @@ public class HomeFragment extends Fragment {
         */
 
 
+        /*
         //底部刷新函数 底部刷新时逻辑写在此函数
         final NestedScrollView nestedScrollView=(NestedScrollView)view.findViewById(R.id.home_scroll_view);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -129,6 +131,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+        */
 
         //顶部刷新函数 顶部刷新的逻辑写在此函数
         swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipe_state_recycler);
@@ -240,6 +243,7 @@ public class HomeFragment extends Fragment {
                         PersonalState personalState=mStateList.get(position);
                         //跳转个人资料activity
                         Intent intent=new Intent(v.getContext(),AlbumActivity.class);
+                        Dao.SetIntent(intent,personalState.getUser_id(),personalState.getProfileID(),personalState.getContent(),personalState.getNickname(),personalState.getSchool());
                         startActivity(intent);
                     }
                 });
@@ -256,14 +260,20 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //跳转动态详情activity
+                        int position=((OneViewHolder)holder).getAdapterPosition();
+                        PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
+                        intent.putExtra("personalstate",personalState);
                         startActivity(intent);
                     }
                 });
                 ((OneViewHolder)holder).stateLinear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        int position=((OneViewHolder)holder).getAdapterPosition();
+                        PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
+                        intent.putExtra("personalstate",personalState);
                         startActivity(intent);
                     }
                 });
@@ -277,6 +287,7 @@ public class HomeFragment extends Fragment {
                         PersonalState personalState=mStateList.get(position);
                         //跳转个人资料activity
                         Intent intent=new Intent(v.getContext(),AlbumActivity.class);
+                        Dao.SetIntent(intent,personalState.getUser_id(),personalState.getProfileID(),personalState.getContent(),personalState.getNickname(),personalState.getSchool());
                         startActivity(intent);
                     }
                 });
@@ -293,14 +304,20 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //跳转动态详情activity
+                        int position=((TwoViewHolder)holder).getAdapterPosition();
+                        PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
+                        intent.putExtra("personalstate",personalState);
                         startActivity(intent);
                     }
                 });
                 ((TwoViewHolder)holder).stateLinear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        int position=((TwoViewHolder)holder).getAdapterPosition();
+                        PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
+                        intent.putExtra("personalstate",personalState);
                         startActivity(intent);
                     }
                 });
@@ -314,6 +331,7 @@ public class HomeFragment extends Fragment {
                         PersonalState personalState=mStateList.get(position);
                         //跳转个人资料activity
                         Intent intent=new Intent(v.getContext(),AlbumActivity.class);
+                        Dao.SetIntent(intent,personalState.getUser_id(),personalState.getProfileID(),personalState.getContent(),personalState.getNickname(),personalState.getSchool());
                         startActivity(intent);
                     }
                 });
@@ -328,14 +346,20 @@ public class HomeFragment extends Fragment {
                 ((ViewHolder)holder).stateCommentLinear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        int position=((ViewHolder)holder).getAdapterPosition();
+                        PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
+                        intent.putExtra("personalstate",personalState);
                         startActivity(intent);
                     }
                 });
                 ((ViewHolder)holder).stateLinear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        int position=((ViewHolder)holder).getAdapterPosition();
+                        PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
+                        intent.putExtra("personalstate",personalState);
                         startActivity(intent);
                     }
                 });
@@ -360,7 +384,11 @@ public class HomeFragment extends Fragment {
                 Glide.with(getActivity()).load(personalState.getImage1ID()).apply(requestOptions).thumbnail(0.1f).into(((OneViewHolder)holder).stateImage1);
                 //((OneViewHolder)holder).stateProfile.setImageResource(personalState.getProfileID());
                 //((OneViewHolder)holder).stateImage1.setImageResource(personalState.getImage1ID());
-                ((OneViewHolder)holder).stateLikePicture.setImageResource(personalState.getPictureID());
+                if(personalState.getPictureID()==0){
+                    ((OneViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like);
+                }else {
+                    ((OneViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like_checked);
+                }
             }else if(holder instanceof TwoViewHolder){
                 PersonalState personalState=mStateList.get(position);
                 ((TwoViewHolder)holder).stateNickName.setText(personalState.getNickname());
@@ -378,7 +406,11 @@ public class HomeFragment extends Fragment {
                 ((TwoViewHolder)holder).stateImage1.setImageResource(personalState.getImage1ID());
                 ((TwoViewHolder)holder).stateImage2.setImageResource(personalState.getImage2ID());
                 */
-                ((TwoViewHolder)holder).stateLikePicture.setImageResource(personalState.getPictureID());
+                if(personalState.getPictureID()==0){
+                    ((TwoViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like);
+                }else {
+                    ((TwoViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like_checked);
+                }
             }else{
                 PersonalState personalState=mStateList.get(position);
                 ((ViewHolder)holder).stateNickName.setText(personalState.getNickname());
@@ -399,7 +431,11 @@ public class HomeFragment extends Fragment {
                 ((ViewHolder)holder).stateImage2.setImageResource(personalState.getImage2ID());
                 ((ViewHolder)holder).stateImage3.setImageResource(personalState.getImage3ID());
                 */
-                ((ViewHolder)holder).stateLikePicture.setImageResource(personalState.getPictureID());
+                if(personalState.getPictureID()==0){
+                    ((ViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like);
+                }else {
+                    ((ViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like_checked);
+                }
             }
         }
 

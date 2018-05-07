@@ -2,8 +2,10 @@ package com.example.dell.chat.bean;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 
+import com.awen.photo.FrescoImageLoader;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.dell.chat.tools.Dao;
 import com.example.dell.chat.view.MsgFragment;
@@ -13,7 +15,7 @@ import com.example.dell.chat.view.MsgFragment;
  * Created by wang on 2018/4/12.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
 
     public static Dao dao;
 
@@ -50,6 +52,11 @@ public class MyApplication extends Application {
         this.user=null;
         dao=new Dao(this);
         MyApplication.context = getApplicationContext();
+        FrescoImageLoader.init(this);
+        //下面是配置toolbar颜色和存储图片地址的
+        //FrescoImageLoader.init(this,android.R.color.holo_blue_light);
+        //FrescoImageLoader.init(this,android.R.color.holo_blue_light,"/storage/xxxx/xxx");
+
     }
 
     public static int getTimeout() {
