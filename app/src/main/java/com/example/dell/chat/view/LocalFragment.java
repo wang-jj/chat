@@ -23,10 +23,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.awen.photo.photopick.controller.PhotoPagerConfig;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Location;
+import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.Recommend;
 import com.example.dell.chat.presenter.HomePresenter;
 import com.example.dell.chat.presenter.LocalPresenter;
@@ -299,17 +301,20 @@ public class LocalFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
-                /*
-                ((OneViewHolder)holder).locationImage1.getDrawingCache();
+
                 ((OneViewHolder)holder).locationImage1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         int position=holder.getAdapterPosition();
                         Location location=mLocationList.get(position);
-                        //PictureSelector.create(LocalFragment.this).externalPictureAudio("/storage/emulated/0/Android/data/com.example.dell.chat/cache/luban_disk_cache/1525585956070591.png");
+                        if(location.getImage1ID()!=null){
+                            ArrayList<String> locationPath=new ArrayList<>();
+                            locationPath.add(location.getImage1ID());
+                            seePicture(locationPath,0);
+                        }
                     }
                 });
-                */
+
             }else if(viewType==TYPE_TWO_IMAGE){ //两张图片时的布局
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.location_item_two,parent,false);
                 holder=new TwoViewHolder(view);
@@ -322,6 +327,30 @@ public class LocalFragment extends Fragment {
                         Intent intent=new Intent(v.getContext(),AlbumActivity.class);
                         Dao.SetIntent(intent,location.getUser_id(),location.getProfileID(),location.getIntroduction(),location.getNickname(),location.getSchool());
                         startActivity(intent);
+                    }
+                });
+                ((TwoViewHolder)holder).locationImage1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        //跳转个人资料activity
+                        int position=holder.getAdapterPosition();
+                        Location location=mLocationList.get(position);
+                        ArrayList<String> locationPath=new ArrayList<>();
+                        locationPath.add(location.getImage1ID());
+                        locationPath.add(location.getImage2ID());
+                        seePicture(locationPath,0);
+                    }
+                });
+                ((TwoViewHolder)holder).locationImage2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        //跳转个人资料activity
+                        int position=holder.getAdapterPosition();
+                        Location location=mLocationList.get(position);
+                        ArrayList<String> locationPath=new ArrayList<>();
+                        locationPath.add(location.getImage1ID());
+                        locationPath.add(location.getImage2ID());
+                        seePicture(locationPath,1);
                     }
                 });
             }else { //三张图片时的布局
@@ -338,6 +367,45 @@ public class LocalFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
+                ((ViewHolder)holder).locationImage1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        //跳转个人资料activity
+                        int position=holder.getAdapterPosition();
+                        Location location=mLocationList.get(position);
+                        ArrayList<String> locationPath=new ArrayList<>();
+                        locationPath.add(location.getImage1ID());
+                        locationPath.add(location.getImage2ID());
+                        locationPath.add(location.getImage3ID());
+                        seePicture(locationPath,0);
+                    }
+                });
+                ((ViewHolder)holder).locationImage2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        //跳转个人资料activity
+                        int position=holder.getAdapterPosition();
+                        Location location=mLocationList.get(position);
+                        ArrayList<String> locationPath=new ArrayList<>();
+                        locationPath.add(location.getImage1ID());
+                        locationPath.add(location.getImage2ID());
+                        locationPath.add(location.getImage3ID());
+                        seePicture(locationPath,1);
+                    }
+                });
+                ((ViewHolder)holder).locationImage3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        //跳转个人资料activity
+                        int position=holder.getAdapterPosition();
+                        Location location=mLocationList.get(position);
+                        ArrayList<String> locationPath=new ArrayList<>();
+                        locationPath.add(location.getImage1ID());
+                        locationPath.add(location.getImage2ID());
+                        locationPath.add(location.getImage3ID());
+                        seePicture(locationPath,2);
+                    }
+                });
             }
 
             return holder;
@@ -352,10 +420,10 @@ public class LocalFragment extends Fragment {
                 ((OneViewHolder)holder).locationSchool.setText(location.getSchool());
                 ((OneViewHolder)holder).locationIntroduction.setText(location.getIntroduction());
                 if(location.getProfileID()!=null){
-                    Glide.with(getActivity()).load(location.getProfileID()).into(((OneViewHolder)holder).locationProfile);
+                    Glide.with(getActivity()).load(location.getProfileID()).thumbnail(0.1f).into(((OneViewHolder)holder).locationProfile);
                 }
                 if(location.getImage1ID()!=null){
-                    Glide.with(getActivity()).load(location.getImage1ID()).apply(requestOptions).into(((OneViewHolder)holder).locationImage1);
+                    Glide.with(getActivity()).load(location.getImage1ID()).thumbnail(0.1f).apply(requestOptions).into(((OneViewHolder)holder).locationImage1);
                 }
             }else if(holder instanceof TwoViewHolder){
                 Location location=mLocationList.get(position);
@@ -363,13 +431,13 @@ public class LocalFragment extends Fragment {
                 ((TwoViewHolder)holder).locationSchool.setText(location.getSchool());
                 ((TwoViewHolder)holder).locationIntroduction.setText(location.getIntroduction());
                 if(location.getProfileID()!=null){
-                    Glide.with(getActivity()).load(location.getProfileID()).into(((TwoViewHolder)holder).locationProfile);
+                    Glide.with(getActivity()).load(location.getProfileID()).thumbnail(0.1f).into(((TwoViewHolder)holder).locationProfile);
                 }
                 if(location.getImage1ID()!=null){
-                    Glide.with(getActivity()).load(location.getImage1ID()).apply(requestOptions).into(((TwoViewHolder)holder).locationImage1);
+                    Glide.with(getActivity()).load(location.getImage1ID()).thumbnail(0.1f).apply(requestOptions).into(((TwoViewHolder)holder).locationImage1);
                 }
                 if(location.getImage2ID()!=null){
-                    Glide.with(getActivity()).load(location.getImage2ID()).apply(requestOptions).into(((TwoViewHolder)holder).locationImage2);
+                    Glide.with(getActivity()).load(location.getImage2ID()).thumbnail(0.1f).apply(requestOptions).into(((TwoViewHolder)holder).locationImage2);
                 }
             }else{
                 Location location=mLocationList.get(position);
@@ -377,16 +445,16 @@ public class LocalFragment extends Fragment {
                 ((ViewHolder)holder).locationSchool.setText(location.getSchool());
                 ((ViewHolder)holder).locationIntroduction.setText(location.getIntroduction());
                 if(location.getProfileID()!=null){
-                    Glide.with(getActivity()).load(location.getProfileID()).into(((ViewHolder)holder).locationProfile);
+                    Glide.with(getActivity()).load(location.getProfileID()).thumbnail(0.1f).into(((ViewHolder)holder).locationProfile);
                 }
                 if(location.getImage1ID()!=null){
-                    Glide.with(getActivity()).load(location.getImage1ID()).apply(requestOptions).into(((ViewHolder)holder).locationImage1);
+                    Glide.with(getActivity()).load(location.getImage1ID()).thumbnail(0.1f).apply(requestOptions).into(((ViewHolder)holder).locationImage1);
                 }
                 if(location.getImage2ID()!=null){
-                    Glide.with(getActivity()).load(location.getImage2ID()).apply(requestOptions).into(((ViewHolder)holder).locationImage2);
+                    Glide.with(getActivity()).load(location.getImage2ID()).thumbnail(0.1f).apply(requestOptions).into(((ViewHolder)holder).locationImage2);
                 }
                 if(location.getImage3ID()!=null){
-                    Glide.with(getActivity()).load(location.getImage3ID()).apply(requestOptions).into(((ViewHolder)holder).locationImage3);
+                    Glide.with(getActivity()).load(location.getImage3ID()).thumbnail(0.1f).apply(requestOptions).into(((ViewHolder)holder).locationImage3);
                 }
             }
         }
@@ -487,5 +555,9 @@ public class LocalFragment extends Fragment {
         locationRecyclerView.setLayoutAnimation(controller);
         locationRecyclerView.setAdapter(adapter);
         progressLayout.setVisibility(View.GONE);
+    }
+
+    public void seePicture(ArrayList<String> url,int position){
+        new PhotoPagerConfig.Builder(getActivity()).setBigImageUrls(url).setSavaImage(true).setSaveImageLocalPath(MyApplication.getStorePath()).setPosition(position).setOpenDownAnimate(true).build();
     }
 }

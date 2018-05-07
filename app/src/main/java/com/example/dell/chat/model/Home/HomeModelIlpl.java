@@ -38,6 +38,7 @@ public class HomeModelIlpl implements HomeModel {
     private String updateMomentUrl="http://119.23.255.222/android/discoverynearby.php";
     private String UpdateNearbyURL="http://119.23.255.222/android/personnearby.php";
     private String url="http://119.23.255.222/android";
+    private String sendLikeUrl="http://119.23.255.222/android/likedis.php";
     @Override
     public void UpdateMoment(final double latitude,final double longitude,final List<PersonalState> list,final Callback<List<PersonalState>> callback){
         ThreadTask<Void,Void,List<PersonalState>> threadTask=new ThreadTask<Void,Void,List<PersonalState>>(callback, new Execute<List<PersonalState>>() {
@@ -86,12 +87,15 @@ public class HomeModelIlpl implements HomeModel {
                     for(PersonalState i:personalStates){
                         if(i.getImage1ID()!=null){
                             i.setImage1ID(url+i.getImage1ID().substring(1));
+                            i.setImg_type(0);
                         }
                         if(i.getImage2ID()!=null){
                             i.setImage2ID(url+i.getImage2ID().substring(1));
+                            i.setImg_type(1);
                         }
                         if(i.getImage3ID()!=null){
                             i.setImage3ID(url+i.getImage3ID().substring(1));
+                            i.setImg_type(2);
                         }
                     }
                     PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
@@ -164,6 +168,33 @@ public class HomeModelIlpl implements HomeModel {
                 */
                 personalStates.addAll(result);
                 return personalStates;
+            }
+        });
+        threadTask.execute();
+    }
+
+    @Override
+    public void SendLike(final int Personalstate_id,final PersonalState personalState) {
+        ThreadTask<Void,Void,Void>threadTask=new ThreadTask<>(null, new Execute<Void>() {
+            @Override
+            public Void doExec() {
+                try{//构建请求
+                    OkHttpClient client=new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
+                    Request request=new Request.Builder().url(sendLikeUrl+"?user_id="+String.valueOf(MyApplication.getUser().getUser_id())+"&personalstate_id="+String.valueOf(Personalstate_id)).build();
+                    Response response=client.newCall(request).execute();
+                    String result=response.body().string();
+                    //locations.remove(0);
+                    Log.e("LIKE", result );
+                    PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
+                    personalStateDao.update(personalState);
+                }catch (Exception e){
+                    if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时
+                        Log.e("updateperson", "outoftime" );
+                    }else {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
             }
         });
         threadTask.execute();

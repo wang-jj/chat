@@ -38,6 +38,20 @@ public class MyApplication extends MultiDexApplication {
 
     private static Context context;
 
+    private static String StorePath;
+
+    public static String getStorePath() {
+        return StorePath;
+    }
+
+    public static void setStorePath(String storePath) {
+        StorePath = storePath;
+    }
+
+    public static void setDao(Dao dao) {
+        MyApplication.dao = dao;
+    }
+
     private static double Latitude;        //纬度
     private static double Longitude;       //经度
 

@@ -156,8 +156,15 @@ public class CommentActivity extends BaseActivity<CommentActivity,CommentPresent
         likeLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageView like=(ImageView)findViewById(R.id.comment_like_picture);
-                like.setImageResource(R.drawable.like_checked);
+                if(personalState.getPictureID()==0){
+                    ImageView like=(ImageView)findViewById(R.id.comment_like_picture);
+                    TextView num=(TextView)findViewById(R.id.comment_state_like) ;
+                    like.setImageResource(R.drawable.like_checked);
+                    personalState.setLike(personalState.getLike()+1);
+                    num.setText(String.valueOf(personalState.getLike()));
+                    personalState.setPictureID(1);
+                    presenter.SendLike(personalState);
+                }
             }
         });
     }

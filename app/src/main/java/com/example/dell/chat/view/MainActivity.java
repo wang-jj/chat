@@ -8,6 +8,8 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -49,6 +51,8 @@ import com.hyphenate.chat.EMMessageBody;
 import java.util.List;
 
 import javax.microedition.khronos.opengles.GL;
+
+import freemarker.template.utility.Constants;
 
 public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainActivity>>
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -368,7 +372,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
         option.setIsNeedAddress(true);//地址
         option.setCoorType("BD09ll");
         option.setScanSpan(5*60*1000);
-        //option.setOpenGps(true);
+        option.setOpenGps(false);
         locationClient.setLocOption(option);
         locationClient.start();
     }

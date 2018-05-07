@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessageBody;
 import com.hyphenate.chat.EMOptions;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
@@ -110,6 +112,13 @@ public class LoadActivity extends BaseActivity<LoadActivity,LoginPresenter<LoadA
 
         setContentView(R.layout.activity_load);
 
+        String dir = Environment.getExternalStorageDirectory().getAbsolutePath()+"/chatImage";
+        Log.e("file", dir );
+        File localFile = new File(dir);
+        if (!localFile.exists()) {
+            localFile.mkdir();
+        }
+        MyApplication.setStorePath(dir);
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);

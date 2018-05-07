@@ -64,4 +64,7 @@ public class HomePresenter {
         });
     }
 
+    public void SendLike(int id, PersonalState personalState){
+        homeModel.SendLike(id,personalState);
+    }
 }

@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.awen.photo.photopick.controller.PhotoPagerConfig;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
@@ -165,38 +166,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    //初始化测试数据
-    private List<PersonalState> getState(){
-        List<PersonalState> stateList=new ArrayList<>();
-        for(int i=1;i<=5;i++){
-            PersonalState personalState=new PersonalState();
-            //记得set上用户ID 用以跳转
-            personalState.setNickname("麦梓逗比旗"+i);
-            personalState.setSchool("华南理工大学");
-            personalState.setContent("超级喜欢这种类型的小猫！好想带"+i+"只回家的！真想知道怎么养这种小猫！");
-            personalState.setLocation("广州·华南理工大学");
-            personalState.setLike(233);
-            personalState.setComment(666);
-            personalState.setProfileID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
-            if((i-1)%3==0){
-                personalState.setImage1ID("http://119.23.255.222/image/111.jpg");
-                personalState.setImg_type(0);
-            }else if((i-1)%3==1){
-                personalState.setImage1ID("http://119.23.255.222/image/111.jpg");
-                personalState.setImage2ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
-                personalState.setImg_type(1);
-            }else{
-                personalState.setImage1ID("http://119.23.255.222/image/111.jpg");
-                personalState.setImage2ID("http://119.23.255.222/image/111.jpg");
-                personalState.setImage3ID("https://cn.bing.com/s/hpb/NorthMale_EN-US8782628354_1920x1080.jpg");
-                personalState.setImg_type(2);
-            }
-            personalState.setPictureID(R.drawable.like);
-            //personalState.setState_time("09:22");
-            stateList.add(personalState);   //添加入stateList中
-        }
-        return stateList;
-    }
+
 
     //动态内容RecyclerView Adapter定义
     public class StateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -253,7 +223,13 @@ public class HomeFragment extends Fragment {
                         int position=((OneViewHolder)holder).getAdapterPosition();
                         PersonalState personalState=mStateList.get(position);
                         //点赞
-                        ((OneViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like_checked);
+                        if(personalState.getPictureID()==0){
+                            ((OneViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like_checked);
+                            personalState.setPictureID(1);
+                            personalState.setLike(personalState.getLike()+1);
+                            ((OneViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));
+                            homePresenter.SendLike(personalState.getPersonalstate_id(),personalState);
+                        }
                     }
                 });
                 ((OneViewHolder)holder).stateCommentLinear.setOnClickListener(new View.OnClickListener() {
@@ -277,6 +253,18 @@ public class HomeFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
+                ((OneViewHolder)holder).stateImage1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position=((OneViewHolder)holder).getAdapterPosition();
+                        PersonalState personalState=mStateList.get(position);
+                        if(personalState.getImage1ID()!=null){
+                            ArrayList<String> urls=new ArrayList<>();
+                            urls.add(personalState.getImage1ID());
+                            seePicture(urls,0);
+                        }
+                    }
+                });
             }else if(viewType==TYPE_TWO_IMAGE){ //两张图片时的布局
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.state_item_two,parent,false);
                 holder=new TwoViewHolder(view);
@@ -297,7 +285,13 @@ public class HomeFragment extends Fragment {
                         int position=((TwoViewHolder)holder).getAdapterPosition();
                         PersonalState personalState=mStateList.get(position);
                         //点赞
-                        ((TwoViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like_checked);
+                        if(personalState.getPictureID()==0){
+                            ((TwoViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like_checked);
+                            personalState.setPictureID(1);
+                            personalState.setLike(personalState.getLike()+1);
+                            ((TwoViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));
+                            homePresenter.SendLike(personalState.getPersonalstate_id(),personalState);
+                        }
                     }
                 });
                 ((TwoViewHolder)holder).stateCommentLinear.setOnClickListener(new View.OnClickListener() {
@@ -321,6 +315,28 @@ public class HomeFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
+                ((TwoViewHolder)holder).stateImage1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position=((TwoViewHolder)holder).getAdapterPosition();
+                        PersonalState personalState=mStateList.get(position);
+                        ArrayList<String> urls=new ArrayList<>();
+                        urls.add(personalState.getImage1ID());
+                        urls.add(personalState.getImage2ID());
+                        seePicture(urls,0);
+                    }
+                });
+                ((TwoViewHolder)holder).stateImage2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position=((TwoViewHolder)holder).getAdapterPosition();
+                        PersonalState personalState=mStateList.get(position);
+                        ArrayList<String> urls=new ArrayList<>();
+                        urls.add(personalState.getImage1ID());
+                        urls.add(personalState.getImage2ID());
+                        seePicture(urls,1);
+                    }
+                });
             }else { //三张图片时的布局
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.state_item,parent,false);
                 holder=new ViewHolder(view);
@@ -340,7 +356,13 @@ public class HomeFragment extends Fragment {
                     public void onClick(View v) {
                         int position=((ViewHolder)holder).getAdapterPosition();
                         PersonalState personalState=mStateList.get(position);
-                        ((ViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like_checked);
+                        if(personalState.getPictureID()==0){
+                            ((ViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like_checked);
+                            personalState.setPictureID(1);
+                            personalState.setLike(personalState.getLike()+1);
+                            ((ViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));
+                            homePresenter.SendLike(personalState.getPersonalstate_id(),personalState);
+                        }
                     }
                 });
                 ((ViewHolder)holder).stateCommentLinear.setOnClickListener(new View.OnClickListener() {
@@ -363,6 +385,42 @@ public class HomeFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
+                ((ViewHolder)holder).stateImage1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position=((ViewHolder)holder).getAdapterPosition();
+                        PersonalState personalState=mStateList.get(position);
+                        ArrayList<String> urls=new ArrayList<>();
+                        urls.add(personalState.getImage1ID());
+                        urls.add(personalState.getImage2ID());
+                        urls.add(personalState.getImage3ID());
+                        seePicture(urls,0);
+                    }
+                });
+                ((ViewHolder)holder).stateImage2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position=((ViewHolder)holder).getAdapterPosition();
+                        PersonalState personalState=mStateList.get(position);
+                        ArrayList<String> urls=new ArrayList<>();
+                        urls.add(personalState.getImage1ID());
+                        urls.add(personalState.getImage2ID());
+                        urls.add(personalState.getImage3ID());
+                        seePicture(urls,1);
+                    }
+                });
+                ((ViewHolder)holder).stateImage3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position=((ViewHolder)holder).getAdapterPosition();
+                        PersonalState personalState=mStateList.get(position);
+                        ArrayList<String> urls=new ArrayList<>();
+                        urls.add(personalState.getImage1ID());
+                        urls.add(personalState.getImage2ID());
+                        urls.add(personalState.getImage3ID());
+                        seePicture(urls,2);
+                    }
+                });
             }
             return holder;
         }
@@ -380,7 +438,7 @@ public class HomeFragment extends Fragment {
                 ((OneViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));      //用以将int类型转换成String类型使用setText显示
                 ((OneViewHolder)holder).stateComment.setText(String.valueOf(personalState.getComment()));
                 //stateProfile 就是一个ImageView
-                Glide.with(getActivity()).load(personalState.getProfileID()).into(((OneViewHolder)holder).stateProfile);
+                Glide.with(getActivity()).load(personalState.getProfileID()).thumbnail(0.1f).into(((OneViewHolder)holder).stateProfile);
                 Glide.with(getActivity()).load(personalState.getImage1ID()).apply(requestOptions).thumbnail(0.1f).into(((OneViewHolder)holder).stateImage1);
                 //((OneViewHolder)holder).stateProfile.setImageResource(personalState.getProfileID());
                 //((OneViewHolder)holder).stateImage1.setImageResource(personalState.getImage1ID());
@@ -398,7 +456,7 @@ public class HomeFragment extends Fragment {
                 ((TwoViewHolder)holder).stateTime.setText(simpleDateFormat.format(personalState.getState_time()));
                 ((TwoViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));      //用以将int类型转换成String类型使用setText显示
                 ((TwoViewHolder)holder).stateComment.setText(String.valueOf(personalState.getComment()));
-                Glide.with(getActivity()).load(personalState.getProfileID()).into(((TwoViewHolder)holder).stateProfile);
+                Glide.with(getActivity()).load(personalState.getProfileID()).thumbnail(0.1f).into(((TwoViewHolder)holder).stateProfile);
                 Glide.with(getActivity()).load(personalState.getImage1ID()).apply(requestOptions).thumbnail(0.1f).into(((TwoViewHolder)holder).stateImage1);
                 Glide.with(getActivity()).load(personalState.getImage2ID()).apply(requestOptions).thumbnail(0.1f).into(((TwoViewHolder)holder).stateImage2);
                 /*
@@ -421,7 +479,7 @@ public class HomeFragment extends Fragment {
                 ((ViewHolder)holder).stateTime.setText(simpleDateFormat.format(personalState.getState_time()));
                 ((ViewHolder)holder).stateLike.setText(String.valueOf(personalState.getLike()));      //用以将int类型转换成String类型使用setText显示
                 ((ViewHolder)holder).stateComment.setText(String.valueOf(personalState.getComment()));
-                Glide.with(getActivity()).load(personalState.getProfileID()).into(((ViewHolder)holder).stateProfile);
+                Glide.with(getActivity()).load(personalState.getProfileID()).thumbnail(0.1f).into(((ViewHolder)holder).stateProfile);
                 Glide.with(getActivity()).load(personalState.getImage1ID()).apply(requestOptions).thumbnail(0.1f).into(((ViewHolder)holder).stateImage1);
                 Glide.with(getActivity()).load(personalState.getImage2ID()).apply(requestOptions).thumbnail(0.1f).into(((ViewHolder)holder).stateImage2);
                 Glide.with(getActivity()).load(personalState.getImage3ID()).apply(requestOptions).thumbnail(0.1f).into(((ViewHolder)holder).stateImage3);
@@ -602,5 +660,9 @@ public class HomeFragment extends Fragment {
         }
         stateRecyclerView.scrollToPosition(0);
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    public void seePicture(ArrayList<String> url,int position){
+        new PhotoPagerConfig.Builder(getActivity()).setBigImageUrls(url).setSavaImage(true).setSaveImageLocalPath(MyApplication.getStorePath()).setPosition(position).setOpenDownAnimate(true).build();
     }
 }

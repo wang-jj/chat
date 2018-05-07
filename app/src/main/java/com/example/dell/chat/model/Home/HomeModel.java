@@ -17,4 +17,6 @@ public interface HomeModel {
     void UpdatePerson(double latitude,double longitude,final Callback<List<Location>> callback);
     //从数据库加载朋友圈
     void LoadMoment(final Callback<List<PersonalState>> callback);
+    //点赞
+    void SendLike(final int Personalstate_id,final PersonalState personalState);
 }

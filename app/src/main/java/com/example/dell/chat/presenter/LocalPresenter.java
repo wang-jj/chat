@@ -53,12 +53,15 @@ public class LocalPresenter {
             public void execute(List<Location> datas) {
                 for(Location location:datas){
                     if(location.getImage1ID()!=null){
+                        location.setImg_type(0);
                         location.setImage1ID(url+location.getImage1ID().substring(1));
                     }
                     if(location.getImage2ID()!=null){
+                        location.setImg_type(1);
                         location.setImage2ID(url+location.getImage2ID().substring(1));
                     }
                     if(location.getImage3ID()!=null){
+                        location.setImg_type(2);
                         location.setImage3ID(url+location.getImage3ID().substring(1));
                     }
                 }
