@@ -164,7 +164,12 @@ public class ChatModelImpl implements ChatModel{
 
                         newmsg.setLatest_content(latest_content);
                         newmsg.setLatest_time(time);
-                        newmsg.setUnread(1);
+                        if(MyApplication.getChattingMode()==0||Integer.valueOf(sender)!=MyApplication.getChattingMode()){
+                            newmsg.setUnread(1);
+                        }
+                        else {
+                            newmsg.setUnread(0);
+                        }
                         messageDao.insert(newmsg);
                     }
                     else { //更新Message

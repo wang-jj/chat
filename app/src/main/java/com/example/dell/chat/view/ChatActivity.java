@@ -71,8 +71,9 @@ public class ChatActivity extends AppCompatActivity {
 
         adapter = new ChatAdapter();
         presenter.showChat(contact_id);  //初始化list
-
         chatRecyclerView.setAdapter(adapter);
+
+        MyApplication.setChatActivity(this);
 
         //进入activity后默认跳转到最新的聊天记录
             chatRecyclerView.scrollToPosition(adapter.getItemCount() - 1);
@@ -353,4 +354,38 @@ public class ChatActivity extends AppCompatActivity {
         return adapter;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MyApplication.setChattingMode(0);
+        MyApplication.setChatActivity(null);
+        Log.e("Chat", "onDestroy");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Log.e("Chat", "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("Chat", "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //EMClient.getInstance().chatManager().removeMessageListener(msgListener);
+        Log.e("Chat", "onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        Log.e("Chat", "onStop");
+    }
 }

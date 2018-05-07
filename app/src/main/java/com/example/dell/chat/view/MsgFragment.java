@@ -201,6 +201,7 @@ public class MsgFragment extends Fragment {
                     mMessageList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position,mMessageList.size());
+                    MyApplication.setChattingMode(message.getContact_id());
                     presenter.delContact(message.getContact_id()); //在本地数据库中删除
 
                 }
