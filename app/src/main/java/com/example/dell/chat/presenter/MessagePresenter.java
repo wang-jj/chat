@@ -5,6 +5,7 @@ import android.view.ViewParent;
 
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Message;
+import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Chat.ChatModelImpl;
 import com.example.dell.chat.model.Message.MessageModel;
@@ -33,7 +34,7 @@ public class MessagePresenter {
     //展示最近联系人
     public void dispContact(){
         List<Message> datas = messageModel.InitContact();
-        view.getAdapter().setAdapter(new ArrayList<Message>());
+        //view.getAdapter().setAdapter(new ArrayList<Message>());
         view.getAdapter().setAdapter(datas);
         return;
 //            @Override
@@ -84,6 +85,9 @@ public class MessagePresenter {
                 view.getAdapter().notifyDataSetChanged();
 
                 //可能还需要判断此时是否在聊天界面 与谁聊天
+                if(MyApplication.getChatActivity()!=null&&MyApplication.getChattingMode()!=0){
+                    MyApplication.getChatActivity().getAdapter().notifyDataSetChanged();
+                }
                 return;
             }
         });

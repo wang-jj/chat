@@ -8,6 +8,7 @@ import android.support.multidex.MultiDexApplication;
 import com.awen.photo.FrescoImageLoader;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.dell.chat.tools.Dao;
+import com.example.dell.chat.view.ChatActivity;
 import com.example.dell.chat.view.MsgFragment;
 import com.hyphenate.EMMessageListener;
 
@@ -60,6 +61,10 @@ public class MyApplication extends MultiDexApplication {
     private static MsgFragment Frag;
 
     private static EMMessageListener Listener;
+
+    private static int ChattingMode=0;
+
+    private static ChatActivity ChatActivity=null;
 
     @Override
     public void onCreate(){
@@ -118,5 +123,21 @@ public class MyApplication extends MultiDexApplication {
 
     public static EMMessageListener getListener(){
         return Listener;
+    }
+
+    public static void setChattingMode(int chattingMode){
+        ChattingMode = chattingMode;
+    }
+
+    public static int getChattingMode(){
+        return ChattingMode;
+    }
+
+    public static void setChatActivity(ChatActivity chatActivity){
+        ChatActivity=chatActivity;
+    }
+
+    public static ChatActivity getChatActivity(){
+        return ChatActivity;
     }
 }

@@ -211,6 +211,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
         };
         EMClient.getInstance().chatManager().addMessageListener(msgListener);
         MyApplication.setListener(msgListener);
+        Log.e("listener","it is set");
 
     }
 

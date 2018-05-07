@@ -41,7 +41,7 @@ public class MsgFragment extends Fragment {
 
 
     private MessagePresenter presenter = new MessagePresenter(this);
-    private MessageAdapter adapter;
+    private MessageAdapter adapter=new MessageAdapter();;
     private RecyclerView messageRecyclerView;
     private EMMessageListener msgListener;
 
@@ -65,7 +65,7 @@ public class MsgFragment extends Fragment {
         MyApplication.setFrag(this);
 
         //设置适配器以及list用以显示数据
-        adapter = new MessageAdapter();
+        //adapter = new MessageAdapter();
         presenter.dispContact();
 
 
@@ -137,6 +137,7 @@ public class MsgFragment extends Fragment {
         presenter.create(90,"220");
         presenter.create(93,"221");
         presenter.create(90,"220");
+        presenter.create(95,"517");
 
 
         return view;
@@ -201,6 +202,7 @@ public class MsgFragment extends Fragment {
                     mMessageList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position,mMessageList.size());
+                    MyApplication.setChattingMode(message.getContact_id());
                     presenter.delContact(message.getContact_id()); //在本地数据库中删除
 
                 }
