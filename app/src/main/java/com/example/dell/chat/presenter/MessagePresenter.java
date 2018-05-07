@@ -33,7 +33,7 @@ public class MessagePresenter {
     //展示最近联系人
     public void dispContact(){
         List<Message> datas = messageModel.InitContact();
-        view.getAdapter().setAdapter(new ArrayList<Message>());
+        //view.getAdapter().setAdapter(new ArrayList<Message>());
         view.getAdapter().setAdapter(datas);
         return;
 //            @Override

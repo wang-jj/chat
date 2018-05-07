@@ -46,6 +46,7 @@ public class MainModelImpl implements MainModel {
                 String password=u.getPassword();
                 EMClient.getInstance().logout(true);
                 EMClient.getInstance().chatManager().removeMessageListener(MyApplication.getListener());
+                Log.e("listener","it is removed");
 
                 u.setPassword(null);
                 userDao.update(u);

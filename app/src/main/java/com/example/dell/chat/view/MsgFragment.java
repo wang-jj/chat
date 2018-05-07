@@ -41,7 +41,7 @@ public class MsgFragment extends Fragment {
 
 
     private MessagePresenter presenter = new MessagePresenter(this);
-    private MessageAdapter adapter;
+    private MessageAdapter adapter=new MessageAdapter();;
     private RecyclerView messageRecyclerView;
     private EMMessageListener msgListener;
 
@@ -65,7 +65,7 @@ public class MsgFragment extends Fragment {
         MyApplication.setFrag(this);
 
         //设置适配器以及list用以显示数据
-        adapter = new MessageAdapter();
+        //adapter = new MessageAdapter();
         presenter.dispContact();
 
 
