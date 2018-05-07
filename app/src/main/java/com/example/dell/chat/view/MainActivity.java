@@ -41,6 +41,10 @@ import com.example.dell.chat.bean.User;
 import com.example.dell.chat.presenter.LoginPresenter;
 import com.example.dell.chat.presenter.MainPresenter;
 import com.example.dell.chat.tools.Dao;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessageBody;
 
 import java.util.List;
 
@@ -57,6 +61,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
     private MsgFragment msgFragment;
     private android.support.v4.app.Fragment currentFragment;
     private LocationClient locationClient;
+    private EMMessageListener msgListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +155,58 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
         setFragment(homeFragment);
         imageView.setVisibility(View.VISIBLE);
         imageView1.setVisibility(View.GONE);
+
+        // 创建接收消息监听器
+        msgListener = new EMMessageListener() {
+            @Override
+            public void onMessageReceived(List<EMMessage> messages) {
+                int i = messages.size();
+                Log.e("message",String.valueOf(i));
+                for(int c = 0;c < i;c++){
+                    EMMessage msg = messages.get(c);
+                    String sender = msg.getFrom();
+                    String receiver = msg.getTo();
+                    long time = msg.getMsgTime();
+                    EMMessageBody body = msg.getBody();
+                    EMMessage.Type type = msg.getType();
+
+                    Log.d("time", String.valueOf(time));
+                    Log.d("type", String.valueOf(type));
+                    Log.d("body", body.toString());
+                    Log.d("sender", sender);
+                    Log.d("receiver", receiver);
+                }
+                //收到消息
+                msgFragment.getPresenter().receive(messages);
+                Log.e("mainactivity", "on start" );
+            }
+
+            @Override
+            public void onCmdMessageReceived(List<EMMessage> messages) {
+                //收到透传消息
+            }
+
+            @Override
+            public void onMessageRead(List<EMMessage> messages) {
+                //收到已读回执
+            }
+
+            @Override
+            public void onMessageDelivered(List<EMMessage> message) {
+                //收到已送达回执
+            }
+            @Override
+            public void onMessageRecalled(List<EMMessage> messages) {
+                //消息被撤回
+            }
+
+            @Override
+            public void onMessageChanged(EMMessage message, Object change) {
+                //消息状态变动
+            }
+        };
+        EMClient.getInstance().chatManager().addMessageListener(msgListener);
+        MyApplication.setListener(msgListener);
 
     }
 
@@ -272,8 +329,22 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         Log.e("locations", String.valueOf(1) );
         locationClient.stop();
+    }
+
+    @Override
+    protected  void onStop(){
+        super.onStop();
+        //EMClient.getInstance().chatManager().removeMessageListener(msgListener);
+        Log.e("mainactivity", "on stop" );
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
     }
 
     //位置
