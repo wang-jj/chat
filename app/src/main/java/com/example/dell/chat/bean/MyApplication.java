@@ -50,7 +50,6 @@ public class MyApplication extends MultiDexApplication {
     @Override
     public void onCreate(){
         super.onCreate();
-        //LitePal.initialize(this);
         SDKInitializer.initialize(this);
         this.user=null;
         dao=new Dao(this);

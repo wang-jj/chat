@@ -140,7 +140,7 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         option.setIsNeedAddress(true);//地址
-        option.setCoorType("BD09");
+        option.setCoorType("BD09ll");
         option.setOpenGps(true);
         locationClient.setLocOption(option);
         locationClient.start();
