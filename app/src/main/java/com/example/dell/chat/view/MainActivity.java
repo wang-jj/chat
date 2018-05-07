@@ -366,7 +366,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         option.setIsNeedAddress(true);//地址
-        option.setCoorType("wgs84");
+        option.setCoorType("BD09");
         option.setScanSpan(5*60*1000);
         option.setOpenGps(true);
         locationClient.setLocOption(option);
