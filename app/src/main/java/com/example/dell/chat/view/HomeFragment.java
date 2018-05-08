@@ -33,6 +33,7 @@ import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.presenter.HomePresenter;
 import com.example.dell.chat.tools.Dao;
+import com.example.dell.chat.tools.Notify;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -703,6 +704,7 @@ public class HomeFragment extends Fragment {
         }
         stateRecyclerView.scrollToPosition(0);
         swipeRefreshLayout.setRefreshing(false);
+        Notify.createCommentNofity("王锦杰",adapter.mStateList.get(0));
     }
 
     public void seePicture(ArrayList<String> url,int position){
@@ -750,6 +752,9 @@ public class HomeFragment extends Fragment {
                         adapter.notifyItemChanged(pos);
                     }
                 }
+                break;
+            default:
+                break;
         }
     }
 }

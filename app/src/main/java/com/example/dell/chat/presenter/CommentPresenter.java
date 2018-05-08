@@ -9,6 +9,7 @@ import com.example.dell.chat.bean.Comment;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.model.Callback;
+import com.example.dell.chat.model.Chat.ChatModelImpl;
 import com.example.dell.chat.model.Comment.CommentModel;
 import com.example.dell.chat.model.Comment.CommentModelImpl;
 import com.example.dell.chat.model.Home.HomeModel;
@@ -43,6 +44,7 @@ public class CommentPresenter <T extends BaseActivity> extends BasePresenter<T> 
                     Log.e("up", datas);
                 }else {
                     Log.e("up", datas);
+                    new ChatModelImpl().SendComment(MyApplication.getUser().getUser_name(),momentID,holder_id);
                     Comment comment=new Comment();
                     comment.setComment_content(content);
                     comment.setProfileID(MyApplication.getUser().getImage_path());

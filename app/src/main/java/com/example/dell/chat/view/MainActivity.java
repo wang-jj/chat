@@ -39,15 +39,19 @@ import com.example.dell.chat.R;
 import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.base.PermissionListener;
 import com.example.dell.chat.bean.MyApplication;
+import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.bean.User;
+import com.example.dell.chat.db.PersonalStateDao;
 import com.example.dell.chat.presenter.LoginPresenter;
 import com.example.dell.chat.presenter.MainPresenter;
 import com.example.dell.chat.tools.Dao;
+import com.example.dell.chat.tools.Notify;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessageBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.microedition.khronos.opengles.GL;
@@ -166,6 +170,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
             public void onMessageReceived(List<EMMessage> messages) {
                 int i = messages.size();
                 Log.e("message",String.valueOf(i));
+                ArrayList<Integer>com=new ArrayList<>();
                 for(int c = 0;c < i;c++){
                     EMMessage msg = messages.get(c);
                     String sender = msg.getFrom();
@@ -174,14 +179,33 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
                     EMMessageBody body = msg.getBody();
                     EMMessage.Type type = msg.getType();
 
+                    //判断是否为评论的内容
+                    if(body.toString().contains("这是一条评论11546325:")){
+                        com.add(new Integer(c));
+                        String result=body.toString();
+                        result.substring(19);
+                        String[]ss=new String[2];
+                        ss=result.split(",.iojn",2);
+                        PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
+                        PersonalState personalState=personalStateDao.queryBuilder().where(PersonalStateDao.Properties.Personalstate_id.eq(Integer.parseInt(ss[0])),PersonalStateDao.Properties.Holder_id.eq(MyApplication.getUser().getUser_id())).unique();
+                        if(personalState!=null){
+                            Notify.createCommentNofity(ss[1],personalState);
+                        }
+                    }
+
                     Log.d("time", String.valueOf(time));
                     Log.d("type", String.valueOf(type));
                     Log.d("body", body.toString());
                     Log.d("sender", sender);
                     Log.d("receiver", receiver);
                 }
+                for(int h=com.size()-1;h>=0;h--){
+                    messages.remove(com.get(h).intValue());
+                }
                 //收到消息
-                msgFragment.getPresenter().receive(messages);
+                if(messages.size()>0){
+                    msgFragment.getPresenter().receive(messages);
+                }
                 Log.e("mainactivity", "on start" );
             }
 
