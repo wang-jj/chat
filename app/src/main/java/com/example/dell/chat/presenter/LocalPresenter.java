@@ -2,15 +2,19 @@ package com.example.dell.chat.presenter;
 
 import android.util.Log;
 
+import com.example.dell.chat.bean.Collect;
 import com.example.dell.chat.bean.Location;
 import com.example.dell.chat.bean.MyApplication;
+import com.example.dell.chat.bean.Recommend;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Home.HomeModel;
 import com.example.dell.chat.model.Home.HomeModelIlpl;
 import com.example.dell.chat.view.HomeFragment;
 import com.example.dell.chat.view.LocalFragment;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -67,6 +71,33 @@ public class LocalPresenter {
                 }
                 Log.e("personal", new Gson().toJson(datas));
                 view.CreatePerson(datas);
+            }
+        });
+    }
+
+    public void Recommend(){
+        homeModel.UpdatePerson(MyApplication.getLatitude(), MyApplication.getLongitude(), new Callback<List<Location>>() {
+            @Override
+            public void execute(List<Location> datas) {
+                for(Location location:datas){
+                    if(location.getImage1ID()!=null){
+                        location.setImg_type(0);
+                        location.setImage1ID(url+location.getImage1ID().substring(1));
+                    }
+                    if(location.getImage2ID()!=null){
+                        location.setImg_type(1);
+                        location.setImage2ID(url+location.getImage2ID().substring(1));
+                    }
+                    if(location.getImage3ID()!=null){
+                        location.setImg_type(2);
+                        location.setImage3ID(url+location.getImage3ID().substring(1));
+                    }
+                }
+                Collections.shuffle(datas);
+                String temp=new Gson().toJson(datas);
+                List<Recommend>recommends=new Gson().fromJson(temp,new TypeToken<List<Recommend>>(){}.getType());
+                //Log.e("Recommend", new Gson().toJson(recommends) );
+                view.LoadRecommend(recommends);
             }
         });
     }

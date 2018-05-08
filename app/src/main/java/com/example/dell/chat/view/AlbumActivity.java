@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,12 +44,13 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
     private LinearLayout progressLayout;
     private String url="http://119.23.255.222/android";
     private RequestOptions requestOptions=new RequestOptions().centerCrop();
+    private List<PersonalState> pers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
-        Intent intent=getIntent();
+        final Intent intent=getIntent();
         user_id=intent.getIntExtra("user_id",MyApplication.getUser().getUser_id());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -64,6 +66,14 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
         //初始化头像
         ImageView imageView_profile=(ImageView)findViewById(R.id.album_profile);
         Glide.with(AlbumActivity.this).load(intent.getStringExtra("profileID")).into(imageView_profile);
+        imageView_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<String>list=new ArrayList<>();
+                list.add(intent.getStringExtra("profileID"));
+                seePicture(list,0);
+            }
+        });
         //imageView_profile.setImageResource(R.drawable.profile);
         //初始化昵称
         TextView textView_nickname=(TextView)findViewById(R.id.album_nickname);
@@ -83,6 +93,7 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
         layoutManager=new LinearLayoutManager(this);
         albumRecyclerView.setLayoutManager(layoutManager);
         adapter=new AlbumAdapter(new ArrayList<Album>());    //通过getAlbum()初始化list
+        albumRecyclerView.setAdapter(adapter);
 
         controller = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_animation_slide_bottom);
 
@@ -165,6 +176,10 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
         private static final int TYPE_TWO_IMAGE=1;
         private static final int TYPE_THREE_IMAGE=2;
 
+        public List<Album> getmAlbumList() {
+            return mAlbumList;
+        }
+
         public void setmAlbumList(List<Album> mAlbumList) {
             this.mAlbumList = mAlbumList;
         }
@@ -191,12 +206,109 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
             if(viewType==TYPE_ONE_IMAGE){
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.album_item_one,parent,false);
                 holder=new OneViewHolder(view);
+                ((OneViewHolder)holder).linearLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position=((OneViewHolder)holder).getAdapterPosition();
+                        Intent intent=new Intent(AlbumActivity.this,CommentActivity.class);
+                        intent.putExtra("personalstate",pers.get(position));
+                        startActivity(intent);
+                    }
+                });
+                ((OneViewHolder)holder).albumImage1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position=((OneViewHolder)holder).getAdapterPosition();
+                         Album album=mAlbumList.get(position);
+                         if(album.getImage1ID()!=null){
+                             ArrayList<String> urls=new ArrayList<>();
+                             urls.add(album.getImage1ID());
+                             seePicture(urls,0);
+                         }
+                    }
+                });
             }else if(viewType==TYPE_TWO_IMAGE){
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.album_item_two,parent,false);
                 holder=new TwoViewHolder(view);
+                ((TwoViewHolder)holder).linearLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position=((TwoViewHolder)holder).getAdapterPosition();
+                        Intent intent=new Intent(AlbumActivity.this,CommentActivity.class);
+                        intent.putExtra("personalstate",pers.get(position));
+                        startActivity(intent);
+                    }
+                });
+                ((TwoViewHolder)holder).albumImage1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position=((TwoViewHolder)holder).getAdapterPosition();
+                        final Album album=mAlbumList.get(position);
+                        ArrayList<String> urls=new ArrayList<>();
+                        urls.add(album.getImage1ID());
+                        urls.add(album.getImage2ID());
+                        seePicture(urls,0);
+                    }
+                });
+                ((TwoViewHolder)holder).albumImage2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position=((TwoViewHolder)holder).getAdapterPosition();
+                        final Album album=mAlbumList.get(position);
+                        ArrayList<String> urls=new ArrayList<>();
+                        urls.add(album.getImage1ID());
+                        urls.add(album.getImage2ID());
+                        seePicture(urls,1);
+                    }
+                });
             }else{
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.album_item,parent,false);
                 holder=new ViewHolder(view);
+                ((ViewHolder)holder).linearLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position=((ViewHolder)holder).getAdapterPosition();
+                        Intent intent=new Intent(AlbumActivity.this,CommentActivity.class);
+                        intent.putExtra("personalstate",pers.get(position));
+                        startActivity(intent);
+                    }
+                });
+                ((ViewHolder)holder).albumImage1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position=((ViewHolder)holder).getAdapterPosition();
+                        final Album album=mAlbumList.get(position);
+                        ArrayList<String> urls=new ArrayList<>();
+                        urls.add(album.getImage1ID());
+                        urls.add(album.getImage2ID());
+                        urls.add(album.getImage3ID());
+                        seePicture(urls,0);
+                    }
+                });
+                ((ViewHolder)holder).albumImage2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position=((ViewHolder)holder).getAdapterPosition();
+                        final Album album=mAlbumList.get(position);
+                        ArrayList<String> urls=new ArrayList<>();
+                        urls.add(album.getImage1ID());
+                        urls.add(album.getImage2ID());
+                        urls.add(album.getImage3ID());
+                        seePicture(urls,1);
+                    }
+                });
+                ((ViewHolder)holder).albumImage3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position=((ViewHolder)holder).getAdapterPosition();
+                        final Album album=mAlbumList.get(position);
+                        ArrayList<String> urls=new ArrayList<>();
+                        urls.add(album.getImage1ID());
+                        urls.add(album.getImage2ID());
+                        urls.add(album.getImage3ID());
+                        seePicture(urls,2);
+                    }
+                });
             }
 
             return holder;
@@ -264,12 +376,14 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
             TextView albumContent;
             TextView albumLocation;
             ImageView albumImage1;
+            LinearLayout linearLayout;
 
             public OneViewHolder(View view){
                 super(view);
                 albumContent=(TextView)view.findViewById(R.id.album_content);
                 albumLocation=(TextView)view.findViewById(R.id.album_location);
                 albumImage1=(ImageView)view.findViewById(R.id.album_image1);
+                linearLayout=(LinearLayout)view.findViewById(R.id.alone);
             }
         }
 
@@ -278,6 +392,7 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
             TextView albumLocation;
             ImageView albumImage1;
             ImageView albumImage2;
+            LinearLayout linearLayout;
 
             public TwoViewHolder(View view){
                 super(view);
@@ -285,6 +400,7 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
                 albumLocation=(TextView)view.findViewById(R.id.album_location);
                 albumImage1=(ImageView)view.findViewById(R.id.album_image1);
                 albumImage2=(ImageView)view.findViewById(R.id.album_image2);
+                linearLayout=(LinearLayout)view.findViewById(R.id.altwo);
             }
         }
 
@@ -294,6 +410,7 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
             ImageView albumImage1;
             ImageView albumImage2;
             ImageView albumImage3;
+            LinearLayout linearLayout;
 
             public ViewHolder(View view){
                 super(view);
@@ -302,6 +419,7 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
                 albumImage1=(ImageView)view.findViewById(R.id.album_image1);
                 albumImage2=(ImageView)view.findViewById(R.id.album_image2);
                 albumImage3=(ImageView)view.findViewById(R.id.album_image3);
+                linearLayout=(LinearLayout)view.findViewById(R.id.althree);
             }
         }
     }
@@ -311,6 +429,7 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
     }
 
     public void LoadPersonalState(List<PersonalState>personalStates){
+        pers=personalStates;
         List<Album>albums=new ArrayList<>();
         for(PersonalState personalState:personalStates){
             Album album=new Album();
@@ -319,20 +438,29 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
             album.setImg_type(personalState.getImg_type());
             if(personalState.getImage1ID()!=null){
                 album.setImage1ID(url+personalState.getImage1ID().substring(1));
+                personalState.setImage1ID(url+personalState.getImage1ID().substring(1));
+                album.setImg_type(0);
             }
             if(personalState.getImage2ID()!=null){
                 album.setImage2ID(url+personalState.getImage2ID().substring(1));
+                personalState.setImage2ID(url+personalState.getImage2ID().substring(1));
+                album.setImg_type(1);
             }
             if(personalState.getImage3ID()!=null){
                 album.setImage3ID(url+personalState.getImage3ID().substring(1));
+                personalState.setImage3ID(url+personalState.getImage3ID().substring(1));
+                album.setImg_type(2);
             }
             album.setAlbum_id(personalState.getPersonalstate_id());
             album.setTime(personalState.getState_time());
             albums.add(album);
         }
-        adapter.setmAlbumList(albums);
+        adapter.getmAlbumList().addAll(0,albums);
+        adapter.notifyDataSetChanged();
         albumRecyclerView.setLayoutAnimation(controller);
-        albumRecyclerView.setAdapter(adapter);
         progressLayout.setVisibility(View.GONE);
+    }
+    public void seePicture(ArrayList<String> url,int position){
+        new PhotoPagerConfig.Builder(AlbumActivity.this).setBigImageUrls(url).setSavaImage(true).setSaveImageLocalPath(MyApplication.getStorePath()).setPosition(position).setOpenDownAnimate(true).build();
     }
 }

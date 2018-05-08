@@ -69,6 +69,7 @@ public class MainModelImpl implements MainModel {
                     Request request=new Request.Builder().url(LocationUrl).post(requestBody).build();
                     Response response=client.newCall(request).execute();
                     result=response.body().string();
+                    Log.e("main1", result );
                 }catch (Exception e){
                     if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时
                         result="no";

@@ -131,7 +131,7 @@ public class HomeModelIlpl implements HomeModel {
                     String result=response.body().string();
                     locations=new Gson().fromJson(result,new TypeToken<List<Location>>(){}.getType());
                     //locations.remove(0);
-                    //Log.e("location", result );
+                    //Log.e("location", new Gson().toJson(locations) );
                 }catch (Exception e){
                     if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时
                         Log.e("updateperson", "outoftime" );

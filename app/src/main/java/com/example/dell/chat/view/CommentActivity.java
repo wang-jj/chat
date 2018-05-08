@@ -189,6 +189,7 @@ public class CommentActivity extends BaseActivity<CommentActivity,CommentPresent
                     TextView num=(TextView)findViewById(R.id.comment_state_like) ;
                     like.setImageResource(R.drawable.like_checked);
                     personalState.setLike(personalState.getLike()+1);
+                    personalState.setPictureID(1);
                     num.setText(String.valueOf(personalState.getLike()));
                     personalState.setPictureID(1);
                     presenter.SendLike(personalState);
@@ -218,7 +219,11 @@ public class CommentActivity extends BaseActivity<CommentActivity,CommentPresent
     @Override
     public void onBackPressed() {   //重载back函数 当edit显示为回复某人时 先设置为空 若edit以为空 则直接返回到上一个activity
         if (editText.getHint()==null||editText.getHint().toString().isEmpty()) {
-            super.onBackPressed();
+            Intent intent=new Intent();
+            intent.putExtra("return",personalState);
+            setResult(RESULT_OK,intent);
+            finish();
+            //super.onBackPressed();
         } else {
             user_id=personalState.getHolder_id();
             editText.setHint("");
@@ -409,7 +414,9 @@ public class CommentActivity extends BaseActivity<CommentActivity,CommentPresent
         TextView comment_num=(TextView)findViewById(R.id.comment_state_comment);
         comment_num.setText(String.valueOf(personalState.getComment()));
         PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
-        personalStateDao.update(personalState);
+        if(personalState.getId()!=null){
+            personalStateDao.update(personalState);
+        }
         Log.e("comment", new Gson().toJson(personalState));
     }
     public void LoadComment(List<Comment>comments){

@@ -38,6 +38,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.login.LoginException;
+
+import static android.app.Activity.RESULT_OK;
 import static java.lang.Thread.sleep;
 
 /**
@@ -219,6 +222,12 @@ public class HomeFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
+                ((OneViewHolder)holder).stateProfile.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((OneViewHolder)holder).stateNickName.performClick();
+                    }
+                });
                 ((OneViewHolder)holder).stateLikeLinear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -244,7 +253,7 @@ public class HomeFragment extends Fragment {
                         PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
                         intent.putExtra("personalstate",personalState);
-                        startActivity(intent);
+                        startActivityForResult(intent,1);
                     }
                 });
                 ((OneViewHolder)holder).stateLinear.setOnClickListener(new View.OnClickListener() {
@@ -255,7 +264,7 @@ public class HomeFragment extends Fragment {
                         PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
                         intent.putExtra("personalstate",personalState);
-                        startActivity(intent);
+                        startActivityForResult(intent,1);
                     }
                 });
                 ((OneViewHolder)holder).stateImage1.setOnClickListener(new View.OnClickListener() {
@@ -285,6 +294,12 @@ public class HomeFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
+                ((TwoViewHolder)holder).stateProfile.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((TwoViewHolder)holder).stateNickName.performClick();
+                    }
+                });
                 ((TwoViewHolder)holder).stateLikeLinear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -310,7 +325,7 @@ public class HomeFragment extends Fragment {
                         PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
                         intent.putExtra("personalstate",personalState);
-                        startActivity(intent);
+                        startActivityForResult(intent,1);
                     }
                 });
                 ((TwoViewHolder)holder).stateLinear.setOnClickListener(new View.OnClickListener() {
@@ -321,7 +336,7 @@ public class HomeFragment extends Fragment {
                         PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
                         intent.putExtra("personalstate",personalState);
-                        startActivity(intent);
+                        startActivityForResult(intent,1);
                     }
                 });
                 ((TwoViewHolder)holder).stateImage1.setOnClickListener(new View.OnClickListener() {
@@ -361,6 +376,12 @@ public class HomeFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
+                ((ViewHolder)holder).stateProfile.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((ViewHolder)holder).stateNickName.performClick();
+                    }
+                });
                 ((ViewHolder)holder).stateLikeLinear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -384,7 +405,7 @@ public class HomeFragment extends Fragment {
                         PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
                         intent.putExtra("personalstate",personalState);
-                        startActivity(intent);
+                        startActivityForResult(intent,1);
                     }
                 });
                 ((ViewHolder)holder).stateLinear.setOnClickListener(new View.OnClickListener() {
@@ -395,7 +416,7 @@ public class HomeFragment extends Fragment {
                         PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
                         intent.putExtra("personalstate",personalState);
-                        startActivity(intent);
+                        startActivityForResult(intent,1);
                     }
                 });
                 ((ViewHolder)holder).stateImage1.setOnClickListener(new View.OnClickListener() {
@@ -452,7 +473,13 @@ public class HomeFragment extends Fragment {
                 ((OneViewHolder)holder).stateComment.setText(String.valueOf(personalState.getComment()));
                 //stateProfile 就是一个ImageView
                 Glide.with(getActivity()).load(personalState.getProfileID()).thumbnail(0.1f).into(((OneViewHolder)holder).stateProfile);
-                Glide.with(getActivity()).load(personalState.getImage1ID()).apply(requestOptions).thumbnail(0.1f).into(((OneViewHolder)holder).stateImage1);
+                if(personalState.getImage1ID()!=null){
+                    Glide.with(getActivity()).load(personalState.getImage1ID()).apply(requestOptions).thumbnail(0.1f).into(((OneViewHolder)holder).stateImage1);
+                }else {
+                    ViewGroup.LayoutParams params=((OneViewHolder)holder).stateImage1.getLayoutParams();
+                    params.height=10;
+                    ((OneViewHolder)holder).stateImage1.setLayoutParams(params);
+                }
                 //((OneViewHolder)holder).stateProfile.setImageResource(personalState.getProfileID());
                 //((OneViewHolder)holder).stateImage1.setImageResource(personalState.getImage1ID());
                 if(personalState.getPictureID()==0){
@@ -667,6 +694,9 @@ public class HomeFragment extends Fragment {
     }
 
     public void UpdateMoment(List<PersonalState> personalStates){
+        for(int i=0;i<adapter.getmStateList().size()&&i<30;i++){
+            adapter.notifyItemChanged(i);
+        }
         if(personalStates.size()>0){
             adapter.getmStateList().addAll(0,personalStates);
             adapter.notifyDataSetChanged();
@@ -679,13 +709,47 @@ public class HomeFragment extends Fragment {
         new PhotoPagerConfig.Builder(getActivity()).setBigImageUrls(url).setSavaImage(true).setSaveImageLocalPath(MyApplication.getStorePath()).setPosition(position).setOpenDownAnimate(true).build();
     }
 
+    /*
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("resume", "onResume: ");
-        Log.e("resume", String.valueOf(pos));
+        Log.e("resume", "onResume: " );
+        Log.e("resume", String.valueOf(pos) );
         if(pos>=0){
-            adapter.notifyItemChanged(pos);
+            PersonalState personalStates=adapter.getmStateList().get(pos);
+            if(personalStates.getImg_type()==0){
+                StateAdapter.OneViewHolder viewHolder= (StateAdapter.OneViewHolder)stateRecyclerView.findViewHolderForAdapterPosition(pos);
+                viewHolder.stateComment.setText(String.valueOf(1));
+                viewHolder.stateLike.setText(String.valueOf(1));
+            }else if(personalStates.getImg_type()==1){
+                StateAdapter.TwoViewHolder viewHolder= (StateAdapter.TwoViewHolder)stateRecyclerView.findViewHolderForAdapterPosition(pos);
+                viewHolder.stateComment.setText(String.valueOf(1));
+                viewHolder.stateLike.setText(String.valueOf(1));
+            }else {
+                StateAdapter.ViewHolder viewHolder= (StateAdapter.ViewHolder)stateRecyclerView.findViewHolderForAdapterPosition(pos);
+                viewHolder.stateComment.setText(String.valueOf(1));
+                viewHolder.stateLike.setText(String.valueOf(1));
+            }
+            //adapter.notifyItemChanged(pos);
+        }
+    }
+    */
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 1:
+                if(resultCode==RESULT_OK){
+                    PersonalState per=(PersonalState)data.getSerializableExtra("return");
+                    if(pos>=0){
+                        PersonalState personalState=adapter.getmStateList().get(pos);
+                        personalState.setPictureID(per.getPictureID());
+                        personalState.setComment(per.getComment());
+                        personalState.setLike(per.getLike());
+                        adapter.notifyItemChanged(pos);
+                    }
+                }
         }
     }
 }

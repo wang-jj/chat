@@ -51,6 +51,7 @@ public class LocalFragment extends Fragment {
     private RecyclerView recommendRecyclerView;
     private LinearLayout progressLayout;
     private LayoutAnimationController controller;
+    private RecommendAdapter recommend_adapter;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view=inflater.inflate(R.layout.local_fragment,container,false);
@@ -66,7 +67,8 @@ public class LocalFragment extends Fragment {
         layoutManager_recommend.setOrientation(LinearLayoutManager.HORIZONTAL); //设置横向recyclerview
         recommendRecyclerView.setLayoutManager(layoutManager_recommend);
         //设置 推荐 适配器以及list用以显示数据
-        final RecommendAdapter recommend_adapter=new RecommendAdapter(getRecommend());
+         recommend_adapter=new RecommendAdapter(getRecommend());
+
 
         //定义附近的人 recyclerview
         controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_slide_bottom);
@@ -77,7 +79,7 @@ public class LocalFragment extends Fragment {
         //设置 定位 适配器以及list用以显示数据
         adapter=new LocationAdapter(new ArrayList<Location>());
 
-        final Handler handler = new Handler();
+        //final Handler handler = new Handler();
         recommendRecyclerView.setAdapter(recommend_adapter);
         /*
         handler.postDelayed(new Runnable() {
@@ -129,6 +131,7 @@ public class LocalFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {   //顶部刷新
+                /*
                 Location location=new Location();
                 location.setNickname("谢欣逗比言");
                 location.setSchool("华北理工小学");
@@ -142,12 +145,14 @@ public class LocalFragment extends Fragment {
                 adapter.notifyItemInserted(0);
                 locationRecyclerView.scrollToPosition(0);
                 swipeRefreshLayout.setRefreshing(false);
+                */
                 localPresenter.UpdatePerson();
             }
         });
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorWhite));
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.colorPrimary));
         localPresenter.LoadPerson();
+        localPresenter.Recommend();
         return view;
     }
 
@@ -155,14 +160,8 @@ public class LocalFragment extends Fragment {
         List<Recommend> recommendList=new ArrayList<>();
         Recommend recommend_first=new Recommend();          //初始化推荐的第一项
         recommend_first.setNickname("我的推荐");
-        recommend_first.setProfileID(R.drawable.profile);   //此处获取用户自己的头像
+        recommend_first.setProfileID("http://119.23.255.222/android/image/profile.jpg");   //此处获取用户自己的头像
         recommendList.add(recommend_first);
-        for(int i=1;i<10;i++){
-            Recommend recommend=new Recommend();
-            recommend.setNickname("肖振逗比鹏");
-            recommend.setProfileID(R.drawable.sample3);
-            recommendList.add(recommend);
-        }
         return recommendList;
     }
 
@@ -195,6 +194,14 @@ public class LocalFragment extends Fragment {
 
     class RecommendAdapter extends RecyclerView.Adapter<LocalFragment.RecommendAdapter.ViewHolder>{
         private List<Recommend> mRecommendList;
+
+        public List<Recommend> getmRecommendList() {
+            return mRecommendList;
+        }
+
+        public void setmRecommendList(List<Recommend> mRecommendList) {
+            this.mRecommendList = mRecommendList;
+        }
 
         class ViewHolder extends RecyclerView.ViewHolder{
             TextView recommendNickName;
@@ -231,7 +238,9 @@ public class LocalFragment extends Fragment {
                 public void onClick(View view) {
                     int position=holder.getAdapterPosition();
                     if(position>=1){
-                        Intent intent=new Intent(view.getContext(),AlbumActivity.class);
+                        Recommend location=mRecommendList.get(position);
+                        Intent intent=new Intent(getActivity(),AlbumActivity.class);
+                        Dao.SetIntent(intent,location.getUser_id(),location.getProfileID(),location.getIntroduction(),location.getNickname(),location.getSchool());
                         startActivity(intent);
                     }
                 }
@@ -244,7 +253,7 @@ public class LocalFragment extends Fragment {
         public void onBindViewHolder(LocalFragment.RecommendAdapter.ViewHolder holder, int position){
             Recommend recommend=mRecommendList.get(position);
             holder.recommendNickName.setText(recommend.getNickname());
-            holder.recommendProfile.setImageResource(recommend.getProfileID());
+            Glide.with(getActivity()).load(recommend.getProfileID()).into(holder.recommendProfile);
         }
 
         @Override
@@ -559,5 +568,10 @@ public class LocalFragment extends Fragment {
 
     public void seePicture(ArrayList<String> url,int position){
         new PhotoPagerConfig.Builder(getActivity()).setBigImageUrls(url).setSavaImage(true).setSaveImageLocalPath(MyApplication.getStorePath()).setPosition(position).setOpenDownAnimate(true).build();
+    }
+
+    public void LoadRecommend(List<Recommend>recommends){
+        recommend_adapter.getmRecommendList().addAll(1,recommends);
+        recommend_adapter.notifyDataSetChanged();
     }
 }

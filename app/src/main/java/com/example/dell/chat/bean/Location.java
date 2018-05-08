@@ -8,9 +8,9 @@ import java.io.Serializable;
 
 public class Location implements Serializable{             //附近的人 类
     private String nickname;        //昵称
+    private String profileID;          //头像
     private String school;          //学校
     private String introduction;    //简介
-    private String profileID;          //头像
     private String image1ID;           //图片一
     private String image2ID;           //图片一
     private String image3ID;           //图片一
