@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Message;
 import com.example.dell.chat.bean.MyApplication;
@@ -245,7 +246,7 @@ public class MsgFragment extends Fragment {
             else {
                 holder.messageTips.setVisibility(View.VISIBLE);
             }
-
+            Glide.with(getActivity()).load(message.getImage_path()).thumbnail(0.1f).into(((ViewHolder)holder).messageProfile);
             //holder.messageProfile.setImageResource(message.getImage_path()); 解析图片路径
         }
 
