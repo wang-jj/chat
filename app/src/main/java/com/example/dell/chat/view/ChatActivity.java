@@ -74,6 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         chatRecyclerView.setAdapter(adapter);
 
         MyApplication.setChatActivity(this);
+        Log.e("chat activity","it's recorded");
 
         //进入activity后默认跳转到最新的聊天记录
             chatRecyclerView.scrollToPosition(adapter.getItemCount() - 1);
@@ -358,7 +359,9 @@ public class ChatActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         MyApplication.setChattingMode(0);
+        Log.e("chat mode","it's cleared");
         MyApplication.setChatActivity(null);
+        Log.e("chat activity","it's cleared");
         Log.e("Chat", "onDestroy");
     }
 

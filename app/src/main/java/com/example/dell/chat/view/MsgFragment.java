@@ -214,6 +214,10 @@ public class MsgFragment extends Fragment {
                     holder.messageTips.setVisibility(View.GONE);    //让新消息角标隐藏
                     int position=holder.getAdapterPosition();
                     Message message=mMessageList.get(position);
+
+                    MyApplication.setChattingMode(message.getContact_id());
+                    Log.e("chat mode","it's set");
+
                     presenter.clickContact(message.getContact_id()); //在本地数据库去除角标
                     //获取头像 昵称 联系人id 传值到聊天界面
                     String nickname=message.getContact_name();

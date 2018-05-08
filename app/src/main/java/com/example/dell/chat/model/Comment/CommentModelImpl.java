@@ -2,6 +2,7 @@ package com.example.dell.chat.model.Comment;
 
 import android.util.Log;
 
+import com.example.dell.chat.bean.Contact;
 import com.example.dell.chat.bean.Location;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.model.Callback;
@@ -41,6 +42,7 @@ public class CommentModelImpl implements CommentModel {
                     Request request=new Request.Builder().url(URL).build();
                     Response response=client.newCall(request).execute();
                     result=response.body().string();
+                    //Contact contact=new Gson().fromJson(result,Contact.class);
                     Log.e("upmoment", result );
                 }catch (Exception e){
                     if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时
