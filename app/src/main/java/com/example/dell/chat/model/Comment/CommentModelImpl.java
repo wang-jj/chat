@@ -42,7 +42,6 @@ public class CommentModelImpl implements CommentModel {
                     Request request=new Request.Builder().url(URL).build();
                     Response response=client.newCall(request).execute();
                     result=response.body().string();
-                    //Contact contact=new Gson().fromJson(result,Contact.class);
                     Log.e("upmoment", result );
                 }catch (Exception e){
                     if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时

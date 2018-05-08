@@ -1,6 +1,9 @@
 package com.example.dell.chat.model.Chat;
 
+import android.app.DownloadManager;
+
 import com.example.dell.chat.bean.Chat;
+import com.example.dell.chat.bean.Contact;
 import com.example.dell.chat.bean.Message;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.db.ChatDao;
@@ -8,12 +11,20 @@ import com.example.dell.chat.db.MessageDao;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Execute;
 import com.example.dell.chat.tools.ThreadTask;
+import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessageBody;
 
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by courageface on 2018/4/27.
@@ -118,6 +129,7 @@ public class ChatModelImpl implements ChatModel{
                 EMMessageBody body ;
                 EMMessage.Type type ;
                 List<Chat> chats = new ArrayList<Chat>();
+                String GetHeadImageAndNickname = "http://119.23.255.222/android/useridinfo.php";
 
                 //环信接受信息
                 for(EMMessage msg : messages){
@@ -159,8 +171,27 @@ public class ChatModelImpl implements ChatModel{
                         Message newmsg =  new Message();
                         newmsg.setUser_id(Integer.valueOf(receiver));
                         newmsg.setContact_id(Integer.valueOf(sender));
-                        newmsg.setImage_path(""); //向服务器获取头像
-                        newmsg.setContact_name("对方用户名");//向服务器获取用户名
+
+                        String result=null;
+                    try {
+                        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
+                        String URL = GetHeadImageAndNickname + "?user_id=" + sender; //获取对方头像和昵称
+                        Request request = new Request.Builder().url(URL).build();
+                        Response response = client.newCall(request).execute();
+                        result=response.body().string();
+                        Contact contact=new Gson().fromJson(result,Contact.class);
+                        newmsg.setImage_path(contact.getProfile()); //向服务器获取头像
+                        newmsg.setContact_name(contact.getNickname());//向服务器获取用户名
+                    }
+                    catch(Exception e){
+                        if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时
+                            result="out_of_time";
+                        }else {
+                            e.printStackTrace();
+                        }
+                    }
+
+
 
                         newmsg.setLatest_content(latest_content);
                         newmsg.setLatest_time(time);

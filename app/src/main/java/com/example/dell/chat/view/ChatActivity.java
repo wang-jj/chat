@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Chat;
 import com.example.dell.chat.bean.MyApplication;
@@ -34,7 +35,7 @@ import java.util.List;
 //聊天内容Activity
 public class ChatActivity extends AppCompatActivity {
 
-    private int profile;
+    private String profile;
     private int contact_id;
     public ChatAdapter adapter;
     public ChatPresenter presenter  = new ChatPresenter(this, MyApplication.getFrag());;
@@ -49,7 +50,7 @@ public class ChatActivity extends AppCompatActivity {
         String nickname=intent_msg.getStringExtra("nickname");
         final int contact_id = intent_msg.getIntExtra("contact_id",-1);
         this.contact_id = contact_id;
-        //profile=intent_msg.getIntExtra("profile",-1);     //合并项目时 设置图片的方式改变，记得去掉注释 修改设置图片的方法
+        this.profile=intent_msg.getStringExtra("profile");     //合并项目时 设置图片的方式改变，记得去掉注释 修改设置图片的方法
 
 
 
@@ -272,19 +273,23 @@ public class ChatActivity extends AppCompatActivity {
             if(holder instanceof LeftViewHolder){
                 Chat chat=mChatList.get(position);
                 ((LeftViewHolder)holder).chatContent.setText(chat.getContent());
-                ((LeftViewHolder)holder).chatProfile.setImageResource(profile);
+                //((LeftViewHolder)holder).chatProfile.setImageResource(profile);
+                Glide.with(getApplication()).load(profile).thumbnail(0.1f).into(((LeftViewHolder)holder).chatProfile);
             }else if(holder instanceof RightViewHolder){
                 Chat chat=mChatList.get(position);
                 ((RightViewHolder)holder).chatContent.setText(chat.getContent());
                 //((RightViewHolder)holder).chatProfile.setImageResource(chat.getProfileID());
+                Glide.with(getApplication()).load(MyApplication.getUser().getImage_path()).thumbnail(0.1f).into(((RightViewHolder)holder).chatProfile);
             }else if(holder instanceof LeftImageViewHolder){
                 Chat chat=mChatList.get(position);
                 //((LeftImageViewHolder)holder).chatImage.setImageResource(chat.getImage());
-                ((LeftImageViewHolder)holder).chatProfile.setImageResource(profile);
+                //((LeftImageViewHolder)holder).chatProfile.setImageResource(profile);
+                Glide.with(getApplication()).load(profile).thumbnail(0.1f).into(((LeftImageViewHolder)holder).chatProfile);
             }else{
                 Chat chat=mChatList.get(position);
                 //((RightImageViewHolder)holder).chatImage.setImageResource(chat.getImage());
                 //((RightImageViewHolder)holder).chatProfile.setImageResource(chat.getProfileID());
+                Glide.with(getApplication()).load(MyApplication.getUser().getImage_path()).thumbnail(0.1f).into(((RightImageViewHolder)holder).chatProfile);
             }
         }
 
