@@ -1,15 +1,17 @@
 package com.example.dell.chat.bean;
 
+import java.util.Date;
+
 /**
  * Created by Staroul on 2018/4/3.
  */
 
 public class Comment {              //评论类
     private int momentID;           //动态id
-    private int profileID;          //头像
+    private String profileID;          //头像
     private String nickname;        //昵称
     private String comment_content; //评论内容
-    private String comment_time;    //评论时间
+    private Date comment_time;    //评论时间
     private int User_id;            //评论用户的id
     private int Holder_id;          //被评论用户的id
     private String Holder_name;     //被评论的用户的用户名
@@ -54,11 +56,11 @@ public class Comment {              //评论类
         this.nickname = nickname;
     }
 
-    public int getProfileID() {
+    public String getProfileID() {
         return profileID;
     }
 
-    public void setProfileID(int profileID) {
+    public void setProfileID(String profileID) {
         this.profileID = profileID;
     }
 
@@ -70,11 +72,11 @@ public class Comment {              //评论类
         this.comment_content = comment_content;
     }
 
-    public String getComment_time() {
+    public Date getComment_time() {
         return comment_time;
     }
 
-    public void setComment_time(String comment_time) {
+    public void setComment_time(Date comment_time) {
         this.comment_time = comment_time;
     }
 }

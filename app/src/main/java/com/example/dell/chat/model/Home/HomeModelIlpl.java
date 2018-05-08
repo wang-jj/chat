@@ -184,7 +184,7 @@ public class HomeModelIlpl implements HomeModel {
                     Response response=client.newCall(request).execute();
                     String result=response.body().string();
                     //locations.remove(0);
-                    Log.e("LIKE", result );
+                    //Log.e("LIKE", result );
                     PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
                     personalStateDao.update(personalState);
                 }catch (Exception e){

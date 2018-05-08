@@ -55,6 +55,7 @@ public class HomeFragment extends Fragment {
     private HomePresenter homePresenter;
     private LayoutAnimationController controller;
     private RequestOptions requestOptions=new RequestOptions().centerCrop();
+    private int pos=-1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -210,10 +211,11 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v){
                         int position=((OneViewHolder)holder).getAdapterPosition();
+                        pos=position;
                         PersonalState personalState=mStateList.get(position);
                         //跳转个人资料activity
                         Intent intent=new Intent(v.getContext(),AlbumActivity.class);
-                        Dao.SetIntent(intent,personalState.getUser_id(),personalState.getProfileID(),personalState.getContent(),personalState.getNickname(),personalState.getSchool());
+                        Dao.SetIntent(intent,personalState.getUser_id(),personalState.getProfileID(),personalState.getIntorduction(),personalState.getNickname(),personalState.getSchool());
                         startActivity(intent);
                     }
                 });
@@ -222,6 +224,7 @@ public class HomeFragment extends Fragment {
                     public void onClick(View v) {
                         int position=((OneViewHolder)holder).getAdapterPosition();
                         PersonalState personalState=mStateList.get(position);
+                        pos=position;
                         //点赞
                         if(personalState.getPictureID()==0){
                             ((OneViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like_checked);
@@ -237,6 +240,7 @@ public class HomeFragment extends Fragment {
                     public void onClick(View v) {
                         //跳转动态详情activity
                         int position=((OneViewHolder)holder).getAdapterPosition();
+                        pos=position;
                         PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
                         intent.putExtra("personalstate",personalState);
@@ -247,6 +251,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         int position=((OneViewHolder)holder).getAdapterPosition();
+                        pos=position;
                         PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
                         intent.putExtra("personalstate",personalState);
@@ -272,10 +277,11 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v){
                         int position=((TwoViewHolder)holder).getAdapterPosition();
+                        pos=position;
                         PersonalState personalState=mStateList.get(position);
                         //跳转个人资料activity
                         Intent intent=new Intent(v.getContext(),AlbumActivity.class);
-                        Dao.SetIntent(intent,personalState.getUser_id(),personalState.getProfileID(),personalState.getContent(),personalState.getNickname(),personalState.getSchool());
+                        Dao.SetIntent(intent,personalState.getUser_id(),personalState.getProfileID(),personalState.getIntorduction(),personalState.getNickname(),personalState.getSchool());
                         startActivity(intent);
                     }
                 });
@@ -283,6 +289,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         int position=((TwoViewHolder)holder).getAdapterPosition();
+                        pos=position;
                         PersonalState personalState=mStateList.get(position);
                         //点赞
                         if(personalState.getPictureID()==0){
@@ -299,6 +306,7 @@ public class HomeFragment extends Fragment {
                     public void onClick(View v) {
                         //跳转动态详情activity
                         int position=((TwoViewHolder)holder).getAdapterPosition();
+                        pos=position;
                         PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
                         intent.putExtra("personalstate",personalState);
@@ -309,6 +317,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         int position=((TwoViewHolder)holder).getAdapterPosition();
+                        pos=position;
                         PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
                         intent.putExtra("personalstate",personalState);
@@ -344,10 +353,11 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v){
                         int position=((ViewHolder)holder).getAdapterPosition();
+                        pos=position;
                         PersonalState personalState=mStateList.get(position);
                         //跳转个人资料activity
                         Intent intent=new Intent(v.getContext(),AlbumActivity.class);
-                        Dao.SetIntent(intent,personalState.getUser_id(),personalState.getProfileID(),personalState.getContent(),personalState.getNickname(),personalState.getSchool());
+                        Dao.SetIntent(intent,personalState.getUser_id(),personalState.getProfileID(),personalState.getIntorduction(),personalState.getNickname(),personalState.getSchool());
                         startActivity(intent);
                     }
                 });
@@ -355,6 +365,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         int position=((ViewHolder)holder).getAdapterPosition();
+                        pos=position;
                         PersonalState personalState=mStateList.get(position);
                         if(personalState.getPictureID()==0){
                             ((ViewHolder)holder).stateLikePicture.setImageResource(R.drawable.like_checked);
@@ -369,6 +380,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         int position=((ViewHolder)holder).getAdapterPosition();
+                        pos=position;
                         PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
                         intent.putExtra("personalstate",personalState);
@@ -379,6 +391,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         int position=((ViewHolder)holder).getAdapterPosition();
+                        pos=position;
                         PersonalState personalState=mStateList.get(position);
                         Intent intent=new Intent(v.getContext(),CommentActivity.class);
                         intent.putExtra("personalstate",personalState);
@@ -664,5 +677,15 @@ public class HomeFragment extends Fragment {
 
     public void seePicture(ArrayList<String> url,int position){
         new PhotoPagerConfig.Builder(getActivity()).setBigImageUrls(url).setSavaImage(true).setSaveImageLocalPath(MyApplication.getStorePath()).setPosition(position).setOpenDownAnimate(true).build();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("resume", "onResume: ");
+        Log.e("resume", String.valueOf(pos));
+        if(pos>=0){
+            adapter.notifyItemChanged(pos);
+        }
     }
 }

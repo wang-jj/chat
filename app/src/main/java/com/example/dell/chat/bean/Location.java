@@ -18,6 +18,16 @@ public class Location implements Serializable{             //附近的人 类
     private int user_id;            //用户id
     private double Latitude;        //纬度
     private double Longitude;       //经度
+    private int gender;
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
 
     public void setLatitude(double latitude) {
         Latitude = latitude;
