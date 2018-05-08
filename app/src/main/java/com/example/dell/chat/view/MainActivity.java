@@ -187,7 +187,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
                         String[]ss=new String[2];
                         ss=result.split(",.iojn",2);
                         PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
-                        PersonalState personalState=personalStateDao.queryBuilder().where(PersonalStateDao.Properties.Personalstate_id.eq(Integer.parseInt(ss[0])),PersonalStateDao.Properties.Holder_id.eq(MyApplication.getUser().getUser_id())).unique();
+                        PersonalState personalState=personalStateDao.queryBuilder().where(PersonalStateDao.Properties.Personalstate_id.eq(Integer.parseInt(ss[0]))).unique();
                         if(personalState!=null){
                             Notify.createCommentNofity(ss[1],personalState);
                         }
