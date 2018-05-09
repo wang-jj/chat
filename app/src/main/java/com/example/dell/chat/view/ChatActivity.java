@@ -29,6 +29,11 @@ import com.example.dell.chat.bean.Chat;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.presenter.ChatPresenter;
 import com.example.dell.chat.base.BaseActivity;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,6 +170,7 @@ public class ChatActivity extends AppCompatActivity {
         imageButton_picture_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                creatSelect();
                 Chat chat=new Chat();
                 //chat.setProfileID(R.drawable.profile);
                 chat.setType(2);
@@ -391,5 +397,36 @@ public class ChatActivity extends AppCompatActivity {
         super.onStop();
 
         Log.e("Chat", "onStop");
+    }
+
+    public String getpath(LocalMedia a){
+        String path=a.getPath();
+        if(path.substring(path.length()-3).equals("gif")){
+            return path;
+        }
+        if(a.isCut()){//裁剪了
+            path=a.getCutPath();
+        }if(a.isCompressed()){//压缩了
+            path=a.getCompressPath();
+        }
+        return  path;
+    }
+
+    public void creatSelect(){
+        PictureSelector.create(ChatActivity.this).openGallery(PictureMimeType.ofImage()).enableCrop(true).compress(true).minimumCompressSize(200).previewImage(true).isGif(true).maxSelectNum(1).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                    String path=getpath(selectList.get(0));//获得图片路径
+                    Log.e("path", path);
+                    break;
+            }
+        }
     }
 }
