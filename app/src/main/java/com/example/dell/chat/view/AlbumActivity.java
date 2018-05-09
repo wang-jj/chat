@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,7 +86,10 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
         //初始化昵称
         TextView textView_nickname=(TextView)findViewById(R.id.album_nickname);
         textView_nickname.setText(intent.getStringExtra("nickname"));
-        textView_nickname.setOnClickListener(new View.OnClickListener() {
+
+        //使用线性布局的点击事件进行跳转，原来的昵称跳转注释掉
+        LinearLayout jump_linear=(LinearLayout)findViewById(R.id.jump_linear);
+        jump_linear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //跳转到与该用户聊天
@@ -99,6 +103,21 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
                 startActivity(intent);
             }
         });
+
+//        textView_nickname.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //跳转到与该用户聊天
+//                MessagePresenter presenter = new MessagePresenter(MyApplication.getFrag());
+//                presenter.create(user_id);
+//                //传入头像 昵称 联系人id 传值到聊天界面
+//                Intent intent=new Intent(view.getContext(),ChatActivity.class);
+//                intent.putExtra("nickname",nickname);
+//                intent.putExtra("profile",profile);
+//                intent.putExtra("contact_id",user_id);
+//                startActivity(intent);
+//            }
+//        });
         //初始化学校
         TextView textView_school=(TextView)findViewById(R.id.album_school);
         textView_school.setText(intent.getStringExtra("school"));

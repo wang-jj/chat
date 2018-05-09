@@ -25,12 +25,15 @@
             app:toolbarId="@+id/toolbar">
 
             <LinearLayout
+                android:id="@+id/jump_linear"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginTop="130dp"
                 android:gravity="center_vertical"
-                android:background="@color/colorWhite">
+                android:background="@drawable/jump_background"
+                android:clickable="true"
+                android:focusable="true">
 
                 <TextView
                     android:id="@+id/album_pre"
