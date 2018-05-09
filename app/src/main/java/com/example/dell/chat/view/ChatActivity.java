@@ -357,6 +357,10 @@ public class ChatActivity extends AppCompatActivity {
         return adapter;
     }
 
+    public RecyclerView getChatRecyclerView(){
+        return chatRecyclerView;
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
