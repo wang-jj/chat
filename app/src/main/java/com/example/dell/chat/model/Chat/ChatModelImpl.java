@@ -315,7 +315,7 @@ public class ChatModelImpl implements ChatModel{
         int end_pos = strAfter.indexOf("remoteurl:")-2;
         Log.e("原图片路径",str);
         Log.e("最终图片",strAfter.substring(beg_pos,end_pos));
-        return strAfter.substring(beg_pos,end_pos);
+        return "https://a1.easemob.com/1115180421177235/android-univchat/chatfiles/51b51d70-5360-11e8-8809-a7378fa00f05";//strAfter.substring(beg_pos,end_pos);
 
     }
 }

@@ -85,7 +85,7 @@ public class MessagePresenter {
                 view.getAdapter().notifyDataSetChanged();
 
                 //可能还需要判断此时是否在聊天界面 与谁聊天
-                if(MyApplication.getChatActivity()!=null&&MyApplication.getChattingMode()!=0){
+                if(MyApplication.getChatActivity()!=null){//&&MyApplication.getChattingMode()!=0){
                     MyApplication.getChatActivity().getAdapter().notifyDataSetChanged();
                 }
                 return;
@@ -94,8 +94,8 @@ public class MessagePresenter {
     }
 
     //新建联系人
-    public void create(int contact_id,  String contact_name){
-        messageModel.CreateContact(contact_id, contact_name, new Callback<Void>() {
+    public void create(int contact_id){
+        messageModel.CreateContact(contact_id, new Callback<Void>() {
             @Override
             public void execute(Void datas) {
                 dispContact();

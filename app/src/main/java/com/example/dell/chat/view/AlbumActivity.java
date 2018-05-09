@@ -30,6 +30,7 @@ import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.presenter.AlbumPresenter;
 import com.example.dell.chat.base.BaseActivity;
+import com.example.dell.chat.presenter.MessagePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,8 @@ import java.util.List;
 //个人资料 相册Activity
 public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<AlbumActivity>> {
     private int user_id ;
+    private String nickname;
+    private String profile;
     private AlbumAdapter adapter;
     private RecyclerView albumRecyclerView;
     private LinearLayoutManager layoutManager;
@@ -52,6 +55,8 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
         setContentView(R.layout.activity_album);
         final Intent intent=getIntent();
         user_id=intent.getIntExtra("user_id",MyApplication.getUser().getUser_id());
+        nickname=intent.getStringExtra("nickname");
+        profile=intent.getStringExtra("profileID");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -82,6 +87,14 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
             @Override
             public void onClick(View view) {
                 //跳转到与该用户聊天
+                MessagePresenter presenter = new MessagePresenter(MyApplication.getFrag());
+                presenter.create(user_id);
+                //传入头像 昵称 联系人id 传值到聊天界面
+                Intent intent=new Intent(view.getContext(),ChatActivity.class);
+                intent.putExtra("nickname",nickname);
+                intent.putExtra("profile",profile);
+                intent.putExtra("contact_id",user_id);
+                startActivity(intent);
             }
         });
         //初始化学校

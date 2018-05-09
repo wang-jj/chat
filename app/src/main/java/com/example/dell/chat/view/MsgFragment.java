@@ -140,11 +140,11 @@ public class MsgFragment extends Fragment {
 
 
         //测试
-        presenter.create(93,"221");
-        presenter.create(90,"220");
-        presenter.create(93,"221");
-        presenter.create(90,"220");
-        presenter.create(95,"517");
+        presenter.create(93);
+        presenter.create(90);
+        presenter.create(93);
+        presenter.create(90);
+        presenter.create(95);
 
 
         return view;

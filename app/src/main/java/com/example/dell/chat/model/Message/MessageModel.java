@@ -21,5 +21,5 @@ public interface MessageModel {
     void ClickContact(final int contact_id, final Callback<Void> callback);
 
     //新建联系人
-    void CreateContact(final int contact_id, final String contact_name, final Callback<Void> callback);
+    void CreateContact(final int contact_id, final Callback<Void> callback);
 }

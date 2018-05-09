@@ -2,6 +2,7 @@ package com.example.dell.chat.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -260,7 +261,7 @@ public class ChatActivity extends AppCompatActivity {
                 Glide.with(getApplication()).load(MyApplication.getUser().getImage_path()).thumbnail(0.1f).into(((RightViewHolder)holder).chatProfile);
             }else if(holder instanceof LeftImageViewHolder){
                 Chat chat=mChatList.get(position);
-                Glide.with(getApplication()).load(chat.getContent()).thumbnail(0.1f).into(((LeftImageViewHolder)holder).chatImage);
+                Glide.with(getApplication()).load( chat.getContent()).thumbnail(0.1f).into(((LeftImageViewHolder)holder).chatImage);
                 Glide.with(getApplication()).load(profile).thumbnail(0.1f).into(((LeftImageViewHolder)holder).chatProfile);
             }else{
                 Chat chat=mChatList.get(position);

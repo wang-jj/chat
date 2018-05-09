@@ -105,7 +105,7 @@ public class MessageModelImpl implements MessageModel {
 
     //新建联系人 若已存在则不新建
     @Override
-    public void CreateContact(final int contact_id, final String contact_name, final Callback<Void> callback){
+    public void CreateContact(final int contact_id, final Callback<Void> callback){
         ThreadTask t =new ThreadTask<Void,Void,Void>(callback, new Execute() {
             @Override
             public Void doExec() {
@@ -115,12 +115,6 @@ public class MessageModelImpl implements MessageModel {
                         MessageDao.Properties.Contact_id.eq(contact_id)).build().list();
                 if(list.size()==0){
                     Message m = new Message();
-                    m.setUser_id(MyApplication.getUser().getUser_id());
-                    m.setContact_name(contact_name);
-                    m.setContact_id(contact_id);
-                    m.setLatest_content("");
-                    m.setLatest_time(0);
-                    m.setUnread(0);
                     String result=null;
                     try {
                         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
@@ -130,7 +124,7 @@ public class MessageModelImpl implements MessageModel {
                         result=response.body().string();
                         Contact contact=new Gson().fromJson(result,Contact.class);
                         m.setImage_path(contact.getProfile());//向服务器获取头像
-                        //newmsg.setContact_name(contact.getNickname());//向服务器获取用户名
+                        m.setContact_name(contact.getNickname());//向服务器获取用户名
                     }
                     catch(Exception e){
                         if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时
@@ -139,6 +133,12 @@ public class MessageModelImpl implements MessageModel {
                             e.printStackTrace();
                         }
                     }
+
+                    m.setUser_id(MyApplication.getUser().getUser_id());
+                    m.setContact_id(contact_id);
+                    m.setLatest_content("");
+                    m.setLatest_time(0);
+                    m.setUnread(0);
 
                     messageDao.insert(m);
                 }
