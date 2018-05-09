@@ -86,12 +86,11 @@ public class MessagePresenter {
                 view.getAdapter().notifyDataSetChanged();
 
                 //可能还需要判断此时是否在聊天界面 与谁聊天
-                if(MyApplication.getChatActivity()!=null&&datas.size()>0){//&&MyApplication.getChattingMode()!=0){
+                if(MyApplication.getChatActivity()!=null&&datas.size()>0){
                     for(Chat c : datas) {
                         MyApplication.getChatActivity().getAdapter().getChatList().add(c);
                     }
                     Log.e("chat","更新当前聊天");
-                    //chatModel.InitChat(MyApplication.getChattingMode());
                     MyApplication.getChatActivity().getChatRecyclerView().smoothScrollToPosition(MyApplication.getChatActivity().getAdapter().getItemCount() - 1 );
                     MyApplication.getChatActivity().getAdapter().notifyDataSetChanged();
                 }

@@ -27,17 +27,26 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Chat;
+import com.example.dell.chat.bean.Contact;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.presenter.ChatPresenter;
 import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.tools.Dao;
+import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 //聊天内容Activity
 public class ChatActivity extends AppCompatActivity {
@@ -48,6 +57,8 @@ public class ChatActivity extends AppCompatActivity {
     public ChatPresenter presenter  = new ChatPresenter(this, MyApplication.getFrag());
     public RecyclerView chatRecyclerView;
     public EditText editText;
+    public String GetUserInfo = "http://119.23.255.222/android/useridinfo.php";
+    public Intent mIntent ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +72,7 @@ public class ChatActivity extends AppCompatActivity {
         this.contact_id = contact_id;
         this.profile=intent_msg.getStringExtra("profile");     //合并项目时 设置图片的方式改变，记得去掉注释 修改设置图片的方法
 
-
+        mIntent = new Intent(ChatActivity.this, AlbumActivity.class);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //初始化标题栏名称 使用nickname
@@ -95,10 +106,10 @@ public class ChatActivity extends AppCompatActivity {
         imageView_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //跳转个人资料activity
-                Intent intent=new Intent(ChatActivity.this,AlbumActivity.class);
-                //Dao.SetIntent();
-                startActivity(intent);
+                //获取对方用户个人资料
+                presenter.getInfo(contact_id);
+                //startActivity(mIntent);
+                return;
             }
         });
 
@@ -235,8 +246,8 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //跳转个人资料activity
-                        Intent intent=new Intent(ChatActivity.this,AlbumActivity.class);
-                        startActivity(intent);
+                        //获取对方用户个人资料
+                        presenter.getInfo(contact_id);
                     }
                 });
             }else if(viewType==TYPE_SENT_IMAGE){
@@ -261,8 +272,8 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //跳转个人资料activity
-                        Intent intent=new Intent(ChatActivity.this,AlbumActivity.class);
-                        startActivity(intent);
+                        //获取对方用户个人资料
+                        presenter.getInfo(contact_id);
                     }
                 });
             }

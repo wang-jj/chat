@@ -22,4 +22,6 @@ public interface ChatModel {
 
     //发送评论通知
     void SendComment(final String user_name,final int comment_id,int holder_id);
+
+
 }

@@ -92,7 +92,7 @@ public class ChatModelImpl implements ChatModel{
                         @Override
                         public void  onError (int code, String error){
                             Log.e("chat","send failed, error code:"+String.valueOf(code)+" "+error);
-
+                            //发送失败通知
                         }
 
                         @Override
@@ -117,7 +117,7 @@ public class ChatModelImpl implements ChatModel{
                         @Override
                         public void  onError (int code, String error){
                             Log.e("chat","send failed, error code:"+String.valueOf(code)+" "+error);
-
+                            //发送失败通知
                         }
 
                         @Override
@@ -253,12 +253,9 @@ public class ChatModelImpl implements ChatModel{
                             e.printStackTrace();
                         }
                     }
-
-
-
                         newmsg.setLatest_content(latest_content);
                         newmsg.setLatest_time(time);
-                        if(MyApplication.getChattingMode()==0||Integer.valueOf(sender)!=MyApplication.getChattingMode()){
+                        if(MyApplication.getChattingMode()==0||String.valueOf(MyApplication.getChattingMode()).equals(sender)){
                             newmsg.setUnread(1);
                         }
                         else {
@@ -269,7 +266,12 @@ public class ChatModelImpl implements ChatModel{
                     else { //更新Message
                         themsg.setLatest_content(latest_content);
                         themsg.setLatest_time(time);
-                        themsg.setUnread(1);
+                        if(MyApplication.getChattingMode()==0||String.valueOf(MyApplication.getChattingMode()).equals(sender)){
+                            themsg.setUnread(1);
+                        }
+                        else {
+                            themsg.setUnread(0);
+                        }
                         messageDao.update(themsg);
                     }
 

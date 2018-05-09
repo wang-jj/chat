@@ -57,6 +57,7 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
         user_id=intent.getIntExtra("user_id",MyApplication.getUser().getUser_id());
         nickname=intent.getStringExtra("nickname");
         profile=intent.getStringExtra("profileID");
+        Log.e("int", profile);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -70,7 +71,8 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
         //初始化顶部简介
         //初始化头像
         ImageView imageView_profile=(ImageView)findViewById(R.id.album_profile);
-        Glide.with(AlbumActivity.this).load(intent.getStringExtra("profileID")).into(imageView_profile);
+        Log.e("album","show head image");
+        Glide.with(AlbumActivity.this).load(profile).into(imageView_profile);
         imageView_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
