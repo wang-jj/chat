@@ -17,6 +17,7 @@ import com.example.dell.chat.model.Chat.ChatModelImpl;
 import com.example.dell.chat.model.Message.MessageModelImpl;
 import com.example.dell.chat.view.ChatActivity;
 import com.example.dell.chat.view.CommentActivity;
+import com.example.dell.chat.view.MsgFragment;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -27,8 +28,9 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class NewMessage {
     public static void createNewMessageNofity(String user_name, Chat chat){
         NotificationManager notificationManager= (NotificationManager) MyApplication.getContext().getSystemService(NOTIFICATION_SERVICE);
-        Intent intent=new Intent(MyApplication.getContext(), ChatActivity.class);
-        intent.putExtra("chat",chat);
+        Intent intent=new Intent(MyApplication.getContext(), MsgFragment.class);
+
+        //intent.putExtra("chat",chat);
         String content = " ";
         if(chat.getType()==1){
             content = new ChatModelImpl().messageCutter(chat.getContent());

@@ -2,19 +2,14 @@ package com.example.dell.chat.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -22,38 +17,24 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Chat;
-import com.example.dell.chat.bean.Contact;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Execute;
 import com.example.dell.chat.presenter.ChatPresenter;
-import com.example.dell.chat.base.BaseActivity;
-import com.example.dell.chat.tools.Dao;
-import com.example.dell.chat.tools.IsInternet;
 import com.example.dell.chat.tools.ThreadTask;
-import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 //聊天内容Activity
 public class ChatActivity extends AppCompatActivity {
@@ -516,4 +497,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
