@@ -75,10 +75,7 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
                 //发布动态逻辑
                 //onBackPressed();
                 PersonalState personalState=new PersonalState();
-                String b=translate.string2Unicode(editText.getText().toString());
-                Log.e("publish", b );
-                personalState.setContent(b);
-                //personalState.setContent(editText.getText().toString());
+                personalState.setContent(editText.getText().toString());
                 personalState.setImg_type(selectList.size());
                 personalState.setUser_id(MyApplication.getUser().getUser_id());
                 if(selectList.size()>0){
@@ -210,7 +207,7 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
     }
 
     public void creatSelect(){
-        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).enableCrop(true).compress(true).minimumCompressSize(200).previewImage(true).isGif(true).maxSelectNum(3).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
+        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).theme(R.style.picture_white_style).enableCrop(true).compress(true).minimumCompressSize(200).previewImage(true).isGif(true).maxSelectNum(3).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
     }
 
     @Override

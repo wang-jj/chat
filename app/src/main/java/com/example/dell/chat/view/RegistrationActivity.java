@@ -191,7 +191,7 @@ public class RegistrationActivity extends BaseActivity<RegistrationActivity,Logi
     }
 
     public void creatSelect(){
-        PictureSelector.create(RegistrationActivity.this).openGallery(PictureMimeType.ofImage()).enableCrop(true).previewImage(true).compress(true).minimumCompressSize(200).isGif(false).maxSelectNum(1).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
+        PictureSelector.create(RegistrationActivity.this).openGallery(PictureMimeType.ofImage()).theme(R.style.picture_white_style).enableCrop(true).previewImage(true).compress(true).minimumCompressSize(200).isGif(false).maxSelectNum(1).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).circleDimmedLayer(true).forResult(PictureConfig.CHOOSE_REQUEST);
     }
 
     public String getpath(LocalMedia a){
