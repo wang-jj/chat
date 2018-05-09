@@ -60,6 +60,13 @@ public class LocalFragment extends Fragment {
         progressLayout=(LinearLayout)view.findViewById(R.id.location_progress);
         progressLayout.setVisibility(View.VISIBLE);
 
+        //动画 localFrag
+        //final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_slide_bottom);
+        //final RecyclerView locationRecyclerView=(RecyclerView)view.findViewById(R.id.location_recycler_view);
+        //locationRecyclerView.setLayoutAnimation(controller);
+        //locationRecyclerView.setAdapter(adapter);
+
+
 
         //定义推荐 recyclerview
         recommendRecyclerView.setNestedScrollingEnabled(false);
@@ -574,5 +581,12 @@ public class LocalFragment extends Fragment {
     public void LoadRecommend(List<Recommend>recommends){
         recommend_adapter.getmRecommendList().addAll(1,recommends);
         recommend_adapter.notifyDataSetChanged();
+    }
+
+    //动画
+    public void act() {
+        final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_slide_bottom);
+        final RecyclerView locationRecyclerView=(RecyclerView)view.findViewById(R.id.location_recycler_view);
+        locationRecyclerView.setLayoutAnimation(controller);
     }
 }

@@ -266,6 +266,10 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
             transaction.show(fragment);
             if(fragment==homeFragment){
                 homeFragment.act();
+            }else if(fragment==localFragment){
+                localFragment.act();
+            }else if(fragment==msgFragment){
+                msgFragment.act();
             }
         }
         if(currentFragment!=null){

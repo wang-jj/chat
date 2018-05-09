@@ -60,6 +60,14 @@ public class MsgFragment extends Fragment {
         final LinearLayout progressLayout=(LinearLayout)view.findViewById(R.id.message_progress);
         progressLayout.setVisibility(View.VISIBLE);
 
+
+        //动画 localFrag
+        //final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_slide_right);
+        //final RecyclerView messageRecyclerView=(RecyclerView)view.findViewById(R.id.message_recycler_view);
+        //messageRecyclerView.setLayoutAnimation(controller);
+        //messageRecyclerView.setAdapter(adapter);
+
+
         final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_slide_right);
         messageRecyclerView=(RecyclerView)view.findViewById(R.id.message_recycler_view);
         messageRecyclerView.setNestedScrollingEnabled(false);
@@ -323,5 +331,11 @@ public class MsgFragment extends Fragment {
         super.onStop();
 
         Log.e("Fragment 1", "onStop");
+    }
+
+    //动画
+    public void act() {
+        final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.layout_animation_slide_right);
+        messageRecyclerView.setLayoutAnimation(controller);
     }
 }
