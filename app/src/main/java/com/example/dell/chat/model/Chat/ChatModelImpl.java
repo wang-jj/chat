@@ -1,6 +1,7 @@
 package com.example.dell.chat.model.Chat;
 
 import android.app.DownloadManager;
+import android.util.Log;
 
 import com.example.dell.chat.bean.Chat;
 import com.example.dell.chat.bean.Contact;
@@ -133,6 +134,7 @@ public class ChatModelImpl implements ChatModel{
 
                 //环信接受信息
                 for(EMMessage msg : messages){
+
                     sender = msg.getFrom();
                     receiver = msg.getTo();
                     time = msg.getMsgTime();
@@ -149,7 +151,7 @@ public class ChatModelImpl implements ChatModel{
 
                     String latest_content = "";
                     if(msg_type==1){
-                        latest_content = body.toString();
+                        latest_content = messageCutter(body.toString());
                     }
                     else if(msg_type==3){
                         latest_content = "[图片消息]";
@@ -159,7 +161,7 @@ public class ChatModelImpl implements ChatModel{
                     chat.setUser_id(Integer.valueOf(receiver));
                     chat.setContact_id(Integer.valueOf(sender));
                     chat.setTime(time);
-                    chat.setContent(body.toString());
+                    chat.setContent(messageCutter(body.toString()));
                     chat.setType(msg_type);
                     chats.add(chat);
 
@@ -219,5 +221,14 @@ public class ChatModelImpl implements ChatModel{
             }
         });
         t.execute();
+    }
+
+    public String messageCutter(String str){
+        int pos = str.indexOf(":");
+        Log.e("cutter's ':' index",String.valueOf(pos));
+        if((str.substring(pos+1)).length()==2){
+            return "";
+        }
+        return str.substring(pos+2,str.length()-2);
     }
 }

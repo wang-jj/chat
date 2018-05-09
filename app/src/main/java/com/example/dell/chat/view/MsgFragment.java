@@ -31,6 +31,10 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessageBody;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -82,49 +86,51 @@ public class MsgFragment extends Fragment {
 
 
 
-        //底部刷新函数
-        final NestedScrollView nestedScrollView=(NestedScrollView)view.findViewById(R.id.msg_scroll_view);
-        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, final int scrollX, final int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
-                    //底部刷新
-                    if(progressLayout.getVisibility()==View.GONE){
-                        progressLayout.setVisibility(View.VISIBLE);
-                    }
-                    final Message message=new Message();
-
-                    message.setContact_name("谢欣逗比言");
-                    message.setLatest_content("你还欠我无数顿饭呢！");
-                    //message.setLatest_time("19:61");
-                    //message.setProfileID(R.drawable.sample1);
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.MessageAdd(adapter.getItemCount(),message);
-                            adapter.notifyItemInserted(adapter.getItemCount());
-                            progressLayout.setVisibility(View.GONE);
-                        }
-                    }, 1000);
-                }
-            }
-        });
+//        //底部刷新函数
+//        final NestedScrollView nestedScrollView=(NestedScrollView)view.findViewById(R.id.msg_scroll_view);
+//        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+//            @Override
+//            public void onScrollChange(NestedScrollView v, final int scrollX, final int scrollY, int oldScrollX, int oldScrollY) {
+//                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+//                    //底部刷新
+//                    if(progressLayout.getVisibility()==View.GONE){
+//                        progressLayout.setVisibility(View.VISIBLE);
+//                    }
+//                    final Message message=new Message();
+//
+//                    message.setContact_name("谢欣逗比言");
+//                    message.setLatest_content("你还欠我无数顿饭呢！");
+//                    //message.setLatest_time("19:61");
+//                    //message.setProfileID(R.drawable.sample1);
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            adapter.MessageAdd(adapter.getItemCount(),message);
+//                            adapter.notifyItemInserted(adapter.getItemCount());
+//                            progressLayout.setVisibility(View.GONE);
+//                        }
+//                    }, 1000);
+//                }
+//            }
+//        });
 
         //上拉刷新函数
         final SwipeRefreshLayout swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipe_message_recycler);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {   //顶部刷新
-                Message message=new Message();
-                message.setContact_name("谢欣逗比言");
-                message.setLatest_content("你还欠我无数顿饭呢！");
-                //message.setLatest_time("19:61");
-                //message.setProfileID(R.drawable.sample1);
-
-                adapter.MessageAdd(0,message);
-                adapter.notifyItemInserted(0);
-                messageRecyclerView.scrollToPosition(0);
-                swipeRefreshLayout.setRefreshing(false);
+                presenter.dispContact();
+                adapter.notifyDataSetChanged();
+//                Message message=new Message();
+//                message.setContact_name("谢欣逗比言");
+//                message.setLatest_content("你还欠我无数顿饭呢！");
+//                //message.setLatest_time("19:61");
+//                //message.setProfileID(R.drawable.sample1);
+//
+//                adapter.MessageAdd(0,message);
+//                adapter.notifyItemInserted(0);
+//                messageRecyclerView.scrollToPosition(0);
+//                swipeRefreshLayout.setRefreshing(false);
             }
         });
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorWhite));
@@ -239,15 +245,24 @@ public class MsgFragment extends Fragment {
             Message message=mMessageList.get(position);
             holder.messageNickName.setText(message.getContact_name());
             holder.messageContent.setText(message.getLatest_content());
-            holder.messageTime.setText(String.valueOf(message.getLatest_time()));
+            if(message.getLatest_time()==0){
+                holder.messageTime.setText("");
+            }
+            else {
+                Date date = new Date(message.getLatest_time()+28800000);
+                DateFormat df = new SimpleDateFormat("HH:mm");
+                String time = df.format(date);
+                holder.messageTime.setText(String.valueOf(time));//时间处理
+            }
+
             if(message.getUnread()==0){//新消息角标设置
                 holder.messageTips.setVisibility(View.GONE);
             }
             else {
                 holder.messageTips.setVisibility(View.VISIBLE);
             }
-            Glide.with(getActivity()).load(message.getImage_path()).thumbnail(0.1f).into(((ViewHolder)holder).messageProfile);
-            //holder.messageProfile.setImageResource(message.getImage_path()); 解析图片路径
+            Glide.with(getActivity()).load(message.getImage_path()).thumbnail(0.1f).into((holder).messageProfile);
+            //解析图片路径
         }
 
         @Override

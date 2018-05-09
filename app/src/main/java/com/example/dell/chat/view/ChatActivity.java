@@ -273,22 +273,18 @@ public class ChatActivity extends AppCompatActivity {
             if(holder instanceof LeftViewHolder){
                 Chat chat=mChatList.get(position);
                 ((LeftViewHolder)holder).chatContent.setText(chat.getContent());
-                //((LeftViewHolder)holder).chatProfile.setImageResource(profile);
                 Glide.with(getApplication()).load(profile).thumbnail(0.1f).into(((LeftViewHolder)holder).chatProfile);
             }else if(holder instanceof RightViewHolder){
                 Chat chat=mChatList.get(position);
                 ((RightViewHolder)holder).chatContent.setText(chat.getContent());
-                //((RightViewHolder)holder).chatProfile.setImageResource(chat.getProfileID());
                 Glide.with(getApplication()).load(MyApplication.getUser().getImage_path()).thumbnail(0.1f).into(((RightViewHolder)holder).chatProfile);
             }else if(holder instanceof LeftImageViewHolder){
                 Chat chat=mChatList.get(position);
-                //((LeftImageViewHolder)holder).chatImage.setImageResource(chat.getImage());
-                //((LeftImageViewHolder)holder).chatProfile.setImageResource(profile);
+                Glide.with(getApplication()).load(chat.getContent()).thumbnail(0.1f).into(((LeftImageViewHolder)holder).chatImage);
                 Glide.with(getApplication()).load(profile).thumbnail(0.1f).into(((LeftImageViewHolder)holder).chatProfile);
             }else{
                 Chat chat=mChatList.get(position);
-                //((RightImageViewHolder)holder).chatImage.setImageResource(chat.getImage());
-                //((RightImageViewHolder)holder).chatProfile.setImageResource(chat.getProfileID());
+                Glide.with(getApplication()).load(chat.getContent()).thumbnail(0.1f).into(((RightImageViewHolder)holder).chatImage);
                 Glide.with(getApplication()).load(MyApplication.getUser().getImage_path()).thumbnail(0.1f).into(((RightImageViewHolder)holder).chatProfile);
             }
         }

@@ -4,6 +4,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.dell.chat.bean.Chat;
+import com.example.dell.chat.bean.Contact;
 import com.example.dell.chat.bean.Message;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.db.ChatDao;
@@ -11,8 +12,16 @@ import com.example.dell.chat.db.MessageDao;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Execute;
 import com.example.dell.chat.tools.ThreadTask;
+import com.google.gson.Gson;
 
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by courageface on 2018/4/27.
@@ -100,7 +109,7 @@ public class MessageModelImpl implements MessageModel {
         ThreadTask t =new ThreadTask<Void,Void,Void>(callback, new Execute() {
             @Override
             public Void doExec() {
-
+                String GetHeadImageAndNickname = "http://119.23.255.222/android/useridinfo.php";
                 MessageDao messageDao = MyApplication.getDao().getMessageDao();
                 List<Message> list = messageDao.queryBuilder().where(MessageDao.Properties.User_id.eq(MyApplication.getUser().getUser_id()),
                         MessageDao.Properties.Contact_id.eq(contact_id)).build().list();
@@ -109,6 +118,28 @@ public class MessageModelImpl implements MessageModel {
                     m.setUser_id(MyApplication.getUser().getUser_id());
                     m.setContact_name(contact_name);
                     m.setContact_id(contact_id);
+                    m.setLatest_content("");
+                    m.setLatest_time(0);
+                    m.setUnread(0);
+                    String result=null;
+                    try {
+                        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
+                        String URL = GetHeadImageAndNickname + "?user_id=" + contact_id; //获取对方头像和昵称
+                        Request request = new Request.Builder().url(URL).build();
+                        Response response = client.newCall(request).execute();
+                        result=response.body().string();
+                        Contact contact=new Gson().fromJson(result,Contact.class);
+                        m.setImage_path(contact.getProfile());//向服务器获取头像
+                        //newmsg.setContact_name(contact.getNickname());//向服务器获取用户名
+                    }
+                    catch(Exception e){
+                        if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时
+                            result="out_of_time";
+                        }else {
+                            e.printStackTrace();
+                        }
+                    }
+
                     messageDao.insert(m);
                 }
                 return null;
