@@ -234,9 +234,21 @@ public class ChatActivity extends AppCompatActivity {
             }else if(viewType==TYPE_SENT_IMAGE){
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_right_image,parent,false);
                 holder=new RightImageViewHolder(view);
+//                ((RightImageViewHolder)holder).chatImage.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                    }
+//                });
             }else{
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_left_image,parent,false);
                 holder=new LeftImageViewHolder(view);
+//                ((LeftImageViewHolder)holder).chatImage.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                    }
+//                });
                 ((LeftImageViewHolder)holder).chatProfile.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
