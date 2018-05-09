@@ -1,5 +1,6 @@
 package com.example.dell.chat.bean;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
@@ -12,12 +13,14 @@ import com.awen.photo.FrescoImageLoader;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.dell.chat.tools.Dao;
 import com.example.dell.chat.view.ChatActivity;
+import com.example.dell.chat.view.MainActivity;
 import com.example.dell.chat.view.MsgFragment;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -73,6 +76,16 @@ public class MyApplication extends MultiDexApplication {
     private static int ChattingMode=0;
 
     private static ChatActivity ChatActivity=null;
+
+    private static MainActivity mainActivity;
+
+    public static MainActivity getMainActivity() {
+        return mainActivity;
+    }
+
+    public static void setMainActivity(MainActivity mainActivity) {
+        MyApplication.mainActivity = mainActivity;
+    }
 
     @Override
     public void onCreate(){
