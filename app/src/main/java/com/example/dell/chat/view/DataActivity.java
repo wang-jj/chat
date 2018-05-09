@@ -13,11 +13,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
+import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.User;
+import com.example.dell.chat.presenter.CommentPresenter;
+import com.example.dell.chat.presenter.LoginPresenter;
+import com.example.dell.chat.presenter.MainPresenter;
 
 //个人资料activity
-public class DataActivity extends AppCompatActivity {
+public class DataActivity extends BaseActivity<DataActivity,MainPresenter<DataActivity>> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,11 @@ public class DataActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //退出登录 事件
+                if(MyApplication.getMainActivity()!=null){
+                    MyApplication.getMainActivity().finish();
+                    MyApplication.setMainActivity(null);
+                }
+                finish();
             }
         });
 
@@ -68,6 +77,11 @@ public class DataActivity extends AppCompatActivity {
         textView_account.setText(String.valueOf(u.getUser_id()));
         //跳转生成名片二维码
 
+    }
+
+    @Override
+    protected MainPresenter createPresenter() {
+        return new MainPresenter();
     }
 
 }

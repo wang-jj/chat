@@ -34,6 +34,7 @@ import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.presenter.HomePresenter;
 import com.example.dell.chat.tools.Dao;
 import com.example.dell.chat.tools.Notify;
+import com.example.dell.chat.tools.translate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -467,6 +468,13 @@ public class HomeFragment extends Fragment {
                 PersonalState personalState=mStateList.get(position);
                 ((OneViewHolder)holder).stateNickName.setText(personalState.getNickname());
                 ((OneViewHolder)holder).stateSchool.setText(personalState.getSchool());
+                /*
+                String er= translate.unicode2String(personalState.getContent());
+                String et= translate.string2Unicode(personalState.getContent());
+                Log.e("789456", personalState.getContent() );
+                Log.e("er", er );
+                Log.e("et", et );
+                */
                 ((OneViewHolder)holder).stateContent.setText(personalState.getContent());
                 ((OneViewHolder)holder).stateLocation.setText(personalState.getLocation());
                 ((OneViewHolder)holder).stateTime.setText(simpleDateFormat.format(personalState.getState_time()));

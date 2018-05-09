@@ -68,7 +68,6 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
             personalState.setLocation(addr);
             personalState.setLatitude(latitude);
             personalState.setLongitude(longitude);
-            Log.e("Test", MyApplication.getUser().getUser_name() );
             momentModel.Publish(personalState, new com.example.dell.chat.model.Callback<String>() {//联网发动态
                 @Override
                 public void execute(String datas) {
