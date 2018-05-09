@@ -210,7 +210,7 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
     }
 
     public void creatSelect(){
-        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).enableCrop(true).compress(true).minimumCompressSize(200).previewImage(true).isGif(true).maxSelectNum(3).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
+        PictureSelector.create(PublishActivity.this).openGallery(PictureMimeType.ofImage()).theme(R.style.picture_white_style).enableCrop(true).compress(true).minimumCompressSize(200).previewImage(true).isGif(true).maxSelectNum(3).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
     }
 
     @Override
