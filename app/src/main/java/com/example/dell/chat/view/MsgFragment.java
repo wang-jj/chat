@@ -141,11 +141,11 @@ public class MsgFragment extends Fragment {
 
 
         //测试
-        presenter.create(93);
-        presenter.create(90);
-        presenter.create(93);
-        presenter.create(90);
-        presenter.create(95);
+//        presenter.create(93);
+//        presenter.create(90);
+//        presenter.create(93);
+//        presenter.create(90);
+//        presenter.create(95);
 
 
         return view;

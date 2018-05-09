@@ -2,6 +2,7 @@ package com.example.dell.chat.model.Chat;
 
 import android.app.DownloadManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.dell.chat.bean.Chat;
 import com.example.dell.chat.bean.Contact;
@@ -93,6 +94,7 @@ public class ChatModelImpl implements ChatModel{
                         public void  onError (int code, String error){
                             Log.e("chat","send failed, error code:"+String.valueOf(code)+" "+error);
                             //发送失败通知
+                            Toast.makeText(MyApplication.getChatActivity(),"发送失败，请重试。",Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -118,6 +120,7 @@ public class ChatModelImpl implements ChatModel{
                         public void  onError (int code, String error){
                             Log.e("chat","send failed, error code:"+String.valueOf(code)+" "+error);
                             //发送失败通知
+                            Toast.makeText(MyApplication.getChatActivity(),"发送失败，请重试。",Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -255,22 +258,22 @@ public class ChatModelImpl implements ChatModel{
                     }
                         newmsg.setLatest_content(latest_content);
                         newmsg.setLatest_time(time);
-                        if(MyApplication.getChattingMode()==0||String.valueOf(MyApplication.getChattingMode()).equals(sender)){
-                            newmsg.setUnread(1);
+                        if(MyApplication.getChattingMode()!=0&&String.valueOf(MyApplication.getChattingMode()).equals(sender)){
+                            newmsg.setUnread(0);
                         }
                         else {
-                            newmsg.setUnread(0);
+                            newmsg.setUnread(1);
                         }
                         messageDao.insert(newmsg);
                     }
                     else { //更新Message
                         themsg.setLatest_content(latest_content);
                         themsg.setLatest_time(time);
-                        if(MyApplication.getChattingMode()==0||String.valueOf(MyApplication.getChattingMode()).equals(sender)){
-                            themsg.setUnread(1);
+                        if(MyApplication.getChattingMode()!=0&&String.valueOf(MyApplication.getChattingMode()).equals(sender)){
+                            themsg.setUnread(0);
                         }
                         else {
-                            themsg.setUnread(0);
+                            themsg.setUnread(1);
                         }
                         messageDao.update(themsg);
                     }

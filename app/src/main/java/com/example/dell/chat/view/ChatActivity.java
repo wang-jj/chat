@@ -29,17 +29,24 @@ import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Chat;
 import com.example.dell.chat.bean.Contact;
 import com.example.dell.chat.bean.MyApplication;
+import com.example.dell.chat.model.Callback;
+import com.example.dell.chat.model.Execute;
 import com.example.dell.chat.presenter.ChatPresenter;
 import com.example.dell.chat.base.BaseActivity;
 import com.example.dell.chat.tools.Dao;
+import com.example.dell.chat.tools.IsInternet;
+import com.example.dell.chat.tools.ThreadTask;
 import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
+import java.io.IOException;
 import java.net.ConnectException;
+import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -59,6 +66,7 @@ public class ChatActivity extends AppCompatActivity {
     public EditText editText;
     public String GetUserInfo = "http://119.23.255.222/android/useridinfo.php";
     public Intent mIntent ;
+    public Boolean internetBool=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,26 +170,32 @@ public class ChatActivity extends AppCompatActivity {
         imageButton_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!editText.getText().toString().isEmpty()){
-                    Chat chat = new Chat();
-                    chat.setContent(editText.getText().toString());
-                    chat.setUser_id(MyApplication.getUser().getUser_id());
-                    chat.setContact_id(contact_id);
-                    chat.setTime(System.currentTimeMillis());
-                    chat.setType(0);
-                    //更新当前list
-                    adapter.ChatAdd(adapter.getItemCount(), chat);
-                    if(adapter.getItemCount()>0) {
-                        adapter.notifyItemInserted(adapter.getItemCount() - 1);
-                        chatRecyclerView.smoothScrollToPosition(adapter.getItemCount() - 1 );
+//                if(IsInternet.isNetworkAvailable(getApplication())) {
+                    if (!editText.getText().toString().isEmpty()) {
+                        Chat chat = new Chat();
+                        chat.setContent(editText.getText().toString());
+                        chat.setUser_id(MyApplication.getUser().getUser_id());
+                        chat.setContact_id(contact_id);
+                        chat.setTime(System.currentTimeMillis());
+                        chat.setType(0);
+                        //更新当前list
+                        adapter.ChatAdd(adapter.getItemCount(), chat);
+                        if (adapter.getItemCount() > 0) {
+                            adapter.notifyItemInserted(adapter.getItemCount() - 1);
+                            chatRecyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                        }
+                        //环信发送 以及更新到本地数据库
+                        presenter.send(contact_id, editText.getText().toString(), 0);
+                        editText.setText("");
+
+
                     }
-                    //环信发送 以及更新到本地数据库
-                    presenter.send(contact_id,editText.getText().toString(),0);
-                    editText.setText("");
-
-
                 }
-            }
+//                else {
+//                    Toast.makeText(MyApplication.getChatActivity(),"网络连接异常。",Toast.LENGTH_SHORT).show();
+//                }
+//                }
+
         });
 
         //图片按钮 点击函数 发送图片的逻辑
@@ -189,6 +203,14 @@ public class ChatActivity extends AppCompatActivity {
         imageButton_picture_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                isConnection();
+//                //Log.e("internet",String.valueOf(internetBool));
+//                if(internetBool) {
+//                    createSelect();
+//                }
+//                else {
+//                    Toast.makeText(MyApplication.getChatActivity(),"网络连接异常。",Toast.LENGTH_SHORT).show();
+//                }
                 createSelect();
 
             }
@@ -456,5 +478,42 @@ public class ChatActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    public void connectionNetwork(final Callback<Boolean> callback) {
+        ThreadTask t = new ThreadTask<Void,Void,Void>(callback, new Execute<Boolean>() {
+            @Override
+            public Boolean doExec() {
+                boolean result = false;
+                HttpURLConnection httpUrl = null;
+                try {
+                    httpUrl = (HttpURLConnection) new URL("http://www.baidu.com").openConnection();
+                    httpUrl.setConnectTimeout(5);
+                    httpUrl.connect();
+                    result = true;
+                } catch (IOException e) {
+                } finally {
+                    if (null != httpUrl) {
+                        httpUrl.disconnect();
+                    }
+                    httpUrl = null;
+                }
+                return result;
+            }
+        });
+        t.execute();
+
+    }
+
+    public void isConnection(){
+        connectionNetwork(new Callback<Boolean>() {
+            @Override
+            public void execute(Boolean datas) {
+                internetBool = datas;
+
+                Log.e("internet",String.valueOf(internetBool));
+                return ;
+            }
+        });
     }
 }

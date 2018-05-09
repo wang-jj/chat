@@ -125,10 +125,10 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
         BottomNavigationMenuView menuView=(BottomNavigationMenuView)bottomNavigationView.getChildAt(0);
         View tab = menuView.getChildAt(2);
         BottomNavigationItemView itemView = (BottomNavigationItemView) tab;
-        final View badge = LayoutInflater.from(this).inflate(R.layout.menu_tips, menuView, false);
-        itemView.addView(badge);
+        //final View badge = LayoutInflater.from(this).inflate(R.layout.menu_tips, menuView, false);
+        //itemView.addView(badge);
 
-        badge.setVisibility(View.VISIBLE);          //新消息通知角标 VISIBLE 表示有新通知
+        //badge.setVisibility(View.VISIBLE);          //新消息通知角标 VISIBLE 表示有新通知
 
         homeFragment=new HomeFragment();
         localFragment=new LocalFragment();
@@ -154,7 +154,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
                             setFragment(msgFragment);
                             imageView.setVisibility(View.GONE);
                             imageView1.setVisibility(View.GONE);
-                            badge.setVisibility(View.GONE);         //新消息通知角标 GONE表示点击后让角标消失
+                            //badge.setVisibility(View.GONE);         //新消息通知角标 GONE表示点击后让角标消失
                         }
                         return true;
                     }

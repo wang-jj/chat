@@ -30,7 +30,7 @@ public class NewMessage {
         Intent intent=new Intent(MyApplication.getContext(), ChatActivity.class);
         intent.putExtra("chat",chat);
         String content = " ";
-        if(chat.getType()==0){
+        if(chat.getType()==1){
             content = new ChatModelImpl().messageCutter(chat.getContent());
         }
         else{
