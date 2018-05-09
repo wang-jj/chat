@@ -75,10 +75,7 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
                 //发布动态逻辑
                 //onBackPressed();
                 PersonalState personalState=new PersonalState();
-                String b=translate.string2Unicode(editText.getText().toString());
-                Log.e("publish", b );
-                personalState.setContent(b);
-                //personalState.setContent(editText.getText().toString());
+                personalState.setContent(editText.getText().toString());
                 personalState.setImg_type(selectList.size());
                 personalState.setUser_id(MyApplication.getUser().getUser_id());
                 if(selectList.size()>0){

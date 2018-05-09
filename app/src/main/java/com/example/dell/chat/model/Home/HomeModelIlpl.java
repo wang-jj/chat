@@ -53,8 +53,6 @@ public class HomeModelIlpl implements HomeModel {
                     String result=response.body().string();
                     Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                     personalStates =gson.fromJson(result, new TypeToken<List<PersonalState>>() {}.getType());
-                    Log.e("moment1", String.valueOf(personalStates.size()) );
-                    Log.e("moment2",String.valueOf(list.size()) );
                     List<Integer> a=new ArrayList<>();
                     for(int q=personalStates.size()-1;q>=0;q--){
                         PersonalState i=personalStates.get(q);
@@ -100,11 +98,11 @@ public class HomeModelIlpl implements HomeModel {
                         }
                     }
                     PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
+                    //跟新数据库
+                    personalStateDao.updateInTx(list);
                     if(personalStates.size()>0){
                         personalStateDao.insertInTx(personalStates);
                     }
-                    //跟新数据库
-                    personalStateDao.updateInTx(list);
                 }catch (Exception e){
                     if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时
 
