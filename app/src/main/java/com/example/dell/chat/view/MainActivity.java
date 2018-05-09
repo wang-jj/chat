@@ -315,10 +315,11 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
             Dao.SetIntent(intent,u.getUser_id(),u.getImage_path(),u.getUser_motto(),u.getUser_name(),u.getSchool());
             startActivity(intent);
         } else if (id == R.id.nav_collect) {
-            Intent intent=new Intent(MainActivity.this,CollectActivity.class);
-            startActivity(intent);
+            //Intent intent=new Intent(MainActivity.this,CollectActivity.class);
+            //startActivity(intent);
+            Toast.makeText(this,"收藏功能暂未开放，请期待后续版本更新",Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_setting) {
-
+            Toast.makeText(this,"设置功能暂未开放",Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_cancel) {
             presenter.SignOut();
             finish();
