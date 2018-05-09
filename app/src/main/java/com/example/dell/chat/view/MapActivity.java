@@ -70,7 +70,7 @@ public class MapActivity extends BaseActivity<MapActivity,MapPresenter<MapActivi
         });
         mMapView = (MapView) findViewById(R.id.mmap);
         mBaiduMap = mMapView.getMap();
-        MapStatus mapStatus=new MapStatus.Builder().zoom(30).build();//设置地图初始化大小
+        MapStatus mapStatus=new MapStatus.Builder().zoom(20).build();//设置地图初始化大小
         MapStatusUpdate mapStatusUpdate=MapStatusUpdateFactory.newMapStatus(mapStatus);
         mBaiduMap.setMapStatus(mapStatusUpdate);
         LatLng ll=new LatLng(MyApplication.getLatitude(),MyApplication.getLongitude());

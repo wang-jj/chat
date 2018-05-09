@@ -169,16 +169,17 @@ public class ChatModelImpl implements ChatModel{
 
     //接受消息
     @Override
-    public void ReceiveMessage(final List<EMMessage> messages, final Callback<Void> callback){
-        ThreadTask t = new ThreadTask<Void,Void,Void>(callback, new Execute<Void>(){
+    public void ReceiveMessage(final List<EMMessage> messages, final Callback<List<Chat>> callback){
+        ThreadTask t = new ThreadTask<Void,Void,List<Chat>>(callback, new Execute<List<Chat>>(){
             @Override
-            public Void doExec(){ //插入Chat表，插入与更新Message表
+            public List<Chat> doExec(){ //插入Chat表，插入与更新Message表
                 String sender ;
                 String receiver ;
                 long time ;
                 EMMessageBody body ;
                 EMMessage.Type type ;
                 List<Chat> chats = new ArrayList<Chat>();
+                List<Chat> tempChats = new ArrayList<Chat>();
                 String GetHeadImageAndNickname = "http://119.23.255.222/android/useridinfo.php";
 
                 //环信接受信息
@@ -189,6 +190,7 @@ public class ChatModelImpl implements ChatModel{
                     time = msg.getMsgTime();
                     body = msg.getBody();
                     type = msg.getType();
+
 
                     int msg_type = 1;
                     if((String.valueOf(type)) .equals("TXT") ){
@@ -218,6 +220,11 @@ public class ChatModelImpl implements ChatModel{
                     }
                     chat.setType(msg_type);
                     chats.add(chat);
+
+                    //将当前聊天对象的聊天记录提取出来
+                    if(String.valueOf(MyApplication.getChattingMode()).equals(sender)) {
+                        tempChats.add(chat);
+                    }
 
                     //更新Message最新一条信息内容与时间与已读状态
                     MessageDao messageDao = MyApplication.getDao().getMessageDao();
@@ -291,11 +298,12 @@ public class ChatModelImpl implements ChatModel{
                 ChatDao chatDao = MyApplication.getDao().getChatDao();
                 chatDao.insertInTx(chats);
 
-
-                return null;
+                return tempChats;
             }
         });
         t.execute();
+
+        return;
     }
 
     public String messageCutter(String str){
@@ -311,11 +319,11 @@ public class ChatModelImpl implements ChatModel{
     public String imageCutter(String str){
         int pos = str.indexOf(":");
         String strAfter = str.substring(pos+2);
-        int beg_pos = strAfter.indexOf("localurl")+10;
-        int end_pos = strAfter.indexOf("remoteurl:")-2;
+        int beg_pos = strAfter.indexOf("remoteurl")+11;
+        int end_pos = strAfter.indexOf("thumbnail:")-2;
         Log.e("原图片路径",str);
         Log.e("最终图片",strAfter.substring(beg_pos,end_pos));
-        return "https://a1.easemob.com/1115180421177235/android-univchat/chatfiles/51b51d70-5360-11e8-8809-a7378fa00f05";//strAfter.substring(beg_pos,end_pos);
+        return strAfter.substring(beg_pos,end_pos);
 
     }
 }

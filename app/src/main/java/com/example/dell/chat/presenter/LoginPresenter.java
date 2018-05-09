@@ -97,6 +97,7 @@ public class LoginPresenter<T extends BaseActivity> extends BasePresenter<T>  {
                     userDao.insert(datas);
                     Intent intent=new Intent(getView(),MainActivity.class);
                     getView().startActivity(intent);
+                    getView().finish();
                 }else if(datas.getUser_id()==-1){//密码错误
                     creatAlert("密码错误，请重写登陆");
                 }else if(datas.getUser_id()==-2){//账号不存在
@@ -129,6 +130,7 @@ public class LoginPresenter<T extends BaseActivity> extends BasePresenter<T>  {
                     Toast.makeText(getView(),"注册成功，请登录",Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(getView(),LoginActivity.class);
                     getView().startActivity(intent);
+                    getView().finish();
                     //getView().onBackPressed();
                 }
             }

@@ -61,4 +61,5 @@ dependencies {
 
     compile 'com.github.Awent:PhotoPick-Master:v1.095'
     compile 'com.android.support:multidex:1.0.1'
+    compile 'com.tb.emoji:yykEmoji:1.0.0'
 }

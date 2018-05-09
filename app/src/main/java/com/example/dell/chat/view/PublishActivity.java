@@ -24,10 +24,13 @@ import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.presenter.LoginPresenter;
 import com.example.dell.chat.presenter.MomentPresenter;
+import com.example.dell.chat.tools.translate;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.sqk.emojirelease.Emoji;
+import com.sqk.emojirelease.FaceFragment;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ import java.util.List;
 
 
 //动态发布Activity
-public class PublishActivity extends BaseActivity<PublishActivity,MomentPresenter<PublishActivity>> {
+public class PublishActivity extends BaseActivity<PublishActivity,MomentPresenter<PublishActivity>>  {
 
     private int image_num=0;
     private int CHOOSE_REQUEST=5;
@@ -72,7 +75,10 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
                 //发布动态逻辑
                 //onBackPressed();
                 PersonalState personalState=new PersonalState();
-                personalState.setContent(editText.getText().toString());
+                String b=translate.string2Unicode(editText.getText().toString());
+                Log.e("publish", b );
+                personalState.setContent(b);
+                //personalState.setContent(editText.getText().toString());
                 personalState.setImg_type(selectList.size());
                 personalState.setUser_id(MyApplication.getUser().getUser_id());
                 if(selectList.size()>0){
@@ -142,6 +148,7 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
                 }
             }
         });
+
     }
 
     @Override
@@ -218,4 +225,5 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
     public void setFlat(int flat) {
         this.flat = flat;
     }
+
 }

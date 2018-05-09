@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.ViewParent;
 
 import com.example.dell.chat.R;
+import com.example.dell.chat.bean.Chat;
 import com.example.dell.chat.bean.Message;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.model.Callback;
@@ -78,16 +79,23 @@ public class MessagePresenter {
 
     //监听器接受消息
     public void receive(List<EMMessage> messages){
-        chatModel.ReceiveMessage(messages, new Callback<Void>() {
+        chatModel.ReceiveMessage(messages, new Callback<List<Chat>>() {
             @Override
-            public void execute(Void datas) {
+            public void execute(List<Chat> datas) {
                 dispContact();
                 view.getAdapter().notifyDataSetChanged();
 
                 //可能还需要判断此时是否在聊天界面 与谁聊天
-                if(MyApplication.getChatActivity()!=null){//&&MyApplication.getChattingMode()!=0){
+                if(MyApplication.getChatActivity()!=null&&datas.size()>0){//&&MyApplication.getChattingMode()!=0){
+                    for(Chat c : datas) {
+                        MyApplication.getChatActivity().getAdapter().getChatList().add(c);
+                    }
+                    Log.e("chat","更新当前聊天");
+                    //chatModel.InitChat(MyApplication.getChattingMode());
                     MyApplication.getChatActivity().getAdapter().notifyDataSetChanged();
                 }
+                Log.e("chatmode",String.valueOf(MyApplication.getChattingMode()));
+                Log.e("chat activity",MyApplication.getChatActivity()==null?"null":"not null");
                 return;
             }
         });

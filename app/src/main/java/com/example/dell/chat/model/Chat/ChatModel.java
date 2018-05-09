@@ -18,7 +18,7 @@ public interface ChatModel {
     void SendMessage(final int contact_id, final String content, final int type, final Callback<Void> callback);
 
     //接受消息
-    void ReceiveMessage(final List<EMMessage> messages, final Callback<Void> callback);
+    void ReceiveMessage(final List<EMMessage> messages, final Callback<List<Chat>> callback);
 
     //发送评论通知
     void SendComment(final String user_name,final int comment_id,int holder_id);

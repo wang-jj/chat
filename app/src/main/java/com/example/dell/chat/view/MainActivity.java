@@ -46,6 +46,7 @@ import com.example.dell.chat.presenter.LoginPresenter;
 import com.example.dell.chat.presenter.MainPresenter;
 import com.example.dell.chat.tools.Dao;
 import com.example.dell.chat.tools.Notify;
+import com.example.dell.chat.tools.translate;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
@@ -75,6 +76,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MyApplication.setMainActivity(this);
         sendLocation();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -189,6 +191,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
                         PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
                         PersonalState personalState=personalStateDao.queryBuilder().where(PersonalStateDao.Properties.Personalstate_id.eq(Integer.parseInt(ss[0]))).unique();
                         if(personalState!=null){
+                            String s=ss[1].substring(0,ss[1].length()-1);
                             Notify.createCommentNofity(ss[1],personalState);
                         }
                     }
@@ -205,6 +208,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
                 //收到消息
                 if(messages.size()>0){
                     msgFragment.getPresenter().receive(messages);
+                    //定位到最新一条
                 }
                 Log.e("mainactivity", "on start" );
             }
@@ -283,7 +287,8 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
             super.onBackPressed();
         }
         */
-        super.onBackPressed();
+        moveTaskToBack(true);
+        //super.onBackPressed();
     }
 
     @Override
@@ -405,4 +410,6 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
         locationClient.setLocOption(option);
         locationClient.start();
     }
+
+
 }

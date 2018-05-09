@@ -193,6 +193,14 @@ public class ChatActivity extends AppCompatActivity {
         private static final int TYPE_SENT_IMAGE=2;
         private static final int TYPE_RECEIVED_IMAGE=3;
 
+        public List<Chat> getChatList() {
+            return mChatList;
+        }
+
+        public void setChatList(List<Chat> chatList) {
+            mChatList = chatList;
+        }
+
         public ChatAdapter(){
             //mChatList=chatList;
         }
