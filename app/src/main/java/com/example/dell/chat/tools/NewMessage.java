@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Chat;
@@ -14,6 +15,7 @@ import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.model.Chat.ChatModelImpl;
 import com.example.dell.chat.model.Message.MessageModelImpl;
+import com.example.dell.chat.view.ChatActivity;
 import com.example.dell.chat.view.CommentActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -25,7 +27,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class NewMessage {
     public static void createNewMessageNofity(String user_name, Chat chat){
         NotificationManager notificationManager= (NotificationManager) MyApplication.getContext().getSystemService(NOTIFICATION_SERVICE);
-        Intent intent=new Intent(MyApplication.getContext(), CommentActivity.class);
+        Intent intent=new Intent(MyApplication.getContext(), ChatActivity.class);
         intent.putExtra("chat",chat);
         String content = " ";
         if(chat.getType()==0){
@@ -34,6 +36,7 @@ public class NewMessage {
         else{
             content = "图片消息";
         }
+        Log.e("new message","notify");
         PendingIntent pendingIntent=PendingIntent.getActivities(MyApplication.getContext(),0,new Intent[]{intent},0);
         Notification notification=new NotificationCompat.Builder(MyApplication.getContext())
                 .setContentTitle("收到一条新消息")
@@ -47,6 +50,6 @@ public class NewMessage {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setLights(Color.GREEN,1500,1500)
                 .build();
-        notificationManager.notify(1,notification);
+        notificationManager.notify(2,notification);
     }
 }

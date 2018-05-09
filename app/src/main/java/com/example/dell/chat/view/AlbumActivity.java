@@ -36,7 +36,7 @@ import java.util.List;
 
 //个人资料 相册Activity
 public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<AlbumActivity>> {
-    private int user_id;
+    private int user_id ;
     private AlbumAdapter adapter;
     private RecyclerView albumRecyclerView;
     private LinearLayoutManager layoutManager;
@@ -78,6 +78,12 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
         //初始化昵称
         TextView textView_nickname=(TextView)findViewById(R.id.album_nickname);
         textView_nickname.setText(intent.getStringExtra("nickname"));
+        textView_nickname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //跳转到与该用户聊天
+            }
+        });
         //初始化学校
         TextView textView_school=(TextView)findViewById(R.id.album_school);
         textView_school.setText(intent.getStringExtra("school"));
@@ -96,6 +102,7 @@ public class AlbumActivity extends BaseActivity<AlbumActivity,AlbumPresenter<Alb
         albumRecyclerView.setAdapter(adapter);
 
         controller = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_animation_slide_bottom);
+
 
         presenter.LoadAlbum(user_id);
         /*

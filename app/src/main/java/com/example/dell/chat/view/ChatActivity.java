@@ -29,6 +29,7 @@ import com.example.dell.chat.bean.Chat;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.presenter.ChatPresenter;
 import com.example.dell.chat.base.BaseActivity;
+import com.example.dell.chat.tools.Dao;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -43,7 +44,9 @@ public class ChatActivity extends AppCompatActivity {
     private String profile;
     private int contact_id;
     public ChatAdapter adapter;
-    public ChatPresenter presenter  = new ChatPresenter(this, MyApplication.getFrag());;
+    public ChatPresenter presenter  = new ChatPresenter(this, MyApplication.getFrag());
+    public RecyclerView chatRecyclerView;
+    public EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        final RecyclerView chatRecyclerView=(RecyclerView)findViewById(R.id.chat_recycler_view);
+        chatRecyclerView=(RecyclerView)findViewById(R.id.chat_recycler_view);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         chatRecyclerView.setLayoutManager(layoutManager);
 
@@ -93,12 +96,13 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //跳转个人资料activity
                 Intent intent=new Intent(ChatActivity.this,AlbumActivity.class);
+                Dao.SetIntent();
                 startActivity(intent);
             }
         });
 
         //设置输入框的点击事件 当点击时 弹出输入法 并且让recyclerview滚动到底部
-        final EditText editText=(EditText)findViewById(R.id.chat_input);
+        editText=(EditText)findViewById(R.id.chat_input);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,15 +153,18 @@ public class ChatActivity extends AppCompatActivity {
                 if(!editText.getText().toString().isEmpty()){
                     Chat chat = new Chat();
                     chat.setContent(editText.getText().toString());
-                    //chat.setProfileID(R.drawable.
-                    // );
+                    chat.setUser_id(MyApplication.getUser().getUser_id());
+                    chat.setContact_id(contact_id);
+                    chat.setTime(System.currentTimeMillis());
                     chat.setType(0);
+                    //更新当前list
                     adapter.ChatAdd(adapter.getItemCount(), chat);
                     if(adapter.getItemCount()>0) {
                         adapter.notifyItemInserted(adapter.getItemCount() - 1);
                         chatRecyclerView.smoothScrollToPosition(adapter.getItemCount() - 1 );
                     }
-                    presenter.send(contact_id,editText.getText().toString(),0);//
+                    //环信发送 以及更新到本地数据库
+                    presenter.send(contact_id,editText.getText().toString(),0);
                     editText.setText("");
 
 
@@ -165,50 +172,17 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        //图片按钮 点击函数 发送蹄片的逻辑
+        //图片按钮 点击函数 发送图片的逻辑
         ImageButton imageButton_picture_send=(ImageButton)findViewById(R.id.chat_picture);
         imageButton_picture_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                creatSelect();
-                Chat chat=new Chat();
-                //chat.setProfileID(R.drawable.profile);
-                chat.setType(2);
-                //chat.setImage(R.drawable.profile);
-                adapter.ChatAdd(adapter.getItemCount(),chat);
-                adapter.notifyItemInserted(adapter.getItemCount()-1);
-                chatRecyclerView.smoothScrollToPosition(adapter.getItemCount()-1);
-                //presenter.send(contact_id,editText.getText().toString(),2); //在第二个参数要换为发送的图片路径
+                createSelect();
+
             }
         });
     }
 
-//    private List<Chat> getChat(){   //初始化recyclerview的list
-//        List<Chat> chatList=new ArrayList<>();
-//        for(int i=1;i<=20;i++){
-//            Chat chat=new Chat();
-//            if((i-1)%4==0){//发送文字初始化
-//                chat.setContent("你才欠我"+i+"顿饭呢.");
-//                //chat.setProfileID(R.drawable.profile);
-//                chat.setType(0);
-//            }else if((i-1)%4==1){//接收文字初始化
-//                chat.setContent("你才欠我"+i+"顿饭呢.");
-//                //chat.setProfileID(R.drawable.sample1);    使用Intent传过来的值作为默认头像
-//                chat.setType(1);
-//            }else if((i-1)%4==2){//发送图片初始化
-//                //chat.setProfileID(R.drawable.profile);
-//                chat.setType(2);
-//                //chat.setImage(R.drawable.profile);
-//            }else{//接收图片初始化
-//                //chat.setProfileID(R.drawable.sample1);    使用Intent传过来的值作为默认头像
-//                chat.setType(3);
-//                //chat.setImage(R.drawable.profile);
-//            }
-//            chatList.add(chat);
-//        }
-//
-//        return chatList;
-//    }
 
     //recyclerview的adapter定义
     public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -412,7 +386,7 @@ public class ChatActivity extends AppCompatActivity {
         return  path;
     }
 
-    public void creatSelect(){
+    public void createSelect(){
         PictureSelector.create(ChatActivity.this).openGallery(PictureMimeType.ofImage()).enableCrop(true).compress(true).minimumCompressSize(200).previewImage(true).isGif(true).maxSelectNum(1).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
     }
 
@@ -425,6 +399,24 @@ public class ChatActivity extends AppCompatActivity {
                     List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
                     String path=getpath(selectList.get(0));//获得图片路径
                     Log.e("path", path);
+                    if(path==null||path.equals("")){
+                        Log.e("send image","select no image");
+                    }
+                    else {
+                        //更新当前list
+                        Chat chat = new Chat();
+                        chat.setType(2);
+                        chat.setContent(path);
+                        chat.setUser_id(MyApplication.getUser().getUser_id());
+                        chat.setContact_id(contact_id);
+                        chat.setTime(System.currentTimeMillis());
+                        adapter.ChatAdd(adapter.getItemCount(), chat);
+                        adapter.notifyItemInserted(adapter.getItemCount() - 1);
+
+                        chatRecyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                        presenter.send(contact_id, path, 2); //在第二个参数要换为发送的图片路径
+                    }
+
                     break;
             }
         }
