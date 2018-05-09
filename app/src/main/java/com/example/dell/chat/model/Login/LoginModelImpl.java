@@ -87,7 +87,7 @@ public class LoginModelImpl implements LoginModel {
 
                             @Override
                             public void onError(int code, String message) {
-                                Log.d("log in", "登录聊天服务器失败！");
+                                Log.d("log in", message+" 登录聊天服务器失败！");
                             }
                         });
                     }catch (IOException e){
@@ -217,7 +217,7 @@ public class LoginModelImpl implements LoginModel {
 
                             @Override
                             public void onError(int code, String message) {
-                                Log.d("log in", "登录聊天服务器失败！");
+                                Log.d("log in", message+" 登录聊天服务器失败！");
                             }
                         });
                     }

@@ -96,7 +96,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //跳转个人资料activity
                 Intent intent=new Intent(ChatActivity.this,AlbumActivity.class);
-                Dao.SetIntent();
+                //Dao.SetIntent();
                 startActivity(intent);
             }
         });

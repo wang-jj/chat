@@ -359,18 +359,18 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
     protected void onDestroy() {
         super.onDestroy();
         locationClient.stop();
+        //退出环信
+        String user_id=String.valueOf(MyApplication.getUser().getUser_id());
+        String password=MyApplication.getUser().getPassword();
+        EMClient.getInstance().logout(true);
         Log.e("mainactivity", "on destroy" );
     }
 
     @Override
     protected  void onStop(){
         super.onStop();
-        //退出环信
-        String user_id=String.valueOf(MyApplication.getUser().getUser_id());
-        String password=MyApplication.getUser().getPassword();
-        EMClient.getInstance().logout(true);
+
         Log.e("locations", String.valueOf(1));
-        //EMClient.getInstance().chatManager().removeMessageListener(msgListener);
         Log.e("mainactivity", "on stop" );
     }
 

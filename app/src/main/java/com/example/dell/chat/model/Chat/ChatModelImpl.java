@@ -14,6 +14,7 @@ import com.example.dell.chat.model.Execute;
 import com.example.dell.chat.tools.NewMessage;
 import com.example.dell.chat.tools.ThreadTask;
 import com.google.gson.Gson;
+import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessageBody;
@@ -82,20 +83,50 @@ public class ChatModelImpl implements ChatModel{
                     EMMessage msg = EMMessage.createTxtSendMessage(content, String.valueOf(contact_id));
                     //发送消息
                     EMClient.getInstance().chatManager().sendMessage(msg);
-//                sender = msg.getFrom();
-//                receiver = msg.getTo();
+                    msg.setMessageStatusCallback(new EMCallBack(){
+                        @Override
+                        public void onSuccess (){
+                            Log.e("chat","send success");
+                        }
+
+                        @Override
+                        public void  onError (int code, String error){
+                            Log.e("chat","send failed, error code:"+String.valueOf(code)+" "+error);
+
+                        }
+
+                        @Override
+                        public void  onProgress (int progress, String status){
+
+                        }
+
+                    });
                     time = System.currentTimeMillis();
-//                body = msg.getBody();
                 }
                 else if(msgtype == 2) {
                     //imagePath为图片本地路径，false为不发送原图（默认超过100k的图片会压缩后发给对方），需要发送原图传true
                     EMMessage msg = EMMessage.createImageSendMessage(content, true ,String.valueOf(contact_id));
                     //发送消息
                     EMClient.getInstance().chatManager().sendMessage(msg);
-//                sender = msg.getFrom();
-//                receiver = msg.getTo();
+                    msg.setMessageStatusCallback(new EMCallBack(){
+                        @Override
+                        public void onSuccess (){
+                            Log.e("chat","send success");
+                        }
+
+                        @Override
+                        public void  onError (int code, String error){
+                            Log.e("chat","send failed, error code:"+String.valueOf(code)+" "+error);
+
+                        }
+
+                        @Override
+                        public void  onProgress (int progress, String status){
+
+                        }
+
+                    });
                     time = System.currentTimeMillis();
-//                body = msg.getBody();
                 }
                 else{
                     return null;
