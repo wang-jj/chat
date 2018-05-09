@@ -205,6 +205,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
                 //收到消息
                 if(messages.size()>0){
                     msgFragment.getPresenter().receive(messages);
+                    //定位到最新一条
                 }
                 Log.e("mainactivity", "on start" );
             }

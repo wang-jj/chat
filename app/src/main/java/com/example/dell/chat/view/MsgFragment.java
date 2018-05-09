@@ -55,7 +55,8 @@ public class MsgFragment extends Fragment {
         View view=inflater.inflate(R.layout.msg_fragment,container,false);
 
         Log.e("Fragment 1", "onCreateView");
-
+        Log.e("chatmode",String.valueOf(MyApplication.getChattingMode()));
+        Log.e("chat activity",MyApplication.getChatActivity()==null?"null":"not null");
         final LinearLayout progressLayout=(LinearLayout)view.findViewById(R.id.message_progress);
         progressLayout.setVisibility(View.VISIBLE);
 
