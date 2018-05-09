@@ -19,4 +19,7 @@ public interface ChatModel {
 
     //接受消息
     void ReceiveMessage(final List<EMMessage> messages, final Callback<Void> callback);
+
+    //发送评论通知
+    void SendComment(final String user_name,final int comment_id,int holder_id);
 }

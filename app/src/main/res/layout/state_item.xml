@@ -94,21 +94,21 @@
             <ImageView
                 android:id="@+id/state_image1"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="100dp"
                 android:layout_margin="1dp"
                 android:layout_weight="1"/>
 
             <ImageView
                 android:id="@+id/state_image2"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="100dp"
                 android:layout_margin="1dp"
                 android:layout_weight="1"/>
 
             <ImageView
                 android:id="@+id/state_image3"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="100dp"
                 android:layout_margin="1dp"
                 android:layout_weight="1"/>
 

@@ -45,6 +45,7 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
     ImageView imageView3;
     List<LocalMedia> selectList =new ArrayList<LocalMedia>();
     EditText editText=null;
+    private int flat=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,9 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(flat!=0){
+                    return;
+                }
                 //发布动态逻辑
                 //onBackPressed();
                 PersonalState personalState=new PersonalState();
@@ -83,7 +87,6 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
                 presenter.Publish(personalState);
             }
         });
-
         imageView1=(ImageView)findViewById(R.id.publish_image1);
         imageView2=(ImageView)findViewById(R.id.publish_image2);
         imageView3=(ImageView)findViewById(R.id.publish_image3);
@@ -206,5 +209,13 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
     @Override
     protected MomentPresenter createPresenter() {
         return new MomentPresenter();
+    }
+
+    public int getFlat() {
+        return flat;
+    }
+
+    public void setFlat(int flat) {
+        this.flat = flat;
     }
 }

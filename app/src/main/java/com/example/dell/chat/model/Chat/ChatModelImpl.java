@@ -33,6 +33,22 @@ import okhttp3.Response;
 
 public class ChatModelImpl implements ChatModel{
 
+    private String flat="这是一条评论11546325:";
+
+    @Override
+    public void SendComment(final String user_name, final int comment_id, final int holder_id) {
+        ThreadTask<Void,Void,Void>threadTask=new ThreadTask<>(null, new Execute<Void>() {
+            @Override
+            public Void doExec() {
+                String content=flat+String.valueOf(comment_id)+",.iojn"+user_name;
+                EMMessage msg = EMMessage.createTxtSendMessage(content, String.valueOf(holder_id));
+                //发送消息
+                EMClient.getInstance().chatManager().sendMessage(msg);
+                return null;
+            }
+        });
+    }
+
     //初始化聊天
     @Override
     public List<Chat> InitChat(final int contact_id){
@@ -66,7 +82,7 @@ public class ChatModelImpl implements ChatModel{
                     EMClient.getInstance().chatManager().sendMessage(msg);
 //                sender = msg.getFrom();
 //                receiver = msg.getTo();
-                    time = System.currentTimeMillis();;
+                    time = System.currentTimeMillis();
 //                body = msg.getBody();
                 }
                 else if(msgtype == 2) {
@@ -142,10 +158,10 @@ public class ChatModelImpl implements ChatModel{
                     type = msg.getType();
 
                     int msg_type = 1;
-                    if(String.valueOf(type) == "TXT"){
+                    if((String.valueOf(type)) .equals("TXT") ){
                         msg_type = 1;
                     }
-                    else if(String.valueOf(type) == "IMAGE"){
+                    else if((String.valueOf(type)).equals("IMAGE") ){
                         msg_type = 3;
                     }
 

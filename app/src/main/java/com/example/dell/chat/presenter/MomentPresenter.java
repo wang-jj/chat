@@ -20,6 +20,7 @@ import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Moment.MomentModel;
 import com.example.dell.chat.model.Moment.MomentModelImpl;
+import com.example.dell.chat.view.PublishActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -78,6 +79,7 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
                         Log.e("Publish", datas );
                         getView().finish();
                     }
+                    ((PublishActivity)getView()).setFlat(1);
                 }
             });
             //获取时间
