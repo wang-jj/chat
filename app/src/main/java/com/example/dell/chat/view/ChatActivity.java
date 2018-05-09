@@ -1,7 +1,11 @@
 package com.example.dell.chat.view;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
@@ -47,13 +52,18 @@ public class ChatActivity extends AppCompatActivity {
     public EditText editText;
     public String GetUserInfo = "http://119.23.255.222/android/useridinfo.php";
     public Intent mIntent ;
-    public Boolean internetBool=false;
+    private IntentFilter intentFilter;
+    private  NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
+        //检测网络连接所需初始化
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        networkChangeReceiver = new NetworkChangeReceiver();
+        registerReceiver(networkChangeReceiver,intentFilter);
         //从MsgFragment跳转过来的Intent 使用nickname获取昵称 profile获取头像
         Intent intent_msg=getIntent();
         String nickname=intent_msg.getStringExtra("nickname");
@@ -151,7 +161,8 @@ public class ChatActivity extends AppCompatActivity {
         imageButton_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(IsInternet.isNetworkAvailable(getApplication())) {
+
+                if(MyApplication.getIsInternet()==true) {
                     if (!editText.getText().toString().isEmpty()) {
                         Chat chat = new Chat();
                         chat.setContent(editText.getText().toString());
@@ -172,10 +183,10 @@ public class ChatActivity extends AppCompatActivity {
 
                     }
                 }
-//                else {
-//                    Toast.makeText(MyApplication.getChatActivity(),"网络连接异常。",Toast.LENGTH_SHORT).show();
-//                }
-//                }
+                else {
+                    Toast.makeText(MyApplication.getChatActivity(),"网络连接异常。",Toast.LENGTH_SHORT).show();
+                }
+                }
 
         });
 
@@ -184,16 +195,13 @@ public class ChatActivity extends AppCompatActivity {
         imageButton_picture_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                isConnection();
-//                //Log.e("internet",String.valueOf(internetBool));
-//                if(internetBool) {
-//                    createSelect();
-//                }
-//                else {
-//                    Toast.makeText(MyApplication.getChatActivity(),"网络连接异常。",Toast.LENGTH_SHORT).show();
-//                }
-                createSelect();
 
+                if(MyApplication.getIsInternet()==true) {
+                    createSelect();
+                }
+                else {
+                    Toast.makeText(MyApplication.getChatActivity(),"网络连接异常。",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -378,6 +386,9 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        //网络状态检测
+        unregisterReceiver(networkChangeReceiver);
+        //重置聊天状态与对象
         MyApplication.setChattingMode(0);
         Log.e("chat mode","it's cleared");
         MyApplication.setChatActivity(null);
@@ -461,42 +472,19 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    public void connectionNetwork(final Callback<Boolean> callback) {
-        ThreadTask t = new ThreadTask<Void,Void,Void>(callback, new Execute<Boolean>() {
-            @Override
-            public Boolean doExec() {
-                boolean result = false;
-                HttpURLConnection httpUrl = null;
-                try {
-                    httpUrl = (HttpURLConnection) new URL("http://www.baidu.com").openConnection();
-                    httpUrl.setConnectTimeout(5);
-                    httpUrl.connect();
-                    result = true;
-                } catch (IOException e) {
-                } finally {
-                    if (null != httpUrl) {
-                        httpUrl.disconnect();
-                    }
-                    httpUrl = null;
-                }
-                return result;
+    public class NetworkChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent){
+            ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if(networkInfo!=null&&networkInfo.isAvailable()){
+                MyApplication.setIsInternet(true);
+                Log.e("isinternet","true");
+            } else{
+                MyApplication.setIsInternet(false);
+                Log.e("isinternet","false");
             }
-        });
-        t.execute();
-
+        }
     }
-
-    public void isConnection(){
-        connectionNetwork(new Callback<Boolean>() {
-            @Override
-            public void execute(Boolean datas) {
-                internetBool = datas;
-
-                Log.e("internet",String.valueOf(internetBool));
-                return ;
-            }
-        });
-    }
-
 
 }

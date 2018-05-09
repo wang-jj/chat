@@ -79,6 +79,16 @@ public class MyApplication extends MultiDexApplication {
 
     private static MainActivity mainActivity;
 
+    private static Boolean isInternet = false;
+
+    public static Boolean getIsInternet() {
+        return isInternet;
+    }
+
+    public static void setIsInternet(Boolean isInternet) {
+        MyApplication.isInternet = isInternet;
+    }
+
     public static MainActivity getMainActivity() {
         return mainActivity;
     }

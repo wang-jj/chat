@@ -283,7 +283,9 @@ public class LoadActivity extends BaseActivity<LoadActivity,LoginPresenter<LoadA
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.READ_PHONE_STATE,
                         Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_NETWORK_STATE
+                },
                 new PermissionListener() {
                     @Override
                     public void onGranted() {  //所有权限授权成功

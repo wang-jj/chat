@@ -28,21 +28,21 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class NewMessage {
     public static void createNewMessageNofity(String user_name, Chat chat){
         NotificationManager notificationManager= (NotificationManager) MyApplication.getContext().getSystemService(NOTIFICATION_SERVICE);
-        Intent intent=new Intent(MyApplication.getContext(), MsgFragment.class);
+        Intent intent=new Intent(MyApplication.getContext(), MyApplication.getFrag().getClass());
 
         //intent.putExtra("chat",chat);
         String content = " ";
         if(chat.getType()==1){
-            content = new ChatModelImpl().messageCutter(chat.getContent());
+            content = chat.getContent();
         }
         else{
-            content = "图片消息";
+            content = "[图片消息]";
         }
         Log.e("new message","notify");
         PendingIntent pendingIntent=PendingIntent.getActivities(MyApplication.getContext(),0,new Intent[]{intent},0);
         Notification notification=new NotificationCompat.Builder(MyApplication.getContext())
                 .setContentTitle("收到一条新消息")
-                .setContentText(user_name+":"+content)
+                .setContentText(user_name+"："+content)
                 .setWhen(System.currentTimeMillis())
                 .setLargeIcon(BitmapFactory.decodeResource(MyApplication.getContext().getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.icon_logo)
