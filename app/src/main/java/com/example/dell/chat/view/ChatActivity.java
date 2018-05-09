@@ -242,9 +242,21 @@ public class ChatActivity extends AppCompatActivity {
             }else if(viewType==TYPE_SENT_IMAGE){
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_right_image,parent,false);
                 holder=new RightImageViewHolder(view);
+//                ((RightImageViewHolder)holder).chatImage.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                    }
+//                });
             }else{
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_left_image,parent,false);
                 holder=new LeftImageViewHolder(view);
+//                ((LeftImageViewHolder)holder).chatImage.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                    }
+//                });
                 ((LeftImageViewHolder)holder).chatProfile.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -345,6 +357,10 @@ public class ChatActivity extends AppCompatActivity {
         return adapter;
     }
 
+    public RecyclerView getChatRecyclerView(){
+        return chatRecyclerView;
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -396,7 +412,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void createSelect(){
-        PictureSelector.create(ChatActivity.this).openGallery(PictureMimeType.ofImage()).enableCrop(true).compress(true).minimumCompressSize(200).previewImage(true).isGif(true).maxSelectNum(1).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
+        PictureSelector.create(ChatActivity.this).openGallery(PictureMimeType.ofImage()).theme(R.style.picture_white_style).enableCrop(true).compress(true).minimumCompressSize(200).previewImage(true).isGif(true).maxSelectNum(1).isDragFrame(true).rotateEnabled(true).hideBottomControls(false).forResult(PictureConfig.CHOOSE_REQUEST);
     }
 
     @Override

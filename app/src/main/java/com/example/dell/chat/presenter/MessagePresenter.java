@@ -92,6 +92,7 @@ public class MessagePresenter {
                     }
                     Log.e("chat","更新当前聊天");
                     //chatModel.InitChat(MyApplication.getChattingMode());
+                    MyApplication.getChatActivity().getChatRecyclerView().smoothScrollToPosition(MyApplication.getChatActivity().getAdapter().getItemCount() - 1 );
                     MyApplication.getChatActivity().getAdapter().notifyDataSetChanged();
                 }
                 Log.e("chatmode",String.valueOf(MyApplication.getChattingMode()));
