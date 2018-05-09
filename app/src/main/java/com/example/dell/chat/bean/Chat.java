@@ -3,6 +3,7 @@ package com.example.dell.chat.bean;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 import org.greenrobot.greendao.annotation.Generated;
@@ -12,7 +13,7 @@ import org.greenrobot.greendao.annotation.Generated;
  * Created by courageface on 2018/4/8.
  */
 @Entity
-public class Chat{
+public class Chat implements Serializable {
     @Id(autoincrement = true)
     private Long id;
     private int msg_id;    //该条聊天记录的ID 可能去除

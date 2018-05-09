@@ -11,6 +11,7 @@ import com.example.dell.chat.db.ChatDao;
 import com.example.dell.chat.db.MessageDao;
 import com.example.dell.chat.model.Callback;
 import com.example.dell.chat.model.Execute;
+import com.example.dell.chat.tools.NewMessage;
 import com.example.dell.chat.tools.ThreadTask;
 import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;
@@ -228,11 +229,32 @@ public class ChatModelImpl implements ChatModel{
                         themsg.setUnread(1);
                         messageDao.update(themsg);
                     }
+
+                    //通知栏通知
+                    String result=null;
+                    try {
+                        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(MyApplication.getTimeout(), TimeUnit.SECONDS).build();
+                        String URL = GetHeadImageAndNickname + "?user_id=" + sender; //获取对方头像和昵称
+                        Request request = new Request.Builder().url(URL).build();
+                        Response response = client.newCall(request).execute();
+                        result=response.body().string();
+                        Contact contact=new Gson().fromJson(result,Contact.class);
+                        NewMessage.createNewMessageNofity(contact.getNickname(),chat);//通知栏通知
+                    }
+                    catch(Exception e){
+                        if(e instanceof SocketTimeoutException ||e instanceof ConnectException){//超时
+                            result="out_of_time";
+                        }else {
+                            e.printStackTrace();
+                        }
+                    }
+
                 }
 
                 //本地数据库Chat记录接受信息
                 ChatDao chatDao = MyApplication.getDao().getChatDao();
                 chatDao.insertInTx(chats);
+
 
                 return null;
             }
@@ -246,6 +268,6 @@ public class ChatModelImpl implements ChatModel{
         if((str.substring(pos+1)).length()==2){
             return "";
         }
-        return str.substring(pos+2,str.length()-2);
+        return str.substring(pos+2,str.length()-1);
     }
 }

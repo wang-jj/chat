@@ -130,7 +130,7 @@ public class MsgFragment extends Fragment {
 //                adapter.MessageAdd(0,message);
 //                adapter.notifyItemInserted(0);
 //                messageRecyclerView.scrollToPosition(0);
-//                swipeRefreshLayout.setRefreshing(false);
+                  swipeRefreshLayout.setRefreshing(false);
             }
         });
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorWhite));

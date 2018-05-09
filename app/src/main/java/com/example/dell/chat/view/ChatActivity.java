@@ -122,24 +122,24 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        //顶部的刷新函数 上滑时的刷新逻辑放入此函数
-        final SwipeRefreshLayout swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipe_chat_recycler);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {   //顶部刷新
-                Chat chat=new Chat();
-                chat.setContent("你才欠我十顿饭呢.");
-                //chat.setProfileID(profile);   使用Intent传过来的值作为默认头像
-                chat.setType(1);
-                adapter.ChatAdd(0,chat);
-                adapter.notifyItemInserted(0);
-                chatRecyclerView.scrollToPosition(0);
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-        //刷新样式设置
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorWhite));
-        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.colorPrimary));
+//        //顶部的刷新函数 上滑时的刷新逻辑放入此函数
+//        final SwipeRefreshLayout swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipe_chat_recycler);
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {   //顶部刷新
+//                Chat chat=new Chat();
+//                chat.setContent("你才欠我十顿饭呢.");
+//                //chat.setProfileID(profile);   使用Intent传过来的值作为默认头像
+//                chat.setType(1);
+//                adapter.ChatAdd(0,chat);
+//                adapter.notifyItemInserted(0);
+//                chatRecyclerView.scrollToPosition(0);
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//        });
+//        //刷新样式设置
+//        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorWhite));
+//        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.colorPrimary));
 
         //发送按钮 点击函数 发送信息的逻辑
         ImageButton imageButton_send=(ImageButton)findViewById(R.id.chat_send);
