@@ -1,5 +1,7 @@
 package com.example.dell.chat.view;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -74,20 +76,51 @@ public class PublishActivity extends BaseActivity<PublishActivity,MomentPresente
                 }
                 //发布动态逻辑
                 //onBackPressed();
+
+                AlertDialog.Builder alertDialog=new AlertDialog.Builder(PublishActivity.this);
+                alertDialog.setCancelable(true);
+                alertDialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
                 PersonalState personalState=new PersonalState();
-                personalState.setContent(editText.getText().toString());
-                personalState.setImg_type(selectList.size());
-                personalState.setUser_id(MyApplication.getUser().getUser_id());
-                if(selectList.size()>0){
-                    personalState.setImage1ID(getpath(selectList.get(0)));
+                if(!editText.getText().toString().isEmpty()){
+                    if(editText.getText().toString()!=null){
+                        personalState.setContent(editText.getText().toString());
+                        if(selectList.size()>0){
+                            personalState.setImg_type(selectList.size());
+                            personalState.setUser_id(MyApplication.getUser().getUser_id());
+                            if(selectList.size()>0){
+                                personalState.setImage1ID(getpath(selectList.get(0)));
+                            }
+                            if(selectList.size()>1){
+                                personalState.setImage2ID(getpath(selectList.get(1)));
+                            }
+                            if(selectList.size()>2){
+                                personalState.setImage3ID(getpath(selectList.get(2)));
+                            }
+                            presenter.Publish(personalState);
+                        }else{
+                            //请选择图片
+                            alertDialog.setTitle("请确认动态内容");
+                            alertDialog.setMessage("请确认已选择图片");
+                            alertDialog.show();
+                        }
+                    }else{
+                        //输入文本信息
+                        alertDialog.setTitle("请确认动态内容");
+                        alertDialog.setMessage("请确认已输入文本");
+                        alertDialog.show();
+                    }
+                }else{
+                    //输入文本信息
+                    alertDialog.setTitle("请确认动态内容");
+                    alertDialog.setMessage("请确认已输入文本");
+                    alertDialog.show();
                 }
-                if(selectList.size()>1){
-                    personalState.setImage2ID(getpath(selectList.get(1)));
-                }
-                if(selectList.size()>2){
-                    personalState.setImage3ID(getpath(selectList.get(2)));
-                }
-                presenter.Publish(personalState);
             }
         });
         imageView1=(ImageView)findViewById(R.id.publish_image1);
