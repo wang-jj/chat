@@ -34,7 +34,7 @@ public class Notify {
                 .setSmallIcon(R.drawable.icon_logo)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setVibrate(new long[]{0,1000})
+                .setVibrate(new long[]{0,500})
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setLights(Color.GREEN,1500,1500)
                 .build();

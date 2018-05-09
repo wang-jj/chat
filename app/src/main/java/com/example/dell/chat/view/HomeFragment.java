@@ -474,6 +474,8 @@ public class HomeFragment extends Fragment {
                 ((OneViewHolder)holder).stateComment.setText(String.valueOf(personalState.getComment()));
                 //stateProfile 就是一个ImageView
                 Glide.with(getActivity()).load(personalState.getProfileID()).thumbnail(0.1f).into(((OneViewHolder)holder).stateProfile);
+                Glide.with(getActivity()).load(personalState.getImage1ID()).apply(requestOptions).thumbnail(0.1f).into(((OneViewHolder)holder).stateImage1);
+                /*
                 if(personalState.getImage1ID()!=null){
                     Glide.with(getActivity()).load(personalState.getImage1ID()).apply(requestOptions).thumbnail(0.1f).into(((OneViewHolder)holder).stateImage1);
                 }else {
@@ -481,6 +483,7 @@ public class HomeFragment extends Fragment {
                     params.height=10;
                     ((OneViewHolder)holder).stateImage1.setLayoutParams(params);
                 }
+                */
                 //((OneViewHolder)holder).stateProfile.setImageResource(personalState.getProfileID());
                 //((OneViewHolder)holder).stateImage1.setImageResource(personalState.getImage1ID());
                 if(personalState.getPictureID()==0){
@@ -704,7 +707,6 @@ public class HomeFragment extends Fragment {
         }
         stateRecyclerView.scrollToPosition(0);
         swipeRefreshLayout.setRefreshing(false);
-        Notify.createCommentNofity("王锦杰",adapter.mStateList.get(0));
     }
 
     public void seePicture(ArrayList<String> url,int position){

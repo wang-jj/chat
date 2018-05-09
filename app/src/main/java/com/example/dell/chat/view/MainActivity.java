@@ -183,12 +183,14 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
                     if(body.toString().contains("这是一条评论11546325:")){
                         com.add(new Integer(c));
                         String result=body.toString();
-                        result.substring(19);
+                        String result1=result.substring(20);
                         String[]ss=new String[2];
-                        ss=result.split(",.iojn",2);
+                        ss=result1.split(",.iojn",2);
+                        Log.e("result123", ss[1] );
                         PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
                         PersonalState personalState=personalStateDao.queryBuilder().where(PersonalStateDao.Properties.Personalstate_id.eq(Integer.parseInt(ss[0]))).unique();
                         if(personalState!=null){
+                            Log.e("result123", ss[1] );
                             Notify.createCommentNofity(ss[1],personalState);
                         }
                     }
@@ -316,7 +318,7 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
 
         } else if (id == R.id.nav_cancel) {
             presenter.SignOut();
-            //finish();
+            finish();
         }
 
         item.setChecked(false);

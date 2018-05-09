@@ -41,12 +41,15 @@ public class ChatModelImpl implements ChatModel{
             @Override
             public Void doExec() {
                 String content=flat+String.valueOf(comment_id)+",.iojn"+user_name;
+                Log.e("result123456", content);
+                Log.e("result123456", String.valueOf(holder_id));
                 EMMessage msg = EMMessage.createTxtSendMessage(content, String.valueOf(holder_id));
                 //发送消息
                 EMClient.getInstance().chatManager().sendMessage(msg);
                 return null;
             }
         });
+        threadTask.execute();
     }
 
     //初始化聊天

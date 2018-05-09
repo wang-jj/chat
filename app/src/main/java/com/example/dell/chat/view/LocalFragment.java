@@ -554,6 +554,7 @@ public class LocalFragment extends Fragment {
     }
 
     public void UpdatePerson(List<Location>locations){
+        ((SwipeRefreshLayout)view.findViewById(R.id.swipe_location_recycler)).setRefreshing(false);
         locationRecyclerView.setLayoutAnimation(controller);
         adapter.setmLocationList(locations);
         adapter.notifyDataSetChanged();
