@@ -262,7 +262,7 @@ public class MsgFragment extends Fragment {
                 holder.messageTips.setVisibility(View.VISIBLE);
             }
             Glide.with(getActivity()).load(message.getImage_path()).thumbnail(0.1f).into((holder).messageProfile);
-            //解析图片路径
+            //解析头像图片路径
         }
 
         @Override

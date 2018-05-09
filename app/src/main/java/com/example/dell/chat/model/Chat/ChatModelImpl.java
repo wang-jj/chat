@@ -210,7 +210,12 @@ public class ChatModelImpl implements ChatModel{
                     chat.setUser_id(Integer.valueOf(receiver));
                     chat.setContact_id(Integer.valueOf(sender));
                     chat.setTime(time);
-                    chat.setContent(messageCutter(body.toString()));
+                    if(msg_type==1) {
+                        chat.setContent(messageCutter(body.toString()));
+                    }
+                    else{
+                        chat.setContent(imageCutter(body.toString()));
+                    }
                     chat.setType(msg_type);
                     chats.add(chat);
 
@@ -299,6 +304,18 @@ public class ChatModelImpl implements ChatModel{
         if((str.substring(pos+1)).length()==2){
             return "";
         }
+
         return str.substring(pos+2,str.length()-1);
+    }
+
+    public String imageCutter(String str){
+        int pos = str.indexOf(":");
+        String strAfter = str.substring(pos+2);
+        int beg_pos = strAfter.indexOf("localurl")+10;
+        int end_pos = strAfter.indexOf("remoteurl:")-2;
+        Log.e("原图片路径",str);
+        Log.e("最终图片",strAfter.substring(beg_pos,end_pos));
+        return strAfter.substring(beg_pos,end_pos);
+
     }
 }

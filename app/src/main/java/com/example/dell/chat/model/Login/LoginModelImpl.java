@@ -77,7 +77,7 @@ public class LoginModelImpl implements LoginModel {
                             public void onSuccess() {
                                 EMClient.getInstance().groupManager().loadAllGroups();
                                 EMClient.getInstance().chatManager().loadAllConversations();
-                                Log.d("log in", "登录聊天服务器成功！");
+                                Log.e("log in", "登录聊天服务器成功！");
                             }
 
                             @Override
@@ -87,7 +87,7 @@ public class LoginModelImpl implements LoginModel {
 
                             @Override
                             public void onError(int code, String message) {
-                                Log.d("log in", message+" 登录聊天服务器失败！");
+                                Log.e("log in", message+" 登录聊天服务器失败！");
                             }
                         });
                     }catch (IOException e){
@@ -155,10 +155,10 @@ public class LoginModelImpl implements LoginModel {
                         try {
                             //注册失败会抛出HyphenateException
                             //Log.d("the user id",user_id);
-                            Log.d("the passwd",password);
+                            Log.e("the passwd",password);
                             EMClient.getInstance().createAccount(user_id, password);//同步方法
 
-                            Log.d("sign up", "注册成功！");
+                            Log.e("sign up", "注册成功！");
                         } catch (HyphenateException e) {
                             int errorCode=e.getErrorCode();
                             Log.e("sign up", "注册失败！");
@@ -207,7 +207,7 @@ public class LoginModelImpl implements LoginModel {
                             public void onSuccess() {
                                 EMClient.getInstance().groupManager().loadAllGroups();
                                 EMClient.getInstance().chatManager().loadAllConversations();
-                                Log.d("log in", "登录聊天服务器成功！");
+                                Log.e("log in", "登录聊天服务器成功！");
                             }
 
                             @Override
@@ -217,7 +217,7 @@ public class LoginModelImpl implements LoginModel {
 
                             @Override
                             public void onError(int code, String message) {
-                                Log.d("log in", message+" 登录聊天服务器失败！");
+                                Log.e("log in", message+" 登录聊天服务器失败！");
                             }
                         });
                     }
