@@ -136,8 +136,8 @@ public class MessageModelImpl implements MessageModel {
 
                     m.setUser_id(MyApplication.getUser().getUser_id());
                     m.setContact_id(contact_id);
-                    m.setLatest_content("");
-                    m.setLatest_time(0);
+                    m.setLatest_content("我们可以开始聊天啦！");
+                    m.setLatest_time( System.currentTimeMillis());
                     m.setUnread(0);
 
                     messageDao.insert(m);
