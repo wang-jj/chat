@@ -11,13 +11,17 @@ import android.util.Log;
 
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Chat;
+import com.example.dell.chat.bean.Message;
 import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.model.Chat.ChatModelImpl;
 import com.example.dell.chat.model.Message.MessageModelImpl;
 import com.example.dell.chat.view.ChatActivity;
 import com.example.dell.chat.view.CommentActivity;
+import com.example.dell.chat.view.MainActivity;
 import com.example.dell.chat.view.MsgFragment;
+
+import java.util.List;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -28,9 +32,15 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class NewMessage {
     public static void createNewMessageNofity(String user_name, Chat chat){
         NotificationManager notificationManager= (NotificationManager) MyApplication.getContext().getSystemService(NOTIFICATION_SERVICE);
-        Intent intent=new Intent(MyApplication.getContext(), MyApplication.getFrag().getClass());
-
-        //intent.putExtra("chat",chat);
+        Intent intent=new Intent(MyApplication.getContext(), ChatActivity.class);
+        MessageModelImpl messageModel = new MessageModelImpl();
+        List<Message> list =  messageModel.CheckMessage(chat.getContact_id());
+        if(list.size()>0) {
+            Message message = list.get(0);
+            intent.putExtra("nickname", message.getContact_name());
+            intent.putExtra("profile",message.getImage_path());
+            intent.putExtra("contact_id",message.getContact_id());
+        }
         String content = " ";
         if(chat.getType()==1){
             content = chat.getContent();

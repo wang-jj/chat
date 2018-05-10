@@ -147,4 +147,11 @@ public class MessageModelImpl implements MessageModel {
         });
         t.execute();
     }
+
+    @Override
+    public List<Message> CheckMessage(final int contact_id){
+        MessageDao messageDao = MyApplication.getDao().getMessageDao();
+        List<Message> list = messageDao.queryBuilder().where(MessageDao.Properties.Contact_id.eq(contact_id)).build().list();
+        return list;
+    }
 }

@@ -22,4 +22,7 @@ public interface MessageModel {
 
     //新建联系人
     void CreateContact(final int contact_id, final Callback<Void> callback);
+
+    //id查联系人
+    List<Message> CheckMessage(final int contact_id);
 }
