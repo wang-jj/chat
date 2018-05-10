@@ -721,7 +721,7 @@ public class HomeFragment extends Fragment {
         stateRecyclerView.setLayoutAnimation(controller);
         stateRecyclerView.setAdapter(adapter);
 
-        //progressLayout.setVisibility(View.GONE);
+        progressLayout.setVisibility(View.GONE);
     }
 
     public void UpdateMoment(List<PersonalState> personalStates){
