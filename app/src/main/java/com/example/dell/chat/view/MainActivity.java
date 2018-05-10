@@ -134,6 +134,9 @@ public class MainActivity extends BaseActivity<MainActivity,MainPresenter<MainAc
         localFragment=new LocalFragment();
         msgFragment=new MsgFragment();
 
+        setFragment(msgFragment);
+        setFragment(homeFragment);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
