@@ -89,6 +89,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.AlbumActivity"
+            android:launchMode="singleTask"
             android:label="@string/title_activity_album"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -109,6 +110,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.ChatActivity"
+            android:launchMode="singleTask"
             android:label="@string/title_activity_chat"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

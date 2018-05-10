@@ -55,6 +55,9 @@ public class MessageDao extends AbstractDao<Message, Long> {
                 "\"LATEST_CONTENT\" TEXT," + // 5: latest_content
                 "\"LATEST_TIME\" INTEGER NOT NULL ," + // 6: latest_time
                 "\"UNREAD\" INTEGER NOT NULL );"); // 7: unread
+        // Add Indexes
+        db.execSQL("CREATE INDEX " + constraint + "IDX_MESSAGE_USER_ID ON MESSAGE" +
+                " (\"USER_ID\" ASC);");
     }
 
     /** Drops the underlying database table. */

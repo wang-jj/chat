@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Index;
 
 /**
  * 聊天记录class 对应数据表 Chat
@@ -16,7 +17,8 @@ import org.greenrobot.greendao.annotation.Generated;
 public class Chat implements Serializable {
     @Id(autoincrement = true)
     private Long id;
-    private int msg_id;    //该条聊天记录的ID 可能去除
+    //private int msg_id;    //该条聊天记录的ID 可能去除
+    @Index
     private int user_id;    //本用户的ID
     private int contact_id;    //联系人ID
     private String content; //聊天内容或文件路径
@@ -53,23 +55,16 @@ public class Chat implements Serializable {
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
-    public int getMsg_id() {
-        return this.msg_id;
-    }
-    public void setMsg_id(int msg_id) {
-        this.msg_id = msg_id;
-    }
     public Long getId() {
         return this.id;
     }
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 1640304005)
-    public Chat(Long id, int msg_id, int user_id, int contact_id, String content,
-            long time, int type) {
+    @Generated(hash = 2039281702)
+    public Chat(Long id, int user_id, int contact_id, String content, long time,
+            int type) {
         this.id = id;
-        this.msg_id = msg_id;
         this.user_id = user_id;
         this.contact_id = contact_id;
         this.content = content;
@@ -79,6 +74,7 @@ public class Chat implements Serializable {
     @Generated(hash = 519536279)
     public Chat() {
     }
+
 
 
 }

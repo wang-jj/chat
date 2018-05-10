@@ -5,6 +5,7 @@ import org.greenrobot.greendao.annotation.Id;
 
 import java.util.Date;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Index;
 
 /**
  * 常用联系人class 对应数据表 Message
@@ -14,6 +15,7 @@ import org.greenrobot.greendao.annotation.Generated;
 public class Message  {
     @Id(autoincrement = true)
     private Long id;
+    @Index
     private int user_id;  //本用户的ID
     private int contact_id;    //联系人ID
     private String image_path;   //联系人头像路径

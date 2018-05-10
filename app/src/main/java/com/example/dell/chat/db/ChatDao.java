@@ -25,12 +25,11 @@ public class ChatDao extends AbstractDao<Chat, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Msg_id = new Property(1, int.class, "msg_id", false, "MSG_ID");
-        public final static Property User_id = new Property(2, int.class, "user_id", false, "USER_ID");
-        public final static Property Contact_id = new Property(3, int.class, "contact_id", false, "CONTACT_ID");
-        public final static Property Content = new Property(4, String.class, "content", false, "CONTENT");
-        public final static Property Time = new Property(5, long.class, "time", false, "TIME");
-        public final static Property Type = new Property(6, int.class, "type", false, "TYPE");
+        public final static Property User_id = new Property(1, int.class, "user_id", false, "USER_ID");
+        public final static Property Contact_id = new Property(2, int.class, "contact_id", false, "CONTACT_ID");
+        public final static Property Content = new Property(3, String.class, "content", false, "CONTENT");
+        public final static Property Time = new Property(4, long.class, "time", false, "TIME");
+        public final static Property Type = new Property(5, int.class, "type", false, "TYPE");
     };
 
 
@@ -47,12 +46,14 @@ public class ChatDao extends AbstractDao<Chat, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CHAT\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"MSG_ID\" INTEGER NOT NULL ," + // 1: msg_id
-                "\"USER_ID\" INTEGER NOT NULL ," + // 2: user_id
-                "\"CONTACT_ID\" INTEGER NOT NULL ," + // 3: contact_id
-                "\"CONTENT\" TEXT," + // 4: content
-                "\"TIME\" INTEGER NOT NULL ," + // 5: time
-                "\"TYPE\" INTEGER NOT NULL );"); // 6: type
+                "\"USER_ID\" INTEGER NOT NULL ," + // 1: user_id
+                "\"CONTACT_ID\" INTEGER NOT NULL ," + // 2: contact_id
+                "\"CONTENT\" TEXT," + // 3: content
+                "\"TIME\" INTEGER NOT NULL ," + // 4: time
+                "\"TYPE\" INTEGER NOT NULL );"); // 5: type
+        // Add Indexes
+        db.execSQL("CREATE INDEX " + constraint + "IDX_CHAT_USER_ID ON CHAT" +
+                " (\"USER_ID\" ASC);");
     }
 
     /** Drops the underlying database table. */
@@ -69,16 +70,15 @@ public class ChatDao extends AbstractDao<Chat, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getMsg_id());
-        stmt.bindLong(3, entity.getUser_id());
-        stmt.bindLong(4, entity.getContact_id());
+        stmt.bindLong(2, entity.getUser_id());
+        stmt.bindLong(3, entity.getContact_id());
  
         String content = entity.getContent();
         if (content != null) {
-            stmt.bindString(5, content);
+            stmt.bindString(4, content);
         }
-        stmt.bindLong(6, entity.getTime());
-        stmt.bindLong(7, entity.getType());
+        stmt.bindLong(5, entity.getTime());
+        stmt.bindLong(6, entity.getType());
     }
 
     @Override
@@ -89,16 +89,15 @@ public class ChatDao extends AbstractDao<Chat, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getMsg_id());
-        stmt.bindLong(3, entity.getUser_id());
-        stmt.bindLong(4, entity.getContact_id());
+        stmt.bindLong(2, entity.getUser_id());
+        stmt.bindLong(3, entity.getContact_id());
  
         String content = entity.getContent();
         if (content != null) {
-            stmt.bindString(5, content);
+            stmt.bindString(4, content);
         }
-        stmt.bindLong(6, entity.getTime());
-        stmt.bindLong(7, entity.getType());
+        stmt.bindLong(5, entity.getTime());
+        stmt.bindLong(6, entity.getType());
     }
 
     @Override
@@ -110,12 +109,11 @@ public class ChatDao extends AbstractDao<Chat, Long> {
     public Chat readEntity(Cursor cursor, int offset) {
         Chat entity = new Chat( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getInt(offset + 1), // msg_id
-            cursor.getInt(offset + 2), // user_id
-            cursor.getInt(offset + 3), // contact_id
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // content
-            cursor.getLong(offset + 5), // time
-            cursor.getInt(offset + 6) // type
+            cursor.getInt(offset + 1), // user_id
+            cursor.getInt(offset + 2), // contact_id
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // content
+            cursor.getLong(offset + 4), // time
+            cursor.getInt(offset + 5) // type
         );
         return entity;
     }
@@ -123,12 +121,11 @@ public class ChatDao extends AbstractDao<Chat, Long> {
     @Override
     public void readEntity(Cursor cursor, Chat entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setMsg_id(cursor.getInt(offset + 1));
-        entity.setUser_id(cursor.getInt(offset + 2));
-        entity.setContact_id(cursor.getInt(offset + 3));
-        entity.setContent(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setTime(cursor.getLong(offset + 5));
-        entity.setType(cursor.getInt(offset + 6));
+        entity.setUser_id(cursor.getInt(offset + 1));
+        entity.setContact_id(cursor.getInt(offset + 2));
+        entity.setContent(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setTime(cursor.getLong(offset + 4));
+        entity.setType(cursor.getInt(offset + 5));
      }
     
     @Override

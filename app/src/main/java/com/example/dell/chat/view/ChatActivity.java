@@ -399,7 +399,8 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
+//        presenter.showChat(contact_id);
+//        getAdapter().notifyDataSetChanged();
         Log.e("Chat", "onStart");
     }
 
