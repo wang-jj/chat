@@ -60,6 +60,7 @@ public class MomentModelImpl implements MomentModel {
         ThreadTask threadTask=new ThreadTask<Void,Void,String>(callback, new Execute<String>() {
             @Override
             public String doExec() {
+                Log.e("Publish","jpg");
                 /*
                 String a="no";
                 MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");

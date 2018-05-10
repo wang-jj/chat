@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.MyApplication;
@@ -26,9 +27,10 @@ public class Notify {
         Intent intent=new Intent(MyApplication.getContext(), CommentActivity.class);
         intent.putExtra("personalstate",personalState);
         PendingIntent pendingIntent=PendingIntent.getActivities(MyApplication.getContext(),0,new Intent[]{intent},0);
+        Log.e("yes", "createCommentNofity: " );
         Notification notification=new NotificationCompat.Builder(MyApplication.getContext())
                 .setContentTitle("收到一条评论")
-                .setContentText(user_name+" 评论/回复了你")
+                .setContentText(user_name)
                 .setWhen(System.currentTimeMillis())
                 .setLargeIcon(BitmapFactory.decodeResource(MyApplication.getContext().getResources(),R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.icon_logo)

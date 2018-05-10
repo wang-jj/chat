@@ -61,6 +61,8 @@ public class HomeFragment extends Fragment {
     private LayoutAnimationController controller;
     private RequestOptions requestOptions=new RequestOptions().centerCrop();
     private int pos=-1;
+    private List<PersonalState>AllPersonalState=new ArrayList<>();
+    private int state=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -101,17 +103,28 @@ public class HomeFragment extends Fragment {
         */
 
 
-        /*
         //底部刷新函数 底部刷新时逻辑写在此函数
         final NestedScrollView nestedScrollView=(NestedScrollView)view.findViewById(R.id.home_scroll_view);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, final int scrollX, final int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
-                    //底部刷新
-                    if(progressLayout.getVisibility()==View.GONE){
-                        progressLayout.setVisibility(View.VISIBLE);
+                    progressLayout.setVisibility(View.VISIBLE);
+                    for(int i=0;i<20&&state<AllPersonalState.size();i++){
+                        adapter.getmStateList().add(AllPersonalState.get(state));
+                        state++;
                     }
+                    //底部刷新
+                    Handler handler=new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                            progressLayout.setVisibility(View.GONE);
+                        }
+                    }, 1000);
+                    //progressLayout.setVisibility(View.GONE);
+                    /*
                     final PersonalState personalState=new PersonalState();
                     personalState.setNickname("麦梓逗比旗");
                     personalState.setSchool("华南理工大学");
@@ -135,10 +148,10 @@ public class HomeFragment extends Fragment {
                             progressLayout.setVisibility(View.GONE);
                         }
                     }, 1000);
+                    */
                 }
             }
         });
-        */
 
         //顶部刷新函数 顶部刷新的逻辑写在此函数
         swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipe_state_recycler);
@@ -699,19 +712,26 @@ public class HomeFragment extends Fragment {
     }
 
     public void LoadMoment(List<PersonalState>personalStates){
-        adapter.setmStateList(personalStates);
+        //adapter.setmStateList(personalStates);
+        AllPersonalState=personalStates;
+        List<PersonalState>stateList=adapter.getmStateList();
+        for(;state<20&&state<personalStates.size();state++){
+            stateList.add(personalStates.get(state));
+        }
         stateRecyclerView.setLayoutAnimation(controller);
         stateRecyclerView.setAdapter(adapter);
-        progressLayout.setVisibility(View.GONE);
+
+        //progressLayout.setVisibility(View.GONE);
     }
 
     public void UpdateMoment(List<PersonalState> personalStates){
-        for(int i=0;i<adapter.getmStateList().size()&&i<30;i++){
+        for(int i=0;i<adapter.getmStateList().size()&&i<50;i++){
             adapter.notifyItemChanged(i);
         }
         if(personalStates.size()>0){
             adapter.getmStateList().addAll(0,personalStates);
             adapter.notifyDataSetChanged();
+            AllPersonalState.addAll(0,personalStates);
         }
         stateRecyclerView.scrollToPosition(0);
         swipeRefreshLayout.setRefreshing(false);
@@ -766,5 +786,9 @@ public class HomeFragment extends Fragment {
             default:
                 break;
         }
+    }
+
+    public List<PersonalState> getAllPersonalState() {
+        return AllPersonalState;
     }
 }

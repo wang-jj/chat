@@ -65,7 +65,9 @@ public class MomentPresenter<T extends BaseActivity> extends BasePresenter<T> {
         //判断能否联网
 
         else{
-            personalState.setLocation(addr);
+            if(addr!=null){
+                personalState.setLocation(addr);
+            }
             personalState.setLatitude(latitude);
             personalState.setLongitude(longitude);
             momentModel.Publish(personalState, new com.example.dell.chat.model.Callback<String>() {//联网发动态

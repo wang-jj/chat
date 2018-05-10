@@ -55,7 +55,12 @@ public class LocalPresenter {
         homeModel.UpdatePerson(MyApplication.getLatitude(), MyApplication.getLongitude(), new Callback<List<Location>>() {
             @Override
             public void execute(List<Location> datas) {
-                for(Location location:datas){
+                int a=-1;
+                for(int i=0;i<datas.size();i++){
+                    Location location=datas.get(i);
+                    if(location.getUser_id()==MyApplication.getUser().getUser_id()){
+                        a=i;
+                    }
                     if(location.getImage1ID()!=null){
                         location.setImg_type(0);
                         location.setImage1ID(url+location.getImage1ID().substring(1));
@@ -69,7 +74,11 @@ public class LocalPresenter {
                         location.setImage3ID(url+location.getImage3ID().substring(1));
                     }
                 }
-                Log.e("personal", new Gson().toJson(datas));
+                if(a!=-1){
+                    datas.remove(a);
+                    Log.e("personal", new Gson().toJson(datas));
+                }
+
                 view.CreatePerson(datas);
             }
         });
@@ -79,7 +88,12 @@ public class LocalPresenter {
         homeModel.UpdatePerson(MyApplication.getLatitude(), MyApplication.getLongitude(), new Callback<List<Location>>() {
             @Override
             public void execute(List<Location> datas) {
-                for(Location location:datas){
+                int a=-1;
+                for(int i=0;i<datas.size();i++){
+                    Location location=datas.get(i);
+                    if(location.getUser_id()==MyApplication.getUser().getUser_id()){
+                        a=i;
+                    }
                     if(location.getImage1ID()!=null){
                         location.setImg_type(0);
                         location.setImage1ID(url+location.getImage1ID().substring(1));
@@ -92,6 +106,9 @@ public class LocalPresenter {
                         location.setImg_type(2);
                         location.setImage3ID(url+location.getImage3ID().substring(1));
                     }
+                }
+                if(a!=-1){
+                    datas.remove(a);
                 }
                 Collections.shuffle(datas);
                 String temp=new Gson().toJson(datas);

@@ -152,6 +152,7 @@ public class HomeModelIlpl implements HomeModel {
                 List<PersonalState> personalStates=new ArrayList<>();
                 PersonalStateDao personalStateDao=MyApplication.getDao().getPersonalStateDao();
                 List<PersonalState> result=personalStateDao.queryBuilder().where(PersonalStateDao.Properties.Holder_id.eq(MyApplication.getUser().getUser_id())).orderDesc(PersonalStateDao.Properties.State_time).list();
+                Log.e("personalsize", String.valueOf(result.size()) );
                 /*
                 for(PersonalState i:result){
                     if(i.getImage1ID()!=null){

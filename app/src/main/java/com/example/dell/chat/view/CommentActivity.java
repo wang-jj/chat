@@ -32,6 +32,7 @@ import com.example.dell.chat.bean.MyApplication;
 import com.example.dell.chat.bean.PersonalState;
 import com.example.dell.chat.bean.User;
 import com.example.dell.chat.db.PersonalStateDao;
+import com.example.dell.chat.model.Chat.ChatModelImpl;
 import com.example.dell.chat.presenter.CommentPresenter;
 import com.example.dell.chat.presenter.LoginPresenter;
 import com.example.dell.chat.tools.CircleImageView;
@@ -193,6 +194,7 @@ public class CommentActivity extends BaseActivity<CommentActivity,CommentPresent
                     num.setText(String.valueOf(personalState.getLike()));
                     personalState.setPictureID(1);
                     presenter.SendLike(personalState);
+                    new ChatModelImpl().SendComment(MyApplication.getUser().getUser_name()+" 点赞了你",personalState.getPersonalstate_id(),personalState.getUser_id());
                 }
             }
         });

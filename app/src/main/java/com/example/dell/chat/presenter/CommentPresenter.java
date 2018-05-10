@@ -44,7 +44,7 @@ public class CommentPresenter <T extends BaseActivity> extends BasePresenter<T> 
                     Log.e("up", datas);
                 }else {
                     Log.e("up", datas);
-                    new ChatModelImpl().SendComment(MyApplication.getUser().getUser_name(),momentID,holder_id);
+                    new ChatModelImpl().SendComment(MyApplication.getUser().getUser_name()+" 评论/回复了你",momentID,holder_id);
                     Comment comment=new Comment();
                     comment.setComment_content(content);
                     comment.setProfileID(MyApplication.getUser().getImage_path());

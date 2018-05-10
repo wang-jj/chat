@@ -46,7 +46,8 @@ public class HomePresenter {
         final HomeFragment.StateAdapter adapter=view.getAdapter();
         final RecyclerView stateRecyclerView=view.getStateRecyclerView();
         final SwipeRefreshLayout swipeRefreshLayout=view.getSwipeRefreshLayout();
-        final List<PersonalState> old=adapter.getmStateList();
+        //final List<PersonalState> old=adapter.getmStateList();
+        final List<PersonalState> old=view.getAllPersonalState();
         homeModel.UpdateMoment(MyApplication.getLatitude(), MyApplication.getLongitude(),old, new Callback<List<PersonalState>>() {
             @Override
             public void execute(List<PersonalState> datas) {

@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.awen.photo.photopick.controller.PhotoPagerConfig;
 import com.bumptech.glide.Glide;
 import com.example.dell.chat.R;
 import com.example.dell.chat.bean.Chat;
@@ -39,6 +40,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 //聊天内容Activity
@@ -264,21 +266,28 @@ public class ChatActivity extends AppCompatActivity {
             }else if(viewType==TYPE_SENT_IMAGE){
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_right_image,parent,false);
                 holder=new RightImageViewHolder(view);
-//                ((RightImageViewHolder)holder).chatImage.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                    }
-//                });
+                ((RightImageViewHolder)holder).chatImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position=holder.getAdapterPosition();
+                        ArrayList<String>arrayList=new ArrayList<>();
+                        Log.e("picture",  adapter.getChatList().get(position).getContent());
+                        arrayList.add(adapter.getChatList().get(position).getContent());
+                        seePicture(arrayList,0);
+                    }
+                });
             }else{
                 view=LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_left_image,parent,false);
                 holder=new LeftImageViewHolder(view);
-//                ((LeftImageViewHolder)holder).chatImage.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                    }
-//                });
+                ((LeftImageViewHolder)holder).chatImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position=holder.getAdapterPosition();
+                        ArrayList<String>arrayList=new ArrayList<>();
+                        arrayList.add(adapter.getChatList().get(position).getContent());
+                        seePicture(arrayList,0);
+                    }
+                });
                 ((LeftImageViewHolder)holder).chatProfile.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -488,4 +497,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    public void seePicture(ArrayList<String> url, int position){
+        new PhotoPagerConfig.Builder(ChatActivity.this).setBigImageUrls(url).setSavaImage(true).setSaveImageLocalPath(MyApplication.getStorePath()).setPosition(position).setOpenDownAnimate(true).build();
+    }
 }
