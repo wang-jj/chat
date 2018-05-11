@@ -258,7 +258,7 @@ public class MsgFragment extends Fragment {
                 holder.messageTime.setText("");
             }
             else {
-                Date date = new Date(message.getLatest_time()+28800000);
+                Date date = new Date(message.getLatest_time());
                 DateFormat df = new SimpleDateFormat("HH:mm");
                 String time = df.format(date);
                 holder.messageTime.setText(String.valueOf(time));//时间处理
