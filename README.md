@@ -40,22 +40,27 @@
 <img src='https://github.com/wang-jj/chat/blob/master/img/chatlist.jpg' width="235" height="400" /><br>
 </div>
 
-### 个人资料：<br>
+## 功能展示：<br>
+### 侧栏功能列表：
 <div align=center>
-<img src='https://github.com/wang-jj/chat/blob/master/img/personal.jpg' width="235" height="400" /><br>
+<img src='https://github.com/wang-jj/chat/blob/master/img/left.jpg' width="235" height="400" /><br>
 </div>
 
-## 功能展示：<br>
 ### 聊天功能：<br>
 <div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/chat.jpg' width="235" height="400" />
 <img src='https://github.com/wang-jj/chat/blob/master/img/chat1.jpg' width="235" height="400" /><br>
 </div>
 
-### 发朋友圈：<br>
+### 查看个人资料：<br>
 <div align=center>
-<img src='https://github.com/wang-jj/chat/blob/master/img/sendmoment.jpg' width="235" height="400" />
-<img src='https://github.com/wang-jj/chat/blob/master/img/sendmoment1.jpg' width="235" height="400" /><br>
+<img src='https://github.com/wang-jj/chat/blob/master/img/personal.jpg' width="235" height="400" /><br>
+</div>
+
+### 查看个人动态：<br>
+<div align=center>
+<img src='https://github.com/wang-jj/chat/blob/master/img/personal_moment.jpg' width="235" height="400" />
+<img src='https://github.com/wang-jj/chat/blob/master/img/personal_moment1.jpg' width="235" height="400" /><br>
 </div>
 
 ### 评论与点赞：<br>
