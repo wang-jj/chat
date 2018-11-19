@@ -83,6 +83,7 @@
 ### 评论与点赞：<br>
 <div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/like.jpg' width="235" height="400" />
-<img src='https://github.com/wang-jj/chat/blob/master/img/like1.jpg' width="235" height="400" /><br>
+<img src='https://github.com/wang-jj/chat/blob/master/img/like1.jpg' width="235" height="400" />
+<img src='https://github.com/wang-jj/chat/blob/master/img/like2.jpg' width="235" height="400" /><br>
 </div>
 
