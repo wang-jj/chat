@@ -53,7 +53,7 @@
 <img src='https://github.com/wang-jj/chat/blob/master/img/personal.jpg' width="235" height="400" /><br>
 </div>
 
-### 查看个人动态：<br>
+### 查看个人相册：<br>
 <div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/personal_moment.jpg' width="235" height="400" />
 <img src='https://github.com/wang-jj/chat/blob/master/img/personal_moment1.jpg' width="235" height="400" />
@@ -75,8 +75,8 @@
 
 ### 查看朋友圈详情（点击可放大图片）：<br>
 <div align=center>
-<img src='https://github.com/wang-jj/chat/blob/master/img/detal1.jpg' width="235" height="400" />
-  <img src='https://github.com/wang-jj/chat/blob/master/img/detal2.jpg' width="235" height="400" />
+<img src='https://github.com/wang-jj/chat/blob/master/img/detal1.png' width="235" height="400" />
+<img src='https://github.com/wang-jj/chat/blob/master/img/detal2.png' width="235" height="400" />
 <img src='https://github.com/wang-jj/chat/blob/master/img/detal3.jpg' width="235" height="400" /><br>
 </div>
 
