@@ -3,7 +3,7 @@
 <div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/framework1.jpg' width="250" height="250" />
 <img src='https://github.com/wang-jj/chat/blob/master/img/framework2.jpg' width="250" height="250" />
-</div?
+</div>
 <br>
 2.效果展示：<br>
 App初始化：<br>
