@@ -1,19 +1,19 @@
 
 1.基本框架：采用MVP框架，Model层负责从服务器或者本地数据库获取数据，View 层主要是Activity负责界面的展示，Presenter 层负责业务逻辑，降低代码耦合度。<br>
-<div align=center style="font-size:100">
-<img src='https://github.com/wang-jj/chat/blob/master/img/framework1.jpg' width="250" height="250" />
-<img src='https://github.com/wang-jj/chat/blob/master/img/framework2.jpg' width="250" height="250" />
+<div align=center>
+<img src='https://github.com/wang-jj/chat/blob/master/img/framework1.jpg' width="250" height="250" padding='100' />
+<img src='https://github.com/wang-jj/chat/blob/master/img/framework2.jpg' width="250" height="250" padding='100' />
 </div>
 <br>
 2.效果展示：<br>
 App初始化：<br>
 <div align=center>
-<img src='https://github.com/wang-jj/chat/blob/master/img/loading.jpg' width="235" height="400" /><br>
+<img src='https://github.com/wang-jj/chat/blob/master/img/loading.jpg' width="235" height="350" /><br>
 </div>
 
 注册账号：<br>
 <div align=center>
-<img src='https://github.com/wang-jj/chat/blob/master/img/register.jpg' width="235" height="400" /><br>
+<img src='https://github.com/wang-jj/chat/blob/master/img/register.jpg' width="235" height="350" /><br>
 </div>
 
 登陆账号：<br>
