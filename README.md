@@ -35,6 +35,12 @@
 <img src='https://github.com/wang-jj/chat/blob/master/img/near1.jpg' width="235" height="400" /><br><br>
 </div>
 
+### 以地图的形式展现附近的人（点击头像可查看资料与聊天）：<br>
+<div align=center>
+<img src='https://github.com/wang-jj/chat/blob/master/img/map1.jpg' width="235" height="400" />
+<img src='https://github.com/wang-jj/chat/blob/master/img/map2.jpg' width="235" height="400" /><br><br>
+</div>
+
 ### 聊天列表：<br>
 <div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/chatlist1.jpg' width="235" height="400" />
