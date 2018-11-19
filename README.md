@@ -7,39 +7,58 @@
 <br>
 2.效果展示：<br>
 App初始化：<br>
-<img src='https://github.com/wang-jj/chat/blob/master/img/loading.jpg' width="250" height="400" />
-<br>
+<div align=center>
+<img src='https://github.com/wang-jj/chat/blob/master/img/loading.jpg' width="250" height="400" /><br>
+</div>
 
 注册账号：<br>
+<div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/register.jpg' width="250" height="400" /><br>
+</div>
 
 登陆账号：<br>
+<div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/login.jpg' width="250" height="400" /><br>
+</div>
 
 朋友圈界面：<br>
+<div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/firstpage.jpg' width="250" height="400" />
 <img src='https://github.com/wang-jj/chat/blob/master/img/firstpage1.jpg' width="250" height="400" /><br>
+</div>
 
 附近的人与推荐好友：<br>
+<div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/near.jpg' width="250" height="400" /><br>
+</div>
 
 聊天列表：<br>
+<div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/chatlist1.jpg' width="250" height="400" />
 <img src='https://github.com/wang-jj/chat/blob/master/img/chatlist.jpg' width="250" height="400" /><br>
+</div>
 
 个人资料：<br>
+<div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/personal.jpg' width="250" height="400" /><br>
+</div>
 
 3.功能展示：<br>
 聊天功能：<br>
+<div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/chat.jpg' width="250" height="400" />
 <img src='https://github.com/wang-jj/chat/blob/master/img/chat1.jpg' width="250" height="400" /><br>
+</div>
 
 发朋友圈：<br>
+<div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/sendmoment.jpg' width="250" height="400" />
 <img src='https://github.com/wang-jj/chat/blob/master/img/sendmoment1.jpg' width="250" height="400" /><br>
+</div>
 
 评论与点赞：<br>
+<div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/like.jpg' width="250" height="400" />
 <img src='https://github.com/wang-jj/chat/blob/master/img/like1.jpg' width="250" height="400" /><br>
+</div>
 
