@@ -29,14 +29,16 @@
 <img src='https://github.com/wang-jj/chat/blob/master/img/firstpage1.jpg' width="235" height="400" /><br>
 </div>
 
-### 附近的人与推荐好友：<br>
+### 附近的人与推荐好友（点击头像可查看资料与聊天）：<br>
 <div align=center>
-<img src='https://github.com/wang-jj/chat/blob/master/img/near.jpg' width="235" height="400" /><br>
+<img src='https://github.com/wang-jj/chat/blob/master/img/near.jpg' width="235" height="400" />
+<img src='https://github.com/wang-jj/chat/blob/master/img/near1.jpg' width="235" height="400" /><br><br>
 </div>
 
 ### 聊天列表：<br>
 <div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/chatlist1.jpg' width="235" height="400" />
+<img src='https://github.com/wang-jj/chat/blob/master/img/chatlist2.jpg' width="235" height="400" />
 <img src='https://github.com/wang-jj/chat/blob/master/img/chatlist.jpg' width="235" height="400" /><br>
 </div>
 
@@ -44,12 +46,6 @@
 ### 侧栏功能列表：
 <div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/left.jpg' width="235" height="400" /><br>
-</div>
-
-### 聊天功能：<br>
-<div align=center>
-<img src='https://github.com/wang-jj/chat/blob/master/img/chat.jpg' width="235" height="400" />
-<img src='https://github.com/wang-jj/chat/blob/master/img/chat1.jpg' width="235" height="400" /><br>
 </div>
 
 ### 查看个人资料：<br>
@@ -60,7 +56,28 @@
 ### 查看个人动态：<br>
 <div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/personal_moment.jpg' width="235" height="400" />
-<img src='https://github.com/wang-jj/chat/blob/master/img/personal_moment1.jpg' width="235" height="400" /><br>
+<img src='https://github.com/wang-jj/chat/blob/master/img/personal_moment1.jpg' width="235" height="400" />
+<img src='https://github.com/wang-jj/chat/blob/master/img/personal_moment2.jpg' width="235" height="400" /><br>
+</div>
+
+### 聊天功能（可发送图片和文字）：<br>
+<div align=center>
+<img src='https://github.com/wang-jj/chat/blob/master/img/chat.jpg' width="235" height="400" />
+<img src='https://github.com/wang-jj/chat/blob/master/img/chat1.jpg' width="235" height="400" />
+<img src='https://github.com/wang-jj/chat/blob/master/img/chat3.jpg' width="235" height="400" /><br>
+</div>
+
+### 发朋友圈功能（可发gif图，自动附带地理位置信息）：<br>
+<div align=center>
+<img src='https://github.com/wang-jj/chat/blob/master/img/sendmoment1.jpg' width="235" height="400" />
+<img src='https://github.com/wang-jj/chat/blob/master/img/sendmoment.jpg' width="235" height="400" /><br>
+</div>
+
+### 查看朋友圈详情（点击可放大图片）：<br>
+<div align=center>
+<img src='https://github.com/wang-jj/chat/blob/master/img/detal1.jpg' width="235" height="400" />
+  <img src='https://github.com/wang-jj/chat/blob/master/img/detal2.jpg' width="235" height="400" />
+<img src='https://github.com/wang-jj/chat/blob/master/img/detal3.jpg' width="235" height="400" /><br>
 </div>
 
 ### 评论与点赞：<br>
