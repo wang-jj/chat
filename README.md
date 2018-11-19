@@ -6,7 +6,7 @@
 <img src='https://github.com/wang-jj/chat/blob/master/img/framework2.jpg' width="250" height="250" />
 </div>
 <br>
-## 效果展示：<br>
+## 效果展示：
 App初始化：<br>
 <div align=center>
 <img src='https://github.com/wang-jj/chat/blob/master/img/loading.jpg' width="235" height="350" /><br>
